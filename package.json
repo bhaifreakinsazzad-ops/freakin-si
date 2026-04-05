@@ -1,0 +1,23 @@
+{
+  "name": "freakin-si",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "dev:backend": "npm run dev --workspace=apps/backend",
+    "dev:mobile": "npm run start --workspace=apps/mobile"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: freakin-si-backend
+    runtime: node
+    plan: free
+    rootDir: apps/backend
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: COHERE_API_KEY
+        sync: false
+      - key: FRONTEND_URL
+        value: https://bhaifreakin.online

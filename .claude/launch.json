@@ -1,0 +1,13 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "freakin-si-web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "E:/Ai+Si/apps/web",
+      "port": 5173,
+      "autoPort": true
+    }
+  ]
+}
