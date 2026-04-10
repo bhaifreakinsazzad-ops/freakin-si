@@ -118,6 +118,7 @@ Make it specific, actionable, and tailored to this exact niche.`;
         niche:            targetAudience || '',
         target_audience:  targetAudience || '',
         budget:           budget || '',
+        goal:             goal || '',
         business_model:   blueprint.businessModel || {},
         brand_identity:   blueprint.brandIdentity || {},
         offer_structure:  blueprint.offerStructure || {},
@@ -197,15 +198,64 @@ router.delete('/:id', authenticateToken, async (req, res) => {
 // ── Public Marketplace ─────────────────────────────────────────────────────
 router.get('/marketplace/listings', async (req, res) => {
   try {
-    const { data, error } = await supabase
+    const { category, search } = req.query;
+    let query = supabase
       .from('marketplace_listings')
       .select('*')
       .eq('status', 'active')
       .order('created_at', { ascending: false })
       .limit(24);
 
+    if (category && category !== 'all') query = query.eq('category', category);
+    if (search) query = query.ilike('title', `%${search}%`);
+
+    const { data, error } = await query;
     if (error) throw error;
     res.json({ listings: data || [] });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── List Business on Marketplace ───────────────────────────────────────────
+router.post('/:id/list-marketplace', authenticateToken, async (req, res) => {
+  try {
+    // Verify user owns the business
+    const { data: biz, error: bizErr } = await supabase
+      .from('businesses')
+      .select('id, name, tagline, niche')
+      .eq('id', req.params.id)
+      .eq('user_id', req.user.id)
+      .single();
+
+    if (bizErr || !biz) return res.status(404).json({ error: 'Business not found.' });
+
+    const { price, monthly_revenue, business_age, category, description, tags } = req.body;
+
+    const { data: listing, error: listErr } = await supabase
+      .from('marketplace_listings')
+      .insert({
+        business_id:     biz.id,
+        seller_id:       req.user.id,
+        title:           biz.name,
+        description:     description || biz.tagline || '',
+        niche:           biz.niche || '',
+        category:        category || 'digital',
+        price:           parseFloat(price) || 0,
+        monthly_revenue: parseFloat(monthly_revenue) || 0,
+        business_age:    business_age || '',
+        tags:            tags || [],
+        status:          'active',
+      })
+      .select()
+      .single();
+
+    if (listErr) throw listErr;
+
+    // Mark business as listed
+    await supabase.from('businesses').update({ status: 'listed' }).eq('id', biz.id);
+
+    res.json({ success: true, listing });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLang } from '@/contexts/LanguageContext'
-import { Eye, EyeOff, UserPlus, Zap, CheckCircle } from 'lucide-react'
+import { Eye, EyeOff, UserPlus, TrendingUp, CheckCircle } from 'lucide-react'
 
 export default function RegisterPage() {
   const { register } = useAuth()
@@ -66,10 +66,12 @@ export default function RegisterPage() {
         <div className="text-center mb-6">
           <Link to="/" className="inline-flex flex-col items-center gap-3 group">
             <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
-              style={{ background: 'rgba(255,182,40,0.12)', border: '1px solid rgba(255,182,40,0.3)', boxShadow: '0 0 24px rgba(255,182,40,0.12)' }}>
-              <Zap size={24} fill="currentColor" style={{ color: 'var(--fsi-gold)' }} />
+              style={{ background: 'linear-gradient(135deg, #F5B041, #D4830A)', boxShadow: '0 0 24px rgba(245,176,65,0.3)' }}>
+              <TrendingUp size={24} color="#000" />
             </div>
-            <div className="font-display text-xl font-bold gradient-text">Freakin SI</div>
+            <div className="font-display text-xl font-bold" style={{ color: 'var(--fsi-text)' }}>
+              BhaiFreakin'<span style={{ color: 'var(--fsi-gold)' }}>sBI</span>
+            </div>
           </Link>
           <p className="text-xs mt-1" style={{ color: 'var(--fsi-text-muted)' }}>{t.registerSubtitle}</p>
           <div className="flex items-center justify-center gap-1.5 mt-2">

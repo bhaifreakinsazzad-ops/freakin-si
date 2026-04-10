@@ -60,7 +60,7 @@ function Particle({ style }: { style: React.CSSProperties }) {
 }
 
 /* ── Typewriter demo ──────────────────────────────────── */
-const DEMO_TEXT = "Bangladesh-এর top AI platform — 40+ models, সব বাংলায় 🇧🇩"
+const DEMO_TEXT = "আমার skincare business-এর একটা complete BI blueprint তৈরি করো 💰"
 function TypewriterDemo() {
   const [text, setText] = useState('')
   const [i, setI] = useState(0)
@@ -74,7 +74,7 @@ function TypewriterDemo() {
       <div className="flex items-center gap-2 mb-3">
         <div className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold"
           style={{ background: 'rgba(255,182,40,0.2)', color: 'var(--fsi-gold)' }}>SI</div>
-        <span className="text-xs font-medium" style={{ color: 'var(--fsi-gold)' }}>Freakin SI</span>
+        <span className="text-xs font-medium" style={{ color: 'var(--fsi-gold)' }}>BhaiFreakin'sBI</span>
       </div>
       <p className="text-sm leading-relaxed" style={{ color: 'var(--fsi-text)' }}>
         {text}<span className="stream-cursor" />
@@ -133,7 +133,7 @@ export default function LandingPage() {
             style={{ background: 'linear-gradient(135deg, var(--fsi-gold), #FFA000)', boxShadow: '0 0 16px rgba(255,182,40,0.5)' }}>
             <Zap size={18} fill="black" color="black" />
           </div>
-          <span className="font-display font-bold text-lg" style={{ color: 'var(--fsi-gold)' }}>Freakin SI</span>
+          <span className="font-display font-bold text-lg" style={{ color: 'var(--fsi-gold)' }}>BhaiFreakin'sBI</span>
         </div>
         <div className="flex items-center gap-3">
           <Link to="/pricing" className="text-sm hidden sm:block" style={{ color: 'var(--fsi-text-muted)' }}>
@@ -171,7 +171,7 @@ export default function LandingPage() {
           style={{ borderColor: 'rgba(255,182,40,0.3)' }}>
           <Star size={13} style={{ color: 'var(--fsi-gold)' }} />
           <span className="text-xs font-medium" style={{ color: 'var(--fsi-gold)' }}>
-            {lang === 'bn' ? 'বাংলাদেশের প্রথম Synthetic Intelligence Platform' : "South Asia's #1 Synthetic Intelligence Platform"}
+            {lang === 'bn' ? 'বাংলাদেশের প্রথম Synthetic Business Intelligence' : "South Asia's #1 Synthetic Business Intelligence"}
           </span>
         </motion.div>
 
@@ -299,7 +299,7 @@ export default function LandingPage() {
           className="text-center mb-12">
           <h2 className="font-display font-bold text-3xl sm:text-4xl mb-4">
             {lang === 'bn' ? 'কেন ' : 'Why '}
-            <span className="gradient-text">Freakin SI?</span>
+            <span className="gradient-text">BhaiFreakin'sBI?</span>
           </h2>
         </motion.div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -436,10 +436,10 @@ export default function LandingPage() {
               style={{ background: 'linear-gradient(135deg, var(--fsi-gold), #FFA000)' }}>
               <Zap size={14} fill="black" color="black" />
             </div>
-            <span className="font-display font-bold" style={{ color: 'var(--fsi-gold)' }}>Freakin SI</span>
+            <span className="font-display font-bold" style={{ color: 'var(--fsi-gold)' }}>BhaiFreakin'sBI</span>
           </div>
           <p className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>
-            {lang === 'bn' ? '© ২০২৫ Freakin SI — Synthetic Intelligence Platform' : '© 2025 Freakin SI — Synthetic Intelligence Platform'}
+            {lang === 'bn' ? `© ২০২৫ BhaiFreakin'sBI — Synthetic Business Intelligence` : `© 2025 BhaiFreakin'sBI — Synthetic Business Intelligence`}
           </p>
           <div className="flex gap-4 text-xs" style={{ color: 'var(--fsi-text-muted)' }}>
             <Link to="/pricing">{lang === 'bn' ? 'মূল্য' : 'Pricing'}</Link>

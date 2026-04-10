@@ -2,59 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Freakin SI — Design Tokens ────────────────────────── */
+/* ── BhaiFreakin'sBI — Design Tokens ────────────────────── */
 
 @layer base {
   :root {
-    /* Brand Colors */
-    --fsi-gold:        #FFB628;
-    --fsi-gold-glow:   #FFD460;
-    --fsi-gold-muted:  #8A6000;
-    --fsi-violet:      #8B5CF6;
-    --fsi-violet-glow: #A78BFA;
-    --fsi-violet-dark: #4C1D95;
-    --fsi-green:       #00E676;
-    --fsi-green-dark:  #00994D;
-    --fsi-pink:        #EC4899;
+    /* Brand Colors — Gold Premium */
+    --fsi-gold:        #F5B041;
+    --fsi-gold-glow:   #F8C97A;
+    --fsi-gold-muted:  rgba(245,176,65,0.35);
+    --fsi-gold-subtle: rgba(245,176,65,0.08);
+    --fsi-amber:       #E67E22;
+    --fsi-amber-glow:  rgba(230,126,34,0.30);
+    --fsi-teal:        #1A8A7A;
+    --fsi-green:       #00C27A;
+    --fsi-green-dark:  #007A4D;
+    --fsi-red:         #E74C3C;
     --fsi-blue:        #3B82F6;
-    --fsi-amber:       #F59E0B;
+
+    /* Radix compat aliases */
+    --fsi-violet:      #D4900A;
+    --fsi-violet-glow: #F8C97A;
 
     /* Backgrounds */
-    --fsi-void:      #080B12;
-    --fsi-surface:   #0D1117;
-    --fsi-surface-2: #161B22;
-    --fsi-surface-3: #1C2333;
+    --fsi-void:      #080808;
+    --fsi-surface:   #111111;
+    --fsi-surface-2: #191919;
+    --fsi-surface-3: #222222;
 
     /* Borders */
-    --fsi-border:       rgba(255, 182, 40, 0.12);
-    --fsi-border-hover: rgba(255, 182, 40, 0.30);
-    --fsi-border-active:rgba(255, 182, 40, 0.55);
+    --fsi-border:        rgba(245,176,65,0.10);
+    --fsi-border-hover:  rgba(245,176,65,0.30);
+    --fsi-border-active: rgba(245,176,65,0.55);
 
     /* Text */
-    --fsi-text:       #F0F6FC;
-    --fsi-text-muted: #8B949E;
-    --fsi-text-dim:   #484F58;
+    --fsi-text:       #F4F6FA;
+    --fsi-text-muted: #A7ACB8;
+    --fsi-text-dim:   #5a5f6e;
 
     /* Radix UI token mapping */
-    --background:             8 8% 4%;
-    --foreground:             210 40% 95%;
-    --card:                   220 13% 8%;
-    --card-foreground:        210 40% 95%;
-    --popover:                220 13% 8%;
-    --popover-foreground:     210 40% 95%;
-    --primary:                38 100% 58%;
+    --background:             0 0% 3%;
+    --foreground:             40 20% 96%;
+    --card:                   0 0% 7%;
+    --card-foreground:        40 20% 96%;
+    --popover:                0 0% 7%;
+    --popover-foreground:     40 20% 96%;
+    --primary:                37 90% 61%;
     --primary-foreground:     0 0% 0%;
-    --secondary:              220 13% 12%;
-    --secondary-foreground:   210 40% 95%;
-    --muted:                  220 13% 14%;
-    --muted-foreground:       215 14% 55%;
-    --accent:                 263 80% 65%;
-    --accent-foreground:      210 40% 95%;
+    --secondary:              0 0% 10%;
+    --secondary-foreground:   40 20% 96%;
+    --muted:                  0 0% 12%;
+    --muted-foreground:       220 9% 55%;
+    --accent:                 32 80% 50%;
+    --accent-foreground:      40 20% 96%;
     --destructive:            0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border:                 38 70% 40% / 0.15;
-    --input:                  220 13% 12%;
-    --ring:                   38 100% 58%;
+    --border:                 37 90% 61% / 0.12;
+    --input:                  0 0% 10%;
+    --ring:                   37 90% 61%;
     --radius:                 0.625rem;
   }
 }
@@ -94,7 +98,7 @@
   ::-webkit-scrollbar-thumb:hover { background: var(--fsi-gold); }
 
   ::selection {
-    background: rgba(255, 182, 40, 0.25);
+    background: rgba(245, 176, 65, 0.20);
     color: var(--fsi-text);
   }
 }
@@ -140,18 +144,18 @@
 }
 
 @keyframes pulse-glow-gold {
-  0%, 100% { box-shadow: 0 0 20px rgba(255,182,40,0.3), 0 0 40px rgba(255,182,40,0.15); }
-  50%       { box-shadow: 0 0 40px rgba(255,182,40,0.6), 0 0 80px rgba(255,182,40,0.3), 0 0 120px rgba(255,182,40,0.15); }
+  0%, 100% { box-shadow: 0 0 20px rgba(245,176,65,0.35), 0 0 40px rgba(245,176,65,0.18); }
+  50%       { box-shadow: 0 0 40px rgba(245,176,65,0.7), 0 0 80px rgba(245,176,65,0.35), 0 0 120px rgba(245,176,65,0.18); }
 }
 
 @keyframes pulse-glow-violet {
-  0%, 100% { box-shadow: 0 0 20px rgba(139,92,246,0.3), 0 0 40px rgba(139,92,246,0.15); }
-  50%       { box-shadow: 0 0 40px rgba(139,92,246,0.6), 0 0 80px rgba(139,92,246,0.3); }
+  0%, 100% { box-shadow: 0 0 20px rgba(230,126,34,0.3), 0 0 40px rgba(230,126,34,0.15); }
+  50%       { box-shadow: 0 0 40px rgba(230,126,34,0.6), 0 0 80px rgba(230,126,34,0.3); }
 }
 
 @keyframes pulse-text-glow {
-  0%, 100% { text-shadow: 0 0 10px rgba(255,182,40,0.5), 0 0 20px rgba(255,182,40,0.25); }
-  50%       { text-shadow: 0 0 20px rgba(255,182,40,0.9), 0 0 40px rgba(255,182,40,0.6), 0 0 60px rgba(255,182,40,0.3); }
+  0%, 100% { text-shadow: 0 0 10px rgba(245,176,65,0.7), 0 0 20px rgba(245,176,65,0.4); }
+  50%       { text-shadow: 0 0 20px rgba(245,176,65,1), 0 0 40px rgba(245,176,65,0.7), 0 0 60px rgba(245,176,65,0.4); }
 }
 
 @keyframes shimmer {
@@ -219,8 +223,8 @@
 
   .grid-pattern {
     background-image:
-      linear-gradient(rgba(255,182,40,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,182,40,0.025) 1px, transparent 1px);
+      linear-gradient(rgba(245,176,65,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,176,65,0.04) 1px, transparent 1px);
     background-size: 60px 60px;
   }
 
@@ -229,7 +233,7 @@
     position: absolute;
     width: 700px; height: 700px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,182,40,0.10) 0%, rgba(255,150,0,0.05) 40%, transparent 70%);
+    background: radial-gradient(circle, rgba(245,176,65,0.12) 0%, rgba(200,120,20,0.06) 40%, transparent 70%);
     filter: blur(80px);
     animation: aurora 22s ease-in-out infinite;
     pointer-events: none;
@@ -238,7 +242,7 @@
     position: absolute;
     width: 550px; height: 550px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(139,92,246,0.10) 0%, rgba(76,29,149,0.06) 40%, transparent 70%);
+    background: radial-gradient(circle, rgba(230,126,34,0.10) 0%, rgba(180,80,10,0.06) 40%, transparent 70%);
     filter: blur(90px);
     animation: aurora2 28s ease-in-out infinite;
     pointer-events: none;
@@ -247,7 +251,7 @@
     position: absolute;
     width: 450px; height: 450px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,230,118,0.07) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(26,138,122,0.07) 0%, transparent 70%);
     filter: blur(60px);
     animation: aurora 18s ease-in-out infinite reverse;
     pointer-events: none;
@@ -255,13 +259,13 @@
 
   /* ── Glass morphism ── */
   .glass {
-    background: rgba(13, 17, 23, 0.80);
+    background: rgba(15, 12, 8, 0.82);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--fsi-border);
   }
   .glass-light {
-    background: rgba(255, 182, 40, 0.03);
+    background: rgba(245, 176, 65, 0.03);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--fsi-border);
@@ -272,39 +276,39 @@
 
   /* ── Neon effects ── */
   .neon-gold {
-    text-shadow: 0 0 10px rgba(255,182,40,0.8), 0 0 20px rgba(255,182,40,0.5), 0 0 40px rgba(255,182,40,0.3);
+    text-shadow: 0 0 10px rgba(245,176,65,0.9), 0 0 20px rgba(245,176,65,0.6), 0 0 40px rgba(245,176,65,0.35);
   }
   .neon-violet {
-    text-shadow: 0 0 10px rgba(139,92,246,0.8), 0 0 20px rgba(139,92,246,0.5);
+    text-shadow: 0 0 10px rgba(230,126,34,0.8), 0 0 20px rgba(230,126,34,0.5);
   }
   .neon-border-gold {
-    box-shadow: 0 0 5px rgba(255,182,40,0.3), 0 0 10px rgba(255,182,40,0.15), inset 0 0 5px rgba(255,182,40,0.08);
-    border: 1px solid rgba(255,182,40,0.25);
+    box-shadow: 0 0 5px rgba(245,176,65,0.4), 0 0 10px rgba(245,176,65,0.2), inset 0 0 5px rgba(245,176,65,0.08);
+    border: 1px solid rgba(245,176,65,0.3);
   }
   .neon-border-gold:hover {
-    box-shadow: 0 0 12px rgba(255,182,40,0.5), 0 0 24px rgba(255,182,40,0.25), inset 0 0 10px rgba(255,182,40,0.12);
-    border-color: rgba(255,182,40,0.5);
+    box-shadow: 0 0 12px rgba(245,176,65,0.7), 0 0 24px rgba(245,176,65,0.35), inset 0 0 10px rgba(245,176,65,0.15);
+    border-color: rgba(245,176,65,0.6);
   }
   .neon-border-violet {
-    box-shadow: 0 0 5px rgba(139,92,246,0.3), inset 0 0 5px rgba(139,92,246,0.08);
-    border: 1px solid rgba(139,92,246,0.25);
+    box-shadow: 0 0 5px rgba(230,126,34,0.3), inset 0 0 5px rgba(230,126,34,0.08);
+    border: 1px solid rgba(230,126,34,0.25);
   }
 
   /* ── Gradient texts ── */
   .gradient-text {
-    background: linear-gradient(135deg, var(--fsi-gold), var(--fsi-gold-glow), #FFA000);
+    background: linear-gradient(135deg, #F5B041, #F8C97A, #E67E22);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   .gradient-text-violet {
-    background: linear-gradient(135deg, var(--fsi-violet), var(--fsi-violet-glow));
+    background: linear-gradient(135deg, #E67E22, #F5B041);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   .gradient-text-multi {
-    background: linear-gradient(135deg, var(--fsi-gold), var(--fsi-violet), var(--fsi-green), var(--fsi-gold));
+    background: linear-gradient(135deg, #F5B041, #E67E22, #F8C97A, #F5B041);
     background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -316,16 +320,16 @@
 
   /* ── Buttons ── */
   .btn-gold {
-    background: linear-gradient(135deg, var(--fsi-gold), #FFA000);
+    background: linear-gradient(135deg, #F5B041, #E67E22);
     color: #000;
     font-weight: 600;
     border-radius: 10px;
     padding: 10px 20px;
     transition: all 0.2s ease;
-    box-shadow: 0 0 20px rgba(255,182,40,0.35), 0 4px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 0 20px rgba(245,176,65,0.4), 0 4px 15px rgba(0,0,0,0.3);
   }
   .btn-gold:hover {
-    box-shadow: 0 0 30px rgba(255,182,40,0.6), 0 6px 20px rgba(0,0,0,0.4);
+    box-shadow: 0 0 30px rgba(245,176,65,0.7), 0 6px 20px rgba(0,0,0,0.4);
     transform: translateY(-2px) scale(1.02);
   }
   .btn-gold:active { transform: translateY(0) scale(0.98); }

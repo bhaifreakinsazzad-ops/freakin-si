@@ -78,6 +78,7 @@ app.use('/api/models', require('./routes/models'));
 app.use('/api/subscriptions', require('./routes/subscriptions'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/businesses', require('./routes/businesses'));
+app.use('/api/services',   require('./routes/services'));
 
 // Health check
 app.get('/api/health', (req, res) => {

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLang } from '@/contexts/LanguageContext'
 import { authApi, subscriptionApi } from '@/lib/api'
-import { MessageSquare, Image, Wrench, CreditCard, Crown, TrendingUp, Calendar, Zap } from 'lucide-react'
+import { MessageSquare, Image, Wrench, CreditCard, Crown, TrendingUp, Calendar, Zap, Briefcase, Store, Sparkles, ArrowRight } from 'lucide-react'
 import { cn, getSubscriptionBadge, formatDate } from '@/lib/utils'
 
 export default function DashboardPage() {
@@ -114,6 +114,39 @@ export default function DashboardPage() {
               <p className="text-xs text-gray-600 group-hover:text-green-400 transition-colors mt-1">{actionLabel} →</p>
             </Link>
           ))}
+        </div>
+
+        {/* BI Overview */}
+        <div className="rounded-2xl p-5 space-y-4"
+          style={{ background: 'linear-gradient(135deg, rgba(245,176,65,0.06), rgba(212,131,10,0.03))', border: '1px solid rgba(245,176,65,0.15)' }}>
+          <div className="flex items-center justify-between">
+            <h2 className="font-bold flex items-center gap-2 text-sm" style={{ color: 'var(--fsi-gold)' }}>
+              <Sparkles size={16} style={{ color: 'var(--fsi-gold)' }} /> Synthetic Business Intelligence
+            </h2>
+            <Link to="/money-machine" className="text-xs flex items-center gap-1" style={{ color: 'var(--fsi-text-muted)' }}>
+              Open BI Builder <ArrowRight size={12} />
+            </Link>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { icon: Sparkles, label: 'BI Builder', sublabel: 'Create blueprints', to: '/money-machine', color: '#F5B041' },
+              { icon: Briefcase, label: 'Services',   sublabel: 'Hire experts',      to: '/services',      color: '#3B82F6' },
+              { icon: Store,     label: 'Marketplace', sublabel: 'Buy & sell',       to: '/marketplace',   color: '#00C27A' },
+            ].map(({ icon: Icon, label, sublabel, to, color }) => (
+              <Link key={to} to={to}
+                className="rounded-xl p-3 flex flex-col items-center text-center gap-2 transition-all hover:scale-105"
+                style={{ background: `${color}0F`, border: `1px solid ${color}25` }}>
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center"
+                  style={{ background: `${color}18` }}>
+                  <Icon size={16} style={{ color }} />
+                </div>
+                <div>
+                  <p className="text-xs font-bold" style={{ color: 'var(--fsi-text)' }}>{label}</p>
+                  <p className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>{sublabel}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
 
         {/* Usage */}

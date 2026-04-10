@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLang } from '@/contexts/LanguageContext'
-import { Eye, EyeOff, LogIn, Zap } from 'lucide-react'
+import { Eye, EyeOff, LogIn, TrendingUp } from 'lucide-react'
 
 export default function LoginPage() {
   const { login } = useAuth()
@@ -40,13 +40,15 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex flex-col items-center gap-3 group">
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center"
-              style={{ background: 'rgba(255,182,40,0.12)', border: '1px solid rgba(255,182,40,0.3)', boxShadow: '0 0 30px rgba(255,182,40,0.15)' }}>
-              <Zap size={28} fill="currentColor" style={{ color: 'var(--fsi-gold)' }} />
+              style={{ background: 'linear-gradient(135deg, #F5B041, #D4830A)', boxShadow: '0 0 30px rgba(245,176,65,0.3)' }}>
+              <TrendingUp size={28} color="#000" />
             </div>
             <div>
-              <div className="font-display text-2xl font-bold gradient-text">Freakin SI</div>
+              <div className="font-display text-2xl font-bold" style={{ color: 'var(--fsi-text)' }}>
+                BhaiFreakin'<span style={{ color: 'var(--fsi-gold)' }}>sBI</span>
+              </div>
               <p className="text-xs mt-1" style={{ color: 'var(--fsi-text-muted)' }}>
-                {t.loginSubtitle}
+                Synthetic Business Intelligence
               </p>
             </div>
           </Link>

@@ -9,8 +9,10 @@ import {
   Sparkles, TrendingUp, Store, Target, Users, DollarSign,
   Zap, ChevronRight, ChevronLeft, Loader2, Check, Copy,
   BarChart3, Megaphone, Globe, ArrowRight, Trash2, RefreshCw,
-  Lightbulb, Palette, FileText, Rocket,
+  Lightbulb, Palette, FileText, Rocket, Briefcase, ShoppingBag,
+  Play, Clock, CheckCircle, ExternalLink,
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
@@ -130,8 +132,18 @@ function Card({ icon: Icon, title, color, children }: {
 }
 
 /* ── Main Component ────────────────────────────────────────────────────── */
+type MainTab = 'create' | 'run' | 'sell' | 'grow'
+
+const MAIN_TABS: { id: MainTab; label: string; icon: React.ElementType; color: string }[] = [
+  { id: 'create', label: 'CREATE', icon: Sparkles,    color: '#F5B041' },
+  { id: 'run',    label: 'RUN',    icon: Play,         color: '#3B82F6' },
+  { id: 'sell',   label: 'SELL',   icon: ShoppingBag,  color: '#00C27A' },
+  { id: 'grow',   label: 'GROW',   icon: TrendingUp,   color: '#8B5CF6' },
+]
+
 export default function MoneyMachinePage() {
   const { token } = useAuth()
+  const [activeTab, setActiveTab] = useState<MainTab>('create')
   const [step, setStep] = useState<'form' | 'generating' | 'result' | 'saved'>('form')
 
   // Form state
@@ -151,6 +163,9 @@ export default function MoneyMachinePage() {
   const [savedList, setSavedList] = useState<SavedBusiness[]>([])
   const [loadingSaved, setLoadingSaved] = useState(false)
 
+  // Service requests (for RUN tab)
+  const [serviceRequests, setServiceRequests] = useState<any[]>([])
+
   const genInterval = useRef<ReturnType<typeof setInterval> | null>(null)
 
   // Load saved businesses
@@ -165,7 +180,20 @@ export default function MoneyMachinePage() {
     setLoadingSaved(false)
   }
 
-  useEffect(() => { loadSaved() }, [token])
+  // Load service requests
+  const loadServiceRequests = async () => {
+    if (!token) return
+    try {
+      const r = await fetch(`${API}/services`, { headers: { Authorization: `Bearer ${token}` } })
+      const d = await r.json()
+      setServiceRequests(d.requests || [])
+    } catch { /* ignore */ }
+  }
+
+  useEffect(() => {
+    loadSaved()
+    loadServiceRequests()
+  }, [token])
 
   const startGeneration = async () => {
     if (idea.trim().length < 10) { setError('Please describe your idea in at least 10 characters.'); return }
@@ -222,40 +250,278 @@ export default function MoneyMachinePage() {
   return (
     <div className="h-full overflow-y-auto" style={{ background: 'var(--fsi-void)' }}>
       {/* Header */}
-      <div className="sticky top-0 z-10 px-4 py-3 flex items-center justify-between"
-        style={{ background: 'rgba(8,11,18,0.85)', backdropFilter: 'blur(20px)', borderBottom: '1px solid var(--fsi-border)' }}>
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, var(--fsi-gold), var(--fsi-violet))', boxShadow: '0 0 16px rgba(0,212,255,0.3)' }}>
-            <DollarSign size={16} color="#000" />
+      <div className="sticky top-0 z-10"
+        style={{ background: 'rgba(8,8,8,0.92)', backdropFilter: 'blur(20px)', borderBottom: '1px solid var(--fsi-border)' }}>
+        <div className="px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg, #F5B041, #D4830A)', boxShadow: '0 0 12px rgba(245,176,65,0.3)' }}>
+              <DollarSign size={16} color="#000" />
+            </div>
+            <div>
+              <h1 className="font-display font-bold text-sm leading-none" style={{ color: 'var(--fsi-gold)' }}>BI Builder</h1>
+              <p className="text-xs mt-0.5" style={{ color: 'var(--fsi-text-muted)' }}>AI Business Blueprint Generator</p>
+            </div>
           </div>
-          <div>
-            <h1 className="font-display font-bold text-sm leading-none" style={{ color: 'var(--fsi-gold)' }}>Money Machine</h1>
-            <p className="text-xs mt-0.5" style={{ color: 'var(--fsi-text-muted)' }}>AI Business Blueprint Generator</p>
+          <div className="flex items-center gap-2">
+            {activeTab === 'create' && savedList.length > 0 && step !== 'saved' && (
+              <button onClick={() => setStep('saved')}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                style={{ background: 'var(--fsi-surface-2)', color: 'var(--fsi-text-muted)', border: '1px solid var(--fsi-border)' }}>
+                <Store size={13} />
+                {savedList.length} Saved
+              </button>
+            )}
+            {activeTab === 'create' && (step === 'result' || step === 'saved') && (
+              <button onClick={reset}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                style={{ background: 'rgba(245,176,65,0.1)', color: 'var(--fsi-gold)', border: '1px solid rgba(245,176,65,0.2)' }}>
+                <Sparkles size={13} />
+                New Blueprint
+              </button>
+            )}
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          {savedList.length > 0 && step !== 'saved' && (
-            <button onClick={() => setStep('saved')}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-              style={{ background: 'var(--fsi-surface-2)', color: 'var(--fsi-text-muted)', border: '1px solid var(--fsi-border)' }}>
-              <Store size={13} />
-              {savedList.length} Saved
+        {/* Tab bar */}
+        <div className="flex px-4 gap-1 pb-0">
+          {MAIN_TABS.map(tab => (
+            <button key={tab.id} onClick={() => setActiveTab(tab.id)}
+              className="flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold uppercase tracking-wider transition-all relative"
+              style={{ color: activeTab === tab.id ? tab.color : 'var(--fsi-text-muted)' }}>
+              <tab.icon size={12} />
+              {tab.label}
+              {activeTab === tab.id && (
+                <motion.div layoutId="tab-indicator"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 rounded-t-full"
+                  style={{ background: tab.color }}
+                />
+              )}
             </button>
-          )}
-          {(step === 'result' || step === 'saved') && (
-            <button onClick={reset}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-              style={{ background: 'rgba(0,212,255,0.1)', color: 'var(--fsi-gold)', border: '1px solid rgba(0,212,255,0.2)' }}>
-              <Sparkles size={13} />
-              New Blueprint
-            </button>
-          )}
+          ))}
         </div>
       </div>
 
       <div className="max-w-3xl mx-auto p-4 pb-12">
-        <AnimatePresence mode="wait">
+
+        {/* ── RUN TAB ──────────────────────────────────────────────────────── */}
+        {activeTab === 'run' && (
+          <motion.div key="run" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-6 mt-2">
+            <div className="text-center pt-4">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-medium"
+                style={{ background: 'rgba(59,130,246,0.1)', color: '#3B82F6', border: '1px solid rgba(59,130,246,0.25)' }}>
+                <Play size={12} /> Run Your Business
+              </div>
+              <h2 className="font-display font-bold text-2xl mb-2" style={{ color: 'var(--fsi-text)' }}>Hire Expert Help</h2>
+              <p className="text-sm max-w-sm mx-auto" style={{ color: 'var(--fsi-text-muted)' }}>
+                Get ads, dev work, design, copywriting, SEO and social media done for your blueprint.
+              </p>
+            </div>
+
+            <Link to="/services">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                className="rounded-2xl p-5 flex items-center justify-between cursor-pointer"
+                style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.12), rgba(59,130,246,0.06))', border: '1px solid rgba(59,130,246,0.25)' }}>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{ background: 'rgba(59,130,246,0.15)' }}>
+                    <Briefcase size={22} style={{ color: '#3B82F6' }} />
+                  </div>
+                  <div>
+                    <p className="font-bold" style={{ color: 'var(--fsi-text)' }}>Request a Service</p>
+                    <p className="text-xs mt-0.5" style={{ color: 'var(--fsi-text-muted)' }}>Ads · Dev · Design · Copy · SEO · Social — delivery in 24–72h</p>
+                  </div>
+                </div>
+                <ExternalLink size={18} style={{ color: '#3B82F6' }} />
+              </motion.div>
+            </Link>
+
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-sm" style={{ color: 'var(--fsi-text)' }}>Your Service Requests</h3>
+                <button onClick={loadServiceRequests} className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>
+                  <RefreshCw size={13} />
+                </button>
+              </div>
+              {serviceRequests.length === 0 ? (
+                <div className="text-center py-10 rounded-2xl" style={{ background: 'var(--fsi-surface)', border: '1px solid var(--fsi-border)' }}>
+                  <Briefcase size={32} className="mx-auto mb-3 opacity-30" style={{ color: '#3B82F6' }} />
+                  <p className="text-sm font-semibold" style={{ color: 'var(--fsi-text)' }}>No requests yet</p>
+                  <p className="text-xs mt-1" style={{ color: 'var(--fsi-text-muted)' }}>Submit your first service request above</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {serviceRequests.map((req: any, i: number) => (
+                    <motion.div key={req.id || i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="rounded-xl p-4 flex items-center gap-4"
+                      style={{ background: 'var(--fsi-surface)', border: '1px solid var(--fsi-border)' }}>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold capitalize truncate" style={{ color: 'var(--fsi-text)' }}>
+                          {req.service_type} — {req.business_name || 'Unnamed'}
+                        </p>
+                        <p className="text-xs mt-0.5 truncate" style={{ color: 'var(--fsi-text-muted)' }}>{req.description}</p>
+                      </div>
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0`}
+                        style={{
+                          background: req.status === 'completed' ? 'rgba(0,198,122,0.12)' : req.status === 'in_progress' ? 'rgba(245,176,65,0.12)' : 'rgba(255,255,255,0.06)',
+                          color: req.status === 'completed' ? '#00C67A' : req.status === 'in_progress' ? 'var(--fsi-gold)' : 'var(--fsi-text-muted)',
+                        }}>
+                        {req.status === 'completed' ? <CheckCircle size={11} className="inline mr-1" /> : <Clock size={11} className="inline mr-1" />}
+                        {req.status || 'pending'}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+
+        {/* ── SELL TAB ─────────────────────────────────────────────────────── */}
+        {activeTab === 'sell' && (
+          <motion.div key="sell" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-6 mt-2">
+            <div className="text-center pt-4">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-medium"
+                style={{ background: 'rgba(0,194,122,0.1)', color: '#00C27A', border: '1px solid rgba(0,194,122,0.25)' }}>
+                <ShoppingBag size={12} /> Sell Your Business
+              </div>
+              <h2 className="font-display font-bold text-2xl mb-2" style={{ color: 'var(--fsi-text)' }}>List on Marketplace</h2>
+              <p className="text-sm max-w-sm mx-auto" style={{ color: 'var(--fsi-text-muted)' }}>
+                Turn your BI blueprint into a sellable asset. Connect with buyers on our marketplace.
+              </p>
+            </div>
+
+            <Link to="/marketplace">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                className="rounded-2xl p-5 flex items-center justify-between cursor-pointer"
+                style={{ background: 'linear-gradient(135deg, rgba(0,194,122,0.12), rgba(0,194,122,0.06))', border: '1px solid rgba(0,194,122,0.25)' }}>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{ background: 'rgba(0,194,122,0.15)' }}>
+                    <Store size={22} style={{ color: '#00C27A' }} />
+                  </div>
+                  <div>
+                    <p className="font-bold" style={{ color: 'var(--fsi-text)' }}>Browse Marketplace</p>
+                    <p className="text-xs mt-0.5" style={{ color: 'var(--fsi-text-muted)' }}>Buy, sell, and discover AI-built businesses</p>
+                  </div>
+                </div>
+                <ExternalLink size={18} style={{ color: '#00C27A' }} />
+              </motion.div>
+            </Link>
+
+            <div>
+              <h3 className="font-semibold text-sm mb-3" style={{ color: 'var(--fsi-text)' }}>Your Blueprints</h3>
+              {savedList.length === 0 ? (
+                <div className="text-center py-10 rounded-2xl" style={{ background: 'var(--fsi-surface)', border: '1px solid var(--fsi-border)' }}>
+                  <ShoppingBag size={32} className="mx-auto mb-3 opacity-30" style={{ color: '#00C27A' }} />
+                  <p className="text-sm font-semibold" style={{ color: 'var(--fsi-text)' }}>No blueprints to sell yet</p>
+                  <p className="text-xs mt-1 mb-4" style={{ color: 'var(--fsi-text-muted)' }}>Build a blueprint first, then list it here</p>
+                  <button onClick={() => setActiveTab('create')}
+                    className="px-4 py-2 rounded-xl text-sm font-semibold"
+                    style={{ background: 'rgba(245,176,65,0.1)', color: 'var(--fsi-gold)', border: '1px solid rgba(245,176,65,0.2)' }}>
+                    Create Blueprint →
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {savedList.map((b, i) => (
+                    <motion.div key={b.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="rounded-xl p-4 flex items-center gap-4"
+                      style={{ background: 'var(--fsi-surface)', border: '1px solid var(--fsi-border)' }}>
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                        style={{ background: 'rgba(0,194,122,0.12)' }}>
+                        <Rocket size={16} style={{ color: '#00C27A' }} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold truncate" style={{ color: 'var(--fsi-text)' }}>{b.name}</p>
+                        <p className="text-xs mt-0.5 truncate" style={{ color: 'var(--fsi-text-muted)' }}>{b.niche}</p>
+                      </div>
+                      <Link to="/marketplace">
+                        <button className="text-xs px-3 py-1.5 rounded-lg font-medium shrink-0"
+                          style={{ background: 'rgba(0,194,122,0.12)', color: '#00C27A', border: '1px solid rgba(0,194,122,0.25)' }}>
+                          List →
+                        </button>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+
+        {/* ── GROW TAB ─────────────────────────────────────────────────────── */}
+        {activeTab === 'grow' && (
+          <motion.div key="grow" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-6 mt-2">
+            <div className="text-center pt-4">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-medium"
+                style={{ background: 'rgba(139,92,246,0.1)', color: '#8B5CF6', border: '1px solid rgba(139,92,246,0.25)' }}>
+                <TrendingUp size={12} /> Scale Up
+              </div>
+              <h2 className="font-display font-bold text-2xl mb-2" style={{ color: 'var(--fsi-text)' }}>Grow Your Business</h2>
+              <p className="text-sm max-w-sm mx-auto" style={{ color: 'var(--fsi-text-muted)' }}>
+                Follow your blueprint's growth roadmap. Each phase is a milestone toward scale.
+              </p>
+            </div>
+
+            {/* Growth pillars */}
+            {[
+              { icon: Target, color: '#F5B041', title: 'Validate', desc: 'Test your offer with a small audience before scaling. Get 3 paying customers first.' },
+              { icon: Megaphone, color: '#3B82F6', title: 'Acquire', desc: 'Run paid ads with your AI-generated hooks. Start with $20/day and double what works.' },
+              { icon: Users, color: '#00C27A', title: 'Retain', desc: 'Build community and loyalty loops. Subscription + upsells increase LTV by 3–5x.' },
+              { icon: BarChart3, color: '#8B5CF6', title: 'Scale', desc: 'Hire via Services, automate ops, and list your business on the Marketplace at 4–6x revenue.' },
+            ].map(({ icon: Icon, color, title, desc }, i) => (
+              <motion.div key={title} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.08 }}
+                className="rounded-2xl p-5 flex gap-4"
+                style={{ background: 'var(--fsi-surface)', border: '1px solid var(--fsi-border)' }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ background: `${color}18` }}>
+                  <Icon size={18} style={{ color }} />
+                </div>
+                <div>
+                  <p className="font-bold text-sm mb-1" style={{ color: 'var(--fsi-text)' }}>
+                    <span className="font-mono text-xs mr-2" style={{ color }}>{String(i + 1).padStart(2, '0')}</span>
+                    {title}
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--fsi-text-muted)' }}>{desc}</p>
+                </div>
+              </motion.div>
+            ))}
+
+            {savedList.length > 0 && (
+              <div className="rounded-2xl p-5 text-center"
+                style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.1), rgba(245,176,65,0.1))', border: '1px solid rgba(139,92,246,0.2)' }}>
+                <p className="font-bold mb-1" style={{ color: 'var(--fsi-text)' }}>
+                  You have {savedList.length} blueprint{savedList.length > 1 ? 's' : ''} ready to grow
+                </p>
+                <p className="text-sm mb-4" style={{ color: 'var(--fsi-text-muted)' }}>Start running your latest blueprint today</p>
+                <button onClick={() => setActiveTab('run')}
+                  className="px-5 py-2.5 rounded-xl font-semibold text-sm"
+                  style={{ background: 'linear-gradient(135deg, #F5B041, #D4830A)', color: '#000' }}>
+                  Get Expert Help →
+                </button>
+              </div>
+            )}
+
+            {savedList.length === 0 && (
+              <div className="rounded-2xl p-5 text-center"
+                style={{ background: 'var(--fsi-surface)', border: '1px solid var(--fsi-border)' }}>
+                <Lightbulb size={32} className="mx-auto mb-3 opacity-40" style={{ color: '#8B5CF6' }} />
+                <p className="font-bold mb-1" style={{ color: 'var(--fsi-text)' }}>Build your first blueprint to grow</p>
+                <button onClick={() => setActiveTab('create')}
+                  className="mt-3 px-5 py-2 rounded-xl text-sm font-semibold"
+                  style={{ background: 'rgba(245,176,65,0.1)', color: 'var(--fsi-gold)', border: '1px solid rgba(245,176,65,0.2)' }}>
+                  Create Blueprint →
+                </button>
+              </div>
+            )}
+          </motion.div>
+        )}
+
+        {/* ── CREATE TAB ───────────────────────────────────────────────────── */}
+        {activeTab === 'create' && <AnimatePresence mode="wait">
 
           {/* ── FORM ───────────────────────────────────────────────────────── */}
           {step === 'form' && (
@@ -833,7 +1099,8 @@ export default function MoneyMachinePage() {
             </motion.div>
           )}
 
-        </AnimatePresence>
+        </AnimatePresence>}
+
       </div>
     </div>
   )

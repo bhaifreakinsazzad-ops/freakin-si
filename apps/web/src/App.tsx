@@ -13,6 +13,8 @@ import PaymentPage    from '@/pages/PaymentPage'
 import DashboardPage  from '@/pages/DashboardPage'
 import AdminPage         from '@/pages/AdminPage'
 import MoneyMachinePage from '@/pages/MoneyMachinePage'
+import MarketplacePage  from '@/pages/MarketplacePage'
+import ServicesPage     from '@/pages/ServicesPage'
 import Layout            from '@/components/Layout'
 import { Zap } from 'lucide-react'
 
@@ -56,6 +58,8 @@ function AppRoutes() {
         <Route path="/payment"               element={<PaymentPage />} />
         <Route path="/dashboard"             element={<DashboardPage />} />
         <Route path="/money-machine"         element={<MoneyMachinePage />} />
+        <Route path="/marketplace"           element={<MarketplacePage />} />
+        <Route path="/services"              element={<ServicesPage />} />
       </Route>
 
       <Route path="/admin" element={
