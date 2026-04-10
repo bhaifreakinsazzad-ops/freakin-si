@@ -45,10 +45,10 @@ export default function LoginPage() {
             </div>
             <div>
               <div className="font-display text-2xl font-bold" style={{ color: 'var(--fsi-text)' }}>
-                BhaiFreakin'<span style={{ color: 'var(--fsi-gold)' }}>sBI</span>
+                <span style={{ color: 'var(--fsi-gold)' }}>Freakin BI</span>
               </div>
               <p className="text-xs mt-1" style={{ color: 'var(--fsi-text-muted)' }}>
-                Synthetic Business Intelligence
+                Freakin Business Intelligence
               </p>
             </div>
           </Link>

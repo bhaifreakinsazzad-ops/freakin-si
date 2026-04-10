@@ -70,7 +70,7 @@ export default function RegisterPage() {
               <img src="/fsi-icon.svg" alt="F-Bi Logo" className="w-full h-full" />
             </div>
             <div className="font-display text-xl font-bold" style={{ color: 'var(--fsi-text)' }}>
-              BhaiFreakin'<span style={{ color: 'var(--fsi-gold)' }}>sBI</span>
+              <span style={{ color: 'var(--fsi-gold)' }}>Freakin BI</span>
             </div>
           </Link>
           <p className="text-xs mt-1" style={{ color: 'var(--fsi-text-muted)' }}>{t.registerSubtitle}</p>

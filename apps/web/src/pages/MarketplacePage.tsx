@@ -1,5 +1,5 @@
 /**
- * BhaiFreakin'sBI — Business Marketplace
+ * Freakin BI — Business Marketplace
  * Browse, search, and buy AI-generated businesses
  */
 

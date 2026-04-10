@@ -26,8 +26,8 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
           style={{ boxShadow: '0 0 30px rgba(245,176,65,0.5)' }}>
           <img src="/fsi-icon.svg" alt="F-Bi" className="w-full h-full" />
         </div>
-        <p className="font-display font-semibold tracking-wide" style={{ color: 'var(--fsi-gold)' }}>BhaiFreakin'sBI</p>
-        <p className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>Synthetic Business Intelligence</p>
+        <p className="font-display font-semibold tracking-wide" style={{ color: 'var(--fsi-gold)' }}>Freakin BI</p>
+        <p className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>Freakin Business Intelligence</p>
       </div>
     </div>
   )

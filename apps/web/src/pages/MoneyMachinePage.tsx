@@ -1,6 +1,6 @@
 /**
  * Money Machine — AI Business Blueprint Generator
- * BhaiFreakin'sBI — Synthetic Business Intelligence
+ * Freakin BI — Freakin Business Intelligence
  */
 
 import { useState, useRef, useEffect } from 'react'

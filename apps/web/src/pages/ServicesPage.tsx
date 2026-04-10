@@ -1,5 +1,5 @@
 /**
- * BhaiFreakin'sBI — Service Request Portal
+ * Freakin BI — Service Request Portal
  * Request professional Ads, Dev, Design, Copy, SEO, Social services
  */
 

@@ -45,9 +45,9 @@ export default function Layout() {
         {!collapsed && (
           <div>
             <h1 className="font-display font-bold text-base leading-none" style={{ color: 'var(--fsi-text)' }}>
-              BhaiFreakin'<span style={{ color: 'var(--fsi-gold)' }}>sBI</span>
+              <span style={{ color: 'var(--fsi-gold)' }}>Freakin BI</span>
             </h1>
-            <p className="text-xs mt-0.5" style={{ color: 'var(--fsi-text-muted)' }}>Synthetic Business Intelligence</p>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--fsi-text-muted)' }}>Freakin Business Intelligence</p>
           </div>
         )}
       </div>
@@ -173,7 +173,7 @@ export default function Layout() {
           <button onClick={() => setMobileOpen(true)} style={{ color: 'var(--fsi-gold)' }}>
             <Menu size={22} />
           </button>
-          <span className="font-display font-bold text-sm" style={{ color: 'var(--fsi-text)' }}>BhaiFreakin'<span style={{ color: 'var(--fsi-gold)' }}>sBI</span></span>
+          <span className="font-display font-bold text-sm" style={{ color: 'var(--fsi-text)' }}><span style={{ color: 'var(--fsi-gold)' }}>Freakin BI</span></span>
           <button onClick={toggle} className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>
             {lang === 'bn' ? '🇬🇧 EN' : '🇧🇩 বাং'}
           </button>

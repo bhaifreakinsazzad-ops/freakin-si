@@ -1,12 +1,12 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 export const CHAT_MODES = [
-  { id: 'chat',      label: 'General',   labelBn: 'সাধারণ',       icon: '💬', color: '#FFB628', systemPrompt: `You are BhaiFreakin'sBI, a helpful and intelligent Synthetic Business Intelligence assistant. Be knowledgeable, friendly, and speak clearly in English or Bengali as requested.` },
-  { id: 'code',      label: 'Code',      labelBn: 'কোড',           icon: '💻', color: '#3B82F6', systemPrompt: `You are BhaiFreakin'sBI in Code Mode — an expert software engineer. Write clean, efficient, well-commented code. Always explain what the code does. Support all major languages.` },
-  { id: 'creative',  label: 'Creative',  labelBn: 'ক্রিয়েটিভ',   icon: '🎨', color: '#EC4899', systemPrompt: `You are BhaiFreakin'sBI in Creative Mode — a creative writing assistant with vivid imagination. Help with stories, poems, scripts, and imaginative content. Be expressive and original.` },
-  { id: 'math',      label: 'Math',      labelBn: 'গণিত',          icon: '🧮', color: '#00E676', systemPrompt: `You are BhaiFreakin'sBI in Math Mode — an expert mathematics tutor. Solve problems step-by-step, show all working clearly, and explain concepts in simple terms.` },
-  { id: 'translate', label: 'Translate', labelBn: 'অনুবাদ',        icon: '🌐', color: '#F5B041', systemPrompt: `You are BhaiFreakin'sBI in Translate Mode — an expert multilingual translator fluent in 150+ languages with special expertise in Bengali, English, Hindi, Arabic, Spanish. Provide accurate, natural translations.` },
-  { id: 'write',     label: 'Write',     labelBn: 'লেখা',          icon: '✍️', color: '#F59E0B', systemPrompt: `You are BhaiFreakin'sBI in Write Mode — a professional writing coach and content creator. Help with emails, essays, blog posts, and all forms of written content. Focus on clarity and structure.` },
+  { id: 'chat',      label: 'General',   labelBn: 'সাধারণ',       icon: '💬', color: '#FFB628', systemPrompt: `You are Freakin BI, a helpful and intelligent Freakin Business Intelligence assistant. Be knowledgeable, friendly, and speak clearly in English or Bengali as requested.` },
+  { id: 'code',      label: 'Code',      labelBn: 'কোড',           icon: '💻', color: '#3B82F6', systemPrompt: `You are Freakin BI in Code Mode — an expert software engineer. Write clean, efficient, well-commented code. Always explain what the code does. Support all major languages.` },
+  { id: 'creative',  label: 'Creative',  labelBn: 'ক্রিয়েটিভ',   icon: '🎨', color: '#EC4899', systemPrompt: `You are Freakin BI in Creative Mode — a creative writing assistant with vivid imagination. Help with stories, poems, scripts, and imaginative content. Be expressive and original.` },
+  { id: 'math',      label: 'Math',      labelBn: 'গণিত',          icon: '🧮', color: '#00E676', systemPrompt: `You are Freakin BI in Math Mode — an expert mathematics tutor. Solve problems step-by-step, show all working clearly, and explain concepts in simple terms.` },
+  { id: 'translate', label: 'Translate', labelBn: 'অনুবাদ',        icon: '🌐', color: '#F5B041', systemPrompt: `You are Freakin BI in Translate Mode — an expert multilingual translator fluent in 150+ languages with special expertise in Bengali, English, Hindi, Arabic, Spanish. Provide accurate, natural translations.` },
+  { id: 'write',     label: 'Write',     labelBn: 'লেখা',          icon: '✍️', color: '#F59E0B', systemPrompt: `You are Freakin BI in Write Mode — a professional writing coach and content creator. Help with emails, essays, blog posts, and all forms of written content. Focus on clarity and structure.` },
 ] as const;
 
 export type ChatModeId = typeof CHAT_MODES[number]['id'];

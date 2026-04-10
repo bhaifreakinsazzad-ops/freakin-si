@@ -121,7 +121,7 @@ export default function DashboardPage() {
           style={{ background: 'linear-gradient(135deg, rgba(245,176,65,0.06), rgba(212,131,10,0.03))', border: '1px solid rgba(245,176,65,0.15)' }}>
           <div className="flex items-center justify-between">
             <h2 className="font-bold flex items-center gap-2 text-sm" style={{ color: 'var(--fsi-gold)' }}>
-              <Sparkles size={16} style={{ color: 'var(--fsi-gold)' }} /> Synthetic Business Intelligence
+              <Sparkles size={16} style={{ color: 'var(--fsi-gold)' }} /> Freakin Business Intelligence
             </h2>
             <Link to="/money-machine" className="text-xs flex items-center gap-1" style={{ color: 'var(--fsi-text-muted)' }}>
               Open BI Builder <ArrowRight size={12} />
