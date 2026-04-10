@@ -38,9 +38,9 @@ export default function Layout() {
       {/* Logo */}
       <div className={cn('p-4 border-b flex items-center gap-3', collapsed && 'justify-center')}
         style={{ borderColor: 'var(--fsi-border)' }}>
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-          style={{ background: 'linear-gradient(135deg, #F5B041, #D4830A)', boxShadow: '0 0 16px rgba(245,176,65,0.4)' }}>
-          <TrendingUp size={16} color="#000" />
+        <div className="w-9 h-9 rounded-xl overflow-hidden shrink-0 flex items-center justify-center"
+          style={{ boxShadow: '0 0 16px rgba(245,176,65,0.35)' }}>
+          <img src="/fsi-icon.svg" alt="F-Bi" className="w-9 h-9" />
         </div>
         {!collapsed && (
           <div>
@@ -65,7 +65,7 @@ export default function Layout() {
               isActive
                 ? 'fsi-card-active text-[var(--fsi-gold)]'
                 : highlight
-                  ? 'text-[var(--fsi-gold)] bg-[rgba(0,212,255,0.06)] hover:bg-[rgba(0,212,255,0.12)] border border-[rgba(0,212,255,0.15)]'
+                  ? 'text-[var(--fsi-gold)] bg-[rgba(245,176,65,0.07)] hover:bg-[rgba(245,176,65,0.13)] border border-[rgba(245,176,65,0.20)]'
                   : 'text-[var(--fsi-text-muted)] hover:text-[var(--fsi-text)] hover:bg-[var(--fsi-surface-2)]'
             )}
           >

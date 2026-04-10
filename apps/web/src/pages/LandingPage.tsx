@@ -72,8 +72,9 @@ function TypewriterDemo() {
   return (
     <div className="glass rounded-2xl p-4 max-w-sm text-left" style={{ borderColor: 'rgba(255,182,40,0.2)' }}>
       <div className="flex items-center gap-2 mb-3">
-        <div className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold"
-          style={{ background: 'rgba(255,182,40,0.2)', color: 'var(--fsi-gold)' }}>SI</div>
+        <div className="w-6 h-6 rounded-lg overflow-hidden flex items-center justify-center">
+          <img src="/fsi-icon.svg" alt="F-Bi" className="w-full h-full" />
+        </div>
         <span className="text-xs font-medium" style={{ color: 'var(--fsi-gold)' }}>BhaiFreakin'sBI</span>
       </div>
       <p className="text-sm leading-relaxed" style={{ color: 'var(--fsi-text)' }}>
@@ -129,9 +130,9 @@ export default function LandingPage() {
       {/* ── Navbar ── */}
       <nav className="relative z-20 flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, var(--fsi-gold), #FFA000)', boxShadow: '0 0 16px rgba(255,182,40,0.5)' }}>
-            <Zap size={18} fill="black" color="black" />
+          <div className="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center"
+            style={{ boxShadow: '0 0 16px rgba(245,176,65,0.45)' }}>
+            <img src="/fsi-icon.svg" alt="F-Bi" className="w-full h-full" />
           </div>
           <span className="font-display font-bold text-lg" style={{ color: 'var(--fsi-gold)' }}>BhaiFreakin'sBI</span>
         </div>
@@ -223,9 +224,9 @@ export default function LandingPage() {
               <div className="fsi-sphere-ring-3" />
               {/* Center icon */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg, rgba(255,182,40,0.3), rgba(139,92,246,0.2))', border: '1px solid rgba(255,182,40,0.3)' }}>
-                  <Cpu size={32} style={{ color: 'var(--fsi-gold)' }} />
+                <div className="w-20 h-20 rounded-2xl overflow-hidden flex items-center justify-center"
+                  style={{ boxShadow: '0 0 32px rgba(245,176,65,0.5)', border: '1px solid rgba(245,176,65,0.25)' }}>
+                  <img src="/fsi-logo.svg" alt="BhaiFreakin'sBI" className="w-full h-full" />
                 </div>
               </div>
               {/* Orbiting dots */}

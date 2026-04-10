@@ -65,9 +65,9 @@ export default function RegisterPage() {
         {/* Logo */}
         <div className="text-center mb-6">
           <Link to="/" className="inline-flex flex-col items-center gap-3 group">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg, #F5B041, #D4830A)', boxShadow: '0 0 24px rgba(245,176,65,0.3)' }}>
-              <TrendingUp size={24} color="#000" />
+            <div className="w-14 h-14 rounded-2xl overflow-hidden flex items-center justify-center"
+              style={{ boxShadow: '0 0 24px rgba(245,176,65,0.35)' }}>
+              <img src="/fsi-icon.svg" alt="F-Bi Logo" className="w-full h-full" />
             </div>
             <div className="font-display text-xl font-bold" style={{ color: 'var(--fsi-text)' }}>
               BhaiFreakin'<span style={{ color: 'var(--fsi-gold)' }}>sBI</span>

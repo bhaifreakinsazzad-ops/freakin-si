@@ -1,6 +1,6 @@
 /**
  * Money Machine — AI Business Blueprint Generator
- * Integrated into Freakin SI platform
+ * BhaiFreakin'sBI — Synthetic Business Intelligence
  */
 
 import { useState, useRef, useEffect } from 'react'
@@ -532,12 +532,12 @@ export default function MoneyMachinePage() {
               <div className="text-center pt-4">
                 <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.1 }}
                   className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-medium"
-                  style={{ background: 'rgba(0,212,255,0.08)', color: 'var(--fsi-gold)', border: '1px solid rgba(0,212,255,0.2)' }}>
+                  style={{ background: 'rgba(245,176,65,0.08)', color: 'var(--fsi-gold)', border: '1px solid rgba(245,176,65,0.18)' }}>
                   <Zap size={12} />
                   Powered by 40+ AI Models
                 </motion.div>
                 <h2 className="font-display font-bold text-3xl sm:text-4xl leading-tight mb-3"
-                  style={{ background: 'linear-gradient(135deg, #00D4FF, #80EAFF, #9333EA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                  style={{ background: 'linear-gradient(135deg, #F5B041, #F8C97A, #D4830A)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   Turn Ideas Into<br />Real Businesses
                 </h2>
                 <p className="text-sm max-w-md mx-auto" style={{ color: 'var(--fsi-text-muted)' }}>
@@ -559,7 +559,7 @@ export default function MoneyMachinePage() {
                     className="w-full rounded-xl px-4 py-3 text-sm resize-none outline-none transition-all"
                     style={{
                       background: 'var(--fsi-surface-2)',
-                      border: `1px solid ${idea.length > 10 ? 'rgba(0,212,255,0.4)' : 'var(--fsi-border)'}`,
+                      border: `1px solid ${idea.length > 10 ? 'rgba(245,176,65,0.35)' : 'var(--fsi-border)'}`,
                       color: 'var(--fsi-text)',
                     }}
                   />
@@ -586,9 +586,9 @@ export default function MoneyMachinePage() {
                         <button key={n} onClick={() => setNiche(n === niche ? '' : n)}
                           className="px-2.5 py-1 rounded-lg text-xs font-medium transition-all"
                           style={{
-                            background: niche === n ? 'rgba(0,212,255,0.15)' : 'var(--fsi-surface-2)',
+                            background: niche === n ? 'rgba(245,176,65,0.12)' : 'var(--fsi-surface-2)',
                             color: niche === n ? 'var(--fsi-gold)' : 'var(--fsi-text-muted)',
-                            border: `1px solid ${niche === n ? 'rgba(0,212,255,0.4)' : 'var(--fsi-border)'}`,
+                            border: `1px solid ${niche === n ? 'rgba(245,176,65,0.35)' : 'var(--fsi-border)'}`,
                           }}>
                           {n}
                         </button>
@@ -605,9 +605,9 @@ export default function MoneyMachinePage() {
                         <button key={b} onClick={() => setBudget(b === budget ? '' : b)}
                           className="px-2.5 py-1 rounded-lg text-xs font-medium transition-all"
                           style={{
-                            background: budget === b ? 'rgba(147,51,234,0.15)' : 'var(--fsi-surface-2)',
-                            color: budget === b ? 'var(--fsi-violet-glow)' : 'var(--fsi-text-muted)',
-                            border: `1px solid ${budget === b ? 'rgba(147,51,234,0.4)' : 'var(--fsi-border)'}`,
+                            background: budget === b ? 'rgba(245,176,65,0.12)' : 'var(--fsi-surface-2)',
+                            color: budget === b ? 'var(--fsi-amber)' : 'var(--fsi-text-muted)',
+                            border: `1px solid ${budget === b ? 'rgba(245,176,65,0.30)' : 'var(--fsi-border)'}`,
                           }}>
                           {b}
                         </button>
@@ -644,9 +644,9 @@ export default function MoneyMachinePage() {
                 disabled={idea.trim().length < 10}
                 className="w-full py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-3 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 style={{
-                  background: 'linear-gradient(135deg, var(--fsi-gold), var(--fsi-violet))',
+                  background: 'linear-gradient(135deg, var(--fsi-gold), #D4830A)',
                   color: '#fff',
-                  boxShadow: idea.trim().length >= 10 ? '0 0 30px rgba(0,212,255,0.3), 0 0 60px rgba(147,51,234,0.2)' : 'none',
+                  boxShadow: idea.trim().length >= 10 ? '0 0 30px rgba(245,176,65,0.25), 0 0 60px rgba(245,176,65,0.15)' : 'none',
                 }}>
                 <Sparkles size={18} />
                 Generate My Business Blueprint
@@ -657,7 +657,7 @@ export default function MoneyMachinePage() {
               <div className="grid grid-cols-3 gap-3">
                 {[
                   { icon: Zap, label: 'Generation Time', value: '~15 sec', color: 'var(--fsi-gold)' },
-                  { icon: FileText, label: 'Blueprint Sections', value: '8 sections', color: 'var(--fsi-violet-glow)' },
+                  { icon: FileText, label: 'Blueprint Sections', value: '8 sections', color: 'var(--fsi-amber)' },
                   { icon: TrendingUp, label: 'Revenue Roadmap', value: '3 phases', color: '#00E676' },
                 ].map(({ icon: Icon, label, value, color }) => (
                   <div key={label} className="rounded-xl p-3 text-center" style={{ background: 'var(--fsi-surface)', border: '1px solid var(--fsi-border)' }}>
@@ -680,7 +680,7 @@ export default function MoneyMachinePage() {
                       <div key={b.id} className="flex items-center gap-3 rounded-xl px-3 py-2.5"
                         style={{ background: 'var(--fsi-surface)', border: '1px solid var(--fsi-border)' }}>
                         <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
-                          style={{ background: 'rgba(0,212,255,0.1)' }}>
+                          style={{ background: 'rgba(245,176,65,0.10)' }}>
                           <Rocket size={13} style={{ color: 'var(--fsi-gold)' }} />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -704,13 +704,13 @@ export default function MoneyMachinePage() {
               {/* Animated sphere */}
               <div className="relative w-32 h-32">
                 <div className="absolute inset-0 rounded-full animate-spin-slow"
-                  style={{ background: 'conic-gradient(from 0deg, #00D4FF, #9333EA, #00D4FF)', filter: 'blur(2px)', opacity: 0.6 }} />
+                  style={{ background: 'conic-gradient(from 0deg, #F5B041, #D4830A, #F5B041)', filter: 'blur(2px)', opacity: 0.6 }} />
                 <div className="absolute inset-2 rounded-full flex items-center justify-center"
                   style={{ background: 'var(--fsi-void)' }}>
                   <DollarSign size={32} style={{ color: 'var(--fsi-gold)' }} />
                 </div>
                 <div className="absolute -inset-2 rounded-full border animate-pulse"
-                  style={{ borderColor: 'rgba(0,212,255,0.3)' }} />
+                  style={{ borderColor: 'rgba(245,176,65,0.25)' }} />
               </div>
 
               <div className="text-center space-y-2">
@@ -750,9 +750,9 @@ export default function MoneyMachinePage() {
 
               {/* Business name hero */}
               <div className="rounded-2xl p-6 text-center relative overflow-hidden"
-                style={{ background: 'linear-gradient(135deg, rgba(0,212,255,0.08), rgba(147,51,234,0.08))', border: '1px solid rgba(0,212,255,0.2)' }}>
+                style={{ background: 'linear-gradient(135deg, rgba(245,176,65,0.08), rgba(245,176,65,0.08))', border: '1px solid rgba(245,176,65,0.18)' }}>
                 <div className="absolute inset-0 opacity-5"
-                  style={{ backgroundImage: 'radial-gradient(circle at 30% 30%, #00D4FF, transparent 50%), radial-gradient(circle at 70% 70%, #9333EA, transparent 50%)' }} />
+                  style={{ backgroundImage: 'radial-gradient(circle at 30% 30%, #F5B041, transparent 50%), radial-gradient(circle at 70% 70%, #D4830A, transparent 50%)' }} />
                 <div className="relative z-10">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium mb-3"
                     style={{ background: 'rgba(0,230,118,0.12)', color: '#00E676', border: '1px solid rgba(0,230,118,0.3)' }}>
@@ -760,7 +760,7 @@ export default function MoneyMachinePage() {
                     Blueprint Generated {savedId ? '& Saved' : ''}
                   </span>
                   <h2 className="font-display font-bold text-3xl mb-1"
-                    style={{ background: 'linear-gradient(135deg, #00D4FF, #9333EA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                    style={{ background: 'linear-gradient(135deg, #F5B041, #D4830A)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                     {blueprint.businessName}
                   </h2>
                   <p className="text-sm italic" style={{ color: 'var(--fsi-text-muted)' }}>{blueprint.tagline}</p>
@@ -804,7 +804,7 @@ export default function MoneyMachinePage() {
                 <div className="flex flex-wrap gap-1.5 mt-1">
                   {blueprint.businessModel?.revenueStreams?.map((s, i) => (
                     <span key={i} className="text-xs px-2 py-0.5 rounded-full"
-                      style={{ background: 'rgba(0,212,255,0.08)', color: 'var(--fsi-gold)', border: '1px solid rgba(0,212,255,0.15)' }}>
+                      style={{ background: 'rgba(245,176,65,0.08)', color: 'var(--fsi-gold)', border: '1px solid rgba(245,176,65,0.12)' }}>
                       {s}
                     </span>
                   ))}
@@ -812,7 +812,7 @@ export default function MoneyMachinePage() {
               </Card>
 
               {/* Brand Identity */}
-              <Card icon={Palette} title="Brand Identity" color="var(--fsi-violet-glow)">
+              <Card icon={Palette} title="Brand Identity" color="var(--fsi-amber)">
                 <div className="space-y-2">
                   <div>
                     <p className="text-xs mb-1" style={{ color: 'var(--fsi-text-muted)' }}>Positioning</p>
@@ -820,12 +820,12 @@ export default function MoneyMachinePage() {
                   </div>
                   <div>
                     <p className="text-xs mb-1" style={{ color: 'var(--fsi-text-muted)' }}>Unique Value</p>
-                    <p className="text-sm font-medium" style={{ color: 'var(--fsi-violet-glow)' }}>{blueprint.brandIdentity?.uniqueSellingProposition}</p>
+                    <p className="text-sm font-medium" style={{ color: 'var(--fsi-amber)' }}>{blueprint.brandIdentity?.uniqueSellingProposition}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>Tone:</span>
                     <span className="text-xs px-2 py-0.5 rounded-full"
-                      style={{ background: 'rgba(147,51,234,0.1)', color: 'var(--fsi-violet-glow)', border: '1px solid rgba(147,51,234,0.2)' }}>
+                      style={{ background: 'rgba(245,176,65,0.10)', color: 'var(--fsi-amber)', border: '1px solid rgba(245,176,65,0.15)' }}>
                       {blueprint.brandIdentity?.tone}
                     </span>
                   </div>
@@ -940,7 +940,7 @@ export default function MoneyMachinePage() {
                 <div className="space-y-3">
                   {[
                     { phase: 'phase1', label: 'Phase 1', color: 'var(--fsi-gold)' },
-                    { phase: 'phase2', label: 'Phase 2', color: 'var(--fsi-violet-glow)' },
+                    { phase: 'phase2', label: 'Phase 2', color: 'var(--fsi-amber)' },
                     { phase: 'phase3', label: 'Phase 3', color: '#00E676' },
                   ].map(({ phase, label, color }) => {
                     const p = blueprint.monetizationPlan?.[phase as keyof typeof blueprint.monetizationPlan]
@@ -1026,7 +1026,7 @@ export default function MoneyMachinePage() {
                 <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                   onClick={() => setStep('saved')}
                   className="flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm"
-                  style={{ background: 'rgba(0,212,255,0.1)', color: 'var(--fsi-gold)', border: '1px solid rgba(0,212,255,0.25)' }}>
+                  style={{ background: 'rgba(245,176,65,0.10)', color: 'var(--fsi-gold)', border: '1px solid rgba(245,176,65,0.20)' }}>
                   <Store size={15} />
                   My Blueprints
                 </motion.button>
@@ -1044,7 +1044,7 @@ export default function MoneyMachinePage() {
                 </button>
                 <h2 className="font-display font-bold text-lg" style={{ color: 'var(--fsi-text)' }}>My Blueprints</h2>
                 <span className="text-xs px-2 py-0.5 rounded-full ml-auto"
-                  style={{ background: 'rgba(0,212,255,0.1)', color: 'var(--fsi-gold)' }}>
+                  style={{ background: 'rgba(245,176,65,0.10)', color: 'var(--fsi-gold)' }}>
                   {savedList.length} total
                 </span>
               </div>
@@ -1061,7 +1061,7 @@ export default function MoneyMachinePage() {
                   <p className="font-display font-bold text-lg" style={{ color: 'var(--fsi-text)' }}>No blueprints yet</p>
                   <p className="text-sm mt-1" style={{ color: 'var(--fsi-text-muted)' }}>Generate your first business blueprint</p>
                   <button onClick={reset} className="mt-4 px-5 py-2 rounded-xl text-sm font-semibold"
-                    style={{ background: 'rgba(0,212,255,0.1)', color: 'var(--fsi-gold)', border: '1px solid rgba(0,212,255,0.2)' }}>
+                    style={{ background: 'rgba(245,176,65,0.10)', color: 'var(--fsi-gold)', border: '1px solid rgba(245,176,65,0.18)' }}>
                     Get Started →
                   </button>
                 </div>
@@ -1076,7 +1076,7 @@ export default function MoneyMachinePage() {
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-start gap-3 flex-1 min-w-0">
                         <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                          style={{ background: 'linear-gradient(135deg, rgba(0,212,255,0.15), rgba(147,51,234,0.15))', border: '1px solid rgba(0,212,255,0.2)' }}>
+                          style={{ background: 'linear-gradient(135deg, rgba(245,176,65,0.12), rgba(245,176,65,0.12))', border: '1px solid rgba(245,176,65,0.18)' }}>
                           <Rocket size={16} style={{ color: 'var(--fsi-gold)' }} />
                         </div>
                         <div className="flex-1 min-w-0">

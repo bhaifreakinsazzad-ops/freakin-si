@@ -16,18 +16,18 @@ import MoneyMachinePage from '@/pages/MoneyMachinePage'
 import MarketplacePage  from '@/pages/MarketplacePage'
 import ServicesPage     from '@/pages/ServicesPage'
 import Layout            from '@/components/Layout'
-import { Zap } from 'lucide-react'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--fsi-void)' }}>
       <div className="text-center space-y-4">
-        <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto animate-pulse"
-          style={{ background: 'linear-gradient(135deg, var(--fsi-gold), #FFA000)', boxShadow: '0 0 30px rgba(255,182,40,0.4)' }}>
-          <Zap size={26} fill="black" color="black" />
+        <div className="w-16 h-16 rounded-2xl overflow-hidden mx-auto animate-pulse"
+          style={{ boxShadow: '0 0 30px rgba(245,176,65,0.5)' }}>
+          <img src="/fsi-icon.svg" alt="F-Bi" className="w-full h-full" />
         </div>
-        <p className="font-display font-semibold" style={{ color: 'var(--fsi-gold)' }}>Loading Freakin SI...</p>
+        <p className="font-display font-semibold tracking-wide" style={{ color: 'var(--fsi-gold)' }}>BhaiFreakin'sBI</p>
+        <p className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>Synthetic Business Intelligence</p>
       </div>
     </div>
   )
