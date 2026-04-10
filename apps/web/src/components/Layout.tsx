@@ -4,7 +4,7 @@ import { useLang } from '@/contexts/LanguageContext'
 import { useState } from 'react'
 import {
   MessageSquare, Image, Wrench, CreditCard, LayoutDashboard,
-  LogOut, ChevronLeft, ChevronRight, Shield, Menu, Zap,
+  LogOut, ChevronLeft, ChevronRight, Shield, Menu, Zap, DollarSign,
 } from 'lucide-react'
 import { cn, getSubscriptionBadge } from '@/lib/utils'
 
@@ -16,11 +16,12 @@ export default function Layout() {
   const [mobileOpen, setMobileOpen]  = useState(false)
 
   const navItems = [
-    { to: '/chat',      icon: MessageSquare,   label: t.sidebarChat },
-    { to: '/image',     icon: Image,           label: t.sidebarImage },
-    { to: '/tools',     icon: Wrench,          label: t.sidebarTools },
-    { to: '/dashboard', icon: LayoutDashboard, label: t.sidebarDashboard },
-    { to: '/payment',   icon: CreditCard,      label: t.sidebarPayment },
+    { to: '/chat',          icon: MessageSquare,   label: t.sidebarChat },
+    { to: '/image',         icon: Image,           label: t.sidebarImage },
+    { to: '/tools',         icon: Wrench,          label: t.sidebarTools },
+    { to: '/money-machine', icon: DollarSign,      label: 'Money Machine', highlight: true },
+    { to: '/dashboard',     icon: LayoutDashboard, label: t.sidebarDashboard },
+    { to: '/payment',       icon: CreditCard,      label: t.sidebarPayment },
   ]
 
   const handleLogout = () => { logout(); navigate('/') }
@@ -50,7 +51,7 @@ export default function Layout() {
 
       {/* Navigation */}
       <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-        {navItems.map(({ to, icon: Icon, label }) => (
+        {navItems.map(({ to, icon: Icon, label, highlight }) => (
           <NavLink
             key={to}
             to={to}
@@ -60,7 +61,9 @@ export default function Layout() {
               collapsed ? 'justify-center' : '',
               isActive
                 ? 'fsi-card-active text-[var(--fsi-gold)]'
-                : 'text-[var(--fsi-text-muted)] hover:text-[var(--fsi-text)] hover:bg-[var(--fsi-surface-2)]'
+                : highlight
+                  ? 'text-[var(--fsi-gold)] bg-[rgba(0,212,255,0.06)] hover:bg-[rgba(0,212,255,0.12)] border border-[rgba(0,212,255,0.15)]'
+                  : 'text-[var(--fsi-text-muted)] hover:text-[var(--fsi-text)] hover:bg-[var(--fsi-surface-2)]'
             )}
           >
             <Icon size={17} className="shrink-0" />

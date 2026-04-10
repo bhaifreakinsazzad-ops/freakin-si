@@ -11,8 +11,9 @@ import ToolsPage      from '@/pages/ToolsPage'
 import PricingPage    from '@/pages/PricingPage'
 import PaymentPage    from '@/pages/PaymentPage'
 import DashboardPage  from '@/pages/DashboardPage'
-import AdminPage      from '@/pages/AdminPage'
-import Layout         from '@/components/Layout'
+import AdminPage         from '@/pages/AdminPage'
+import MoneyMachinePage from '@/pages/MoneyMachinePage'
+import Layout            from '@/components/Layout'
 import { Zap } from 'lucide-react'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -54,6 +55,7 @@ function AppRoutes() {
         <Route path="/tools"                 element={<ToolsPage />} />
         <Route path="/payment"               element={<PaymentPage />} />
         <Route path="/dashboard"             element={<DashboardPage />} />
+        <Route path="/money-machine"         element={<MoneyMachinePage />} />
       </Route>
 
       <Route path="/admin" element={
