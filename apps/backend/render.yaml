@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: freakin-si-backend
+    name: freakin-bi-backend
     runtime: node
     plan: free
     rootDir: apps/backend

@@ -1,5 +1,5 @@
 /**
- * BhaiFreakin'sBI — Service Requests
+ * Freakin BI — Service Requests
  * POST /api/services        — Submit a service request (costs 5 credits)
  * GET  /api/services        — List user's service requests
  */

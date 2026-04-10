@@ -1,7 +1,7 @@
 {
-  "name": "ai-shala-backend",
+  "name": "freakin-bi-backend",
   "version": "3.0.0",
-  "description": "AI Shala - Bangladesh's First AI Super App Backend",
+  "description": "Freakin BI \u2014 Freakin Business Intelligence Backend API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

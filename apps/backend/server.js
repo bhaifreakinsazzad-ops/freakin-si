@@ -1,5 +1,5 @@
 /**
- * AI SHALA - Bangladesh's First AI Super App
+ * Freakin BI — Freakin Business Intelligence
  * Backend API v3.0
  *
  * Stack: Express.js + Supabase + JWT
@@ -84,7 +84,7 @@ app.use('/api/services',   require('./routes/services'));
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
-    app: 'Freakin SI',
+    app: 'Freakin BI',
     version: '3.0.0',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development',
@@ -94,9 +94,9 @@ app.get('/api/health', (req, res) => {
 // API info
 app.get('/', (req, res) => {
   res.json({
-    name: 'AI Shala API',
+    name: 'Freakin BI API',
     version: '3.0.0',
-    description: "Bangladesh's First AI Super App",
+    description: 'Freakin Business Intelligence — Unlock the Code to Billions',
     docs: '/api/health',
   });
 });
@@ -118,8 +118,8 @@ app.listen(PORT, () => {
   console.log(`
 ╔══════════════════════════════════════════════════════════╗
 ║                                                          ║
-║   🤖  AI SHALA BACKEND v3.0                             ║
-║   Bangladesh's First AI Super App                        ║
+║   🔥  FREAKIN BI BACKEND v3.0                           ║
+║   Freakin Business Intelligence                          ║
 ║                                                          ║
 ║   🌐  http://localhost:${PORT}                              ║
 ║   📍  Environment: ${(process.env.NODE_ENV || 'development').padEnd(35)}║
