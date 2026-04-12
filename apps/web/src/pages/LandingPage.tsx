@@ -131,7 +131,7 @@ function HeroMockup() {
               justifyContent: 'center',
               fontSize: 10,
               fontWeight: 700,
-              background: i < 2 ? '#4361EE' : i === 2 ? '#F5B041' : 'rgba(255,255,255,0.08)',
+              background: i < 2 ? '#F5B041' : i === 2 ? '#F5B041' : 'rgba(255,255,255,0.08)',
               color: i < 2 ? '#fff' : i === 2 ? '#000' : '#555',
               flexShrink: 0,
             }}>
@@ -149,7 +149,7 @@ function HeroMockup() {
                 marginLeft: 'auto',
                 fontSize: 9,
                 fontWeight: 700,
-                background: '#4361EE',
+                background: '#F5B041',
                 color: '#fff',
                 padding: '2px 6px',
                 borderRadius: 4,
@@ -163,7 +163,7 @@ function HeroMockup() {
       <div style={{ marginTop: 16, padding: '10px 12px', background: 'rgba(67,97,238,0.1)', borderRadius: 8, border: '1px solid rgba(67,97,238,0.2)' }}>
         <div style={{ fontSize: 11, color: '#888', marginBottom: 4 }}>AI is analyzing your idea…</div>
         <div style={{ height: 4, background: 'rgba(255,255,255,0.08)', borderRadius: 2 }}>
-          <div style={{ width: '35%', height: '100%', background: 'linear-gradient(90deg, #4361EE, #7B2FFF)', borderRadius: 2 }} />
+          <div style={{ width: '35%', height: '100%', background: 'linear-gradient(90deg, #F5B041, #E67E22)', borderRadius: 2 }} />
         </div>
       </div>
     </div>
@@ -198,8 +198,8 @@ function Hero() {
           {/* Pill badge */}
           <Reveal delay={0}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 16px', borderRadius: 100, background: 'rgba(67,97,238,0.12)', border: '1px solid rgba(67,97,238,0.35)', marginBottom: 32 }}>
-              <Sparkles size={13} color="#4361EE" />
-              <span style={{ fontSize: 13, fontWeight: 600, color: '#4361EE', letterSpacing: '0.03em' }}>
+              <Sparkles size={13} color="#F5B041" />
+              <span style={{ fontSize: 13, fontWeight: 600, color: '#F5B041', letterSpacing: '0.03em' }}>
                 AI Business Builder · Free to Start
               </span>
             </div>
@@ -215,7 +215,7 @@ function Hero() {
             <Reveal delay={0.2}>
               <h1 className="font-display" style={{
                 fontSize: 'clamp(52px, 7vw, 96px)', fontWeight: 800, lineHeight: 1.0, margin: 0,
-                background: 'linear-gradient(135deg, #4361EE 0%, #7B2FFF 100%)',
+                background: 'linear-gradient(135deg, #F5B041 0%, #E67E22 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -237,12 +237,12 @@ function Hero() {
               <Link to="/builder" style={{
                 display: 'inline-flex', alignItems: 'center', gap: 10,
                 padding: '16px 32px', borderRadius: 8, fontSize: 16, fontWeight: 700,
-                background: '#4361EE', color: '#fff', textDecoration: 'none',
+                background: '#F5B041', color: '#fff', textDecoration: 'none',
                 transition: 'all 0.2s', letterSpacing: '0.01em',
                 boxShadow: '0 0 40px rgba(67,97,238,0.4)',
               }}
                 onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#3451d1'; (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(-2px)' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#4361EE'; (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(0)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#F5B041'; (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(0)' }}
               >
                 Build My Business <ArrowRight size={18} />
               </Link>
@@ -332,7 +332,7 @@ function JourneySection() {
     <section id="how-it-works" style={{ background: '#050505', padding: '100px 0', overflow: 'hidden' }}>
       <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 48px', marginBottom: 56 }}>
         <FadeUp>
-          <div style={{ fontSize: 12, fontWeight: 700, color: '#4361EE', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 16 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: '#F5B041', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 16 }}>
             The Process
           </div>
           <h2 className="font-display" style={{ fontSize: 'clamp(32px, 4vw, 56px)', fontWeight: 800, color: '#fff', margin: 0 }}>
@@ -377,7 +377,7 @@ function JourneySection() {
               </div>
               <div style={{
                 width: 40, height: 40, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                background: 'rgba(67,97,238,0.12)', color: '#4361EE', marginBottom: 14,
+                background: 'rgba(67,97,238,0.12)', color: '#F5B041', marginBottom: 14,
               }}>
                 {s.icon}
               </div>
@@ -400,11 +400,11 @@ function JourneySection() {
           <Link to="/builder" style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
             padding: '14px 28px', borderRadius: 8, fontSize: 15, fontWeight: 700,
-            background: 'rgba(67,97,238,0.1)', color: '#4361EE', textDecoration: 'none',
+            background: 'rgba(67,97,238,0.1)', color: '#F5B041', textDecoration: 'none',
             border: '1px solid rgba(67,97,238,0.3)', transition: 'all 0.2s',
           }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#4361EE'; (e.currentTarget as HTMLAnchorElement).style.color = '#fff' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(67,97,238,0.1)'; (e.currentTarget as HTMLAnchorElement).style.color = '#4361EE' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#F5B041'; (e.currentTarget as HTMLAnchorElement).style.color = '#fff' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(67,97,238,0.1)'; (e.currentTarget as HTMLAnchorElement).style.color = '#F5B041' }}
           >
             Start Your 10-Step Journey <ArrowRight size={16} />
           </Link>
@@ -436,7 +436,7 @@ const PARTNERS = [
     desc: 'Access startup capital, business credit coaching, and funding introductions to accelerate your launch.',
     bg: 'rgba(20,40,100,0.4)',
     border: 'rgba(67,97,238,0.3)',
-    color: '#4361EE',
+    color: '#F5B041',
     badge: 'Integrated in Step 9',
   },
   {
@@ -446,7 +446,7 @@ const PARTNERS = [
     desc: 'Run paid campaigns, get professional creative assets, and execute your 90-day growth plan with expert hands.',
     bg: 'rgba(50,10,80,0.4)',
     border: 'rgba(123,47,255,0.3)',
-    color: '#7B2FFF',
+    color: '#E67E22',
     badge: 'Integrated in Step 8',
   },
 ]
@@ -456,7 +456,7 @@ function PartnersSection() {
     <section style={{ background: '#0F0F0F', padding: '100px 0' }}>
       <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 48px' }}>
         <FadeUp>
-          <div style={{ fontSize: 12, fontWeight: 700, color: '#4361EE', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 16 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: '#F5B041', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 16 }}>
             Partner Ecosystem
           </div>
           <h2 className="font-display" style={{ fontSize: 'clamp(32px, 4vw, 56px)', fontWeight: 800, color: '#fff', margin: '0 0 16px' }}>
@@ -693,8 +693,8 @@ const PLANS = [
     cta: 'Start Pro',
     href: '/register?plan=pro',
     featured: true,
-    borderColor: '#4361EE',
-    ctaBg: '#4361EE',
+    borderColor: '#F5B041',
+    ctaBg: '#F5B041',
     ctaColor: '#fff',
   },
   {
@@ -712,8 +712,8 @@ const PLANS = [
     cta: 'Go Elite',
     href: '/register?plan=elite',
     featured: false,
-    borderColor: '#7B2FFF',
-    ctaBg: '#7B2FFF',
+    borderColor: '#E67E22',
+    ctaBg: '#E67E22',
     ctaColor: '#fff',
   },
 ]
@@ -724,7 +724,7 @@ function PricingSection() {
       <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 48px' }}>
         <FadeUp>
           <div style={{ textAlign: 'center', marginBottom: 64 }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: '#4361EE', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 16 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: '#F5B041', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 16 }}>
               Pricing
             </div>
             <h2 className="font-display" style={{ fontSize: 'clamp(32px, 4vw, 56px)', fontWeight: 800, color: '#fff', margin: '0 0 16px' }}>
@@ -750,7 +750,7 @@ function PricingSection() {
                 {plan.featured && (
                   <div style={{
                     position: 'absolute', top: -14, left: '50%', transform: 'translateX(-50%)',
-                    background: '#4361EE', color: '#fff',
+                    background: '#F5B041', color: '#fff',
                     fontSize: 11, fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase',
                     padding: '4px 16px', borderRadius: 20,
                   }}>
@@ -766,7 +766,7 @@ function PricingSection() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 32 }}>
                   {plan.features.map((f, j) => (
                     <div key={j} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <CheckCircle size={16} color="#4361EE" style={{ flexShrink: 0 }} />
+                      <CheckCircle size={16} color="#F5B041" style={{ flexShrink: 0 }} />
                       <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.7)' }}>{f}</span>
                     </div>
                   ))}
@@ -804,7 +804,7 @@ function Footer() {
           {/* Wordmark */}
           <div>
             <div className="font-display" style={{ fontSize: 28, fontWeight: 800, color: '#fff', marginBottom: 8 }}>
-              Bay<span style={{ color: '#4361EE' }}>Paree</span>
+              Bay<span style={{ color: '#F5B041' }}>Paree</span>
             </div>
             <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)', maxWidth: 220, lineHeight: 1.6 }}>
               The AI Business Builder. From idea to launch in one session.
@@ -890,7 +890,7 @@ function Nav() {
       <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64 }}>
         <Link to="/" style={{ textDecoration: 'none' }}>
           <span className="font-display" style={{ fontSize: 22, fontWeight: 800, color: '#fff' }}>
-            Bay<span style={{ color: '#4361EE' }}>Paree</span>
+            Bay<span style={{ color: '#F5B041' }}>Paree</span>
           </span>
         </Link>
 
@@ -907,11 +907,11 @@ function Nav() {
           >Sign In</Link>
           <Link to="/builder" style={{
             fontSize: 14, fontWeight: 700, color: '#fff', textDecoration: 'none',
-            background: '#4361EE', padding: '8px 20px', borderRadius: 6,
+            background: '#F5B041', padding: '8px 20px', borderRadius: 6,
             transition: 'background 0.2s',
           }}
             onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#3451d1' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#4361EE' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#F5B041' }}
           >
             Start Building
           </Link>

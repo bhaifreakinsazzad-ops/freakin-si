@@ -17,6 +17,7 @@ import MarketplacePage   from '@/pages/MarketplacePage'
 import ServicesPage      from '@/pages/ServicesPage'
 import GrowthCheckPage   from '@/pages/GrowthCheckPage'
 import PartnersPage      from '@/pages/PartnersPage'
+import HubPage           from '@/pages/HubPage'
 import Layout            from '@/components/Layout'
 
 // ── DEV MODE: skip all auth gates so every page is accessible without login ──
@@ -60,6 +61,7 @@ function AppRoutes() {
       <Route path="/pricing"      element={<PricingPage />} />
       <Route path="/growth-check" element={<GrowthCheckPage />} />
       <Route path="/partners"     element={<PartnersPage />} />
+      <Route path="/hub"          element={<HubPage />} />
 
       <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route path="/chat"                  element={<ChatPage />} />

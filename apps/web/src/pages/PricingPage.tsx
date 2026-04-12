@@ -148,8 +148,8 @@ export default function PricingPage() {
   // ── USD icon mapping ──
   const usdPlanIcon = (id: string) => {
     if (id === 'free_usd') return <Star size={20} className="text-gray-400" />
-    if (id === 'starter_usd') return <Zap size={20} style={{ color: '#4361EE' }} />
-    if (id === 'pro_usd') return <Shield size={20} style={{ color: '#4361EE' }} />
+    if (id === 'starter_usd') return <Zap size={20} style={{ color: '#F5B041' }} />
+    if (id === 'pro_usd') return <Shield size={20} style={{ color: '#F5B041' }} />
     return <Crown size={20} style={{ color: '#F5B041' }} />
   }
 
@@ -209,7 +209,7 @@ export default function PricingPage() {
                   ? 'text-white'
                   : 'text-gray-500 hover:text-gray-300'
               )}
-              style={currency === 'usd' ? { background: '#4361EE' } : {}}
+              style={currency === 'usd' ? { background: '#F5B041' } : {}}
             >
               <DollarSign size={13} className="inline -mt-0.5 mr-1" />
               USD Plans
@@ -242,7 +242,7 @@ export default function PricingPage() {
             >
               <div
                 className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium mb-3"
-                style={{ background: 'rgba(67,97,238,0.12)', border: '1px solid rgba(67,97,238,0.35)', color: '#4361EE' }}
+                style={{ background: 'rgba(67,97,238,0.12)', border: '1px solid rgba(67,97,238,0.35)', color: '#F5B041' }}
               >
                 BayParee USD Pricing
               </div>
@@ -265,14 +265,14 @@ export default function PricingPage() {
                     className="rounded-2xl p-6 border relative flex flex-col"
                     style={{
                       background: isPopular ? 'rgba(67,97,238,0.08)' : '#0d0d1a',
-                      borderColor: isPopular ? '#4361EE' : isElite ? 'rgba(245,176,65,0.4)' : 'rgba(255,255,255,0.08)',
+                      borderColor: isPopular ? '#F5B041' : isElite ? 'rgba(245,176,65,0.4)' : 'rgba(255,255,255,0.08)',
                       boxShadow: isPopular ? '0 0 40px rgba(67,97,238,0.18)' : 'none',
                     }}
                   >
                     {isPopular && (
                       <div
                         className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-xs font-bold px-4 py-1 rounded-full shadow-lg whitespace-nowrap"
-                        style={{ background: '#4361EE', color: '#fff' }}
+                        style={{ background: '#F5B041', color: '#fff' }}
                       >
                         Most Popular
                       </div>
@@ -287,10 +287,10 @@ export default function PricingPage() {
                     {/* Price */}
                     <div className="mb-6">
                       {plan.price === 0 ? (
-                        <div className="text-4xl font-extrabold" style={{ color: '#4361EE' }}>Free</div>
+                        <div className="text-4xl font-extrabold" style={{ color: '#F5B041' }}>Free</div>
                       ) : (
                         <div className="flex items-baseline gap-0.5">
-                          <span className="text-3xl font-extrabold" style={{ color: isElite ? '#F5B041' : '#4361EE' }}>
+                          <span className="text-3xl font-extrabold" style={{ color: isElite ? '#F5B041' : '#F5B041' }}>
                             ${plan.price}
                           </span>
                           <span className="text-gray-500 text-sm">{plan.period}</span>
@@ -305,7 +305,7 @@ export default function PricingPage() {
                           <CheckCircle
                             size={14}
                             className="mt-0.5 shrink-0"
-                            style={{ color: isElite ? '#F5B041' : '#4361EE' }}
+                            style={{ color: isElite ? '#F5B041' : '#F5B041' }}
                           />
                           {f}
                         </li>
@@ -318,12 +318,12 @@ export default function PricingPage() {
                       className="w-full py-2.5 px-4 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2"
                       style={
                         isPopular
-                          ? { background: '#4361EE', color: '#fff' }
+                          ? { background: '#F5B041', color: '#fff' }
                           : isElite
                           ? { background: 'rgba(245,176,65,0.15)', border: '1px solid rgba(245,176,65,0.5)', color: '#F5B041' }
                           : plan.price === 0
                           ? { border: '1px solid rgba(255,255,255,0.12)', color: '#9ca3af' }
-                          : { border: '1px solid rgba(67,97,238,0.5)', color: '#4361EE' }
+                          : { border: '1px solid rgba(67,97,238,0.5)', color: '#F5B041' }
                       }
                     >
                       {plan.cta} {plan.price > 0 && <ArrowRight size={14} />}
@@ -342,7 +342,7 @@ export default function PricingPage() {
               style={{ background: 'rgba(67,97,238,0.06)', borderColor: 'rgba(67,97,238,0.2)' }}
             >
               <p className="text-sm text-gray-400">
-                <span className="font-semibold" style={{ color: '#4361EE' }}>Pro &amp; Elite</span> plans unlock the{' '}
+                <span className="font-semibold" style={{ color: '#F5B041' }}>Pro &amp; Elite</span> plans unlock the{' '}
                 <Link to="/partners" className="underline" style={{ color: '#F5B041' }}>Partner Ecosystem</Link>{' '}
                 — ThePaperWorkSquad (LLC formation), CGW Systems (business funding), and DhandaBuzz (digital marketing) — all integrated into Step 9 of your AI Business Builder.
               </p>

@@ -130,14 +130,14 @@ function StepBar({ current }: { current: number }) {
             <div
               className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-black transition-all"
               style={{
-                background: done ? '#4361EE' : active ? '#F5B041' : 'rgba(255,255,255,0.06)',
+                background: done ? '#F5B041' : active ? '#F5B041' : 'rgba(255,255,255,0.06)',
                 color: done || active ? '#000' : 'rgba(255,255,255,0.3)',
               }}
             >
               {done ? <Check size={10} /> : s.n}
             </div>
             {i < STEPS.length - 1 && (
-              <div className="w-4 h-px" style={{ background: done ? '#4361EE' : 'rgba(255,255,255,0.1)' }} />
+              <div className="w-4 h-px" style={{ background: done ? '#F5B041' : 'rgba(255,255,255,0.1)' }} />
             )}
           </div>
         )
@@ -194,7 +194,7 @@ export default function BusinessBuilderPage() {
           businessName: idea.split(' ').slice(0, 2).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('') + ' Co.',
           tagline: `The smart way to ${idea.toLowerCase().includes('sell') ? 'sell' : 'grow'} your business`,
           businessModel: { type: niche || 'Digital Product', description: d.content || idea, revenueStreams: ['Direct sales', 'Subscriptions', 'Partnerships'], estimatedMonthlyRevenue: '$2,000 – $8,000', timeToFirstRevenue: '30–60 days' },
-          brandIdentity: { positioning: 'Premium and accessible', tone: 'Professional yet approachable', colorPalette: ['#4361EE', '#F5B041', '#050505'], uniqueSellingProposition: `The fastest way to ${idea.split(' ').slice(0,4).join(' ')}` },
+          brandIdentity: { positioning: 'Premium and accessible', tone: 'Professional yet approachable', colorPalette: ['#F5B041', '#F5B041', '#050505'], uniqueSellingProposition: `The fastest way to ${idea.split(' ').slice(0,4).join(' ')}` },
           offerStructure: { mainOffer: idea, pricePoint: '$49 – $197', upsells: ['Premium support', 'Done-for-you setup', 'Monthly coaching'], guaranteeOrHook: '30-day money-back guarantee' },
           landingPageContent: { headline: `Finally — ${idea.split(' ').slice(0,5).join(' ')}`, subheadline: 'Built for people who are serious about results.', heroDescription: `We help you ${idea.toLowerCase()} without the usual headaches.`, features: [{ title: 'Fast setup', description: 'Get started in under an hour' }, { title: 'Proven system', description: 'Based on what actually works' }, { title: 'Full support', description: 'We are with you every step' }], callToAction: 'Start Today — Free', socialProof: 'Join 1,200+ entrepreneurs already building' },
           adCreatives: { hooks: [`Stop wasting time trying to ${idea.toLowerCase()} the hard way`, `What if you could ${idea.toLowerCase()} in 30 days?`, `The ${niche || 'business'} system that actually works`], adCopy: `Tired of overcomplicating it? Here is the exact system for ${idea.toLowerCase()}.`, targetingStrategy: 'Target entrepreneurial US adults 25–45 interested in business and finance', estimatedCPC: '$0.80 – $2.40' },
@@ -222,7 +222,7 @@ export default function BusinessBuilderPage() {
       <div className="sticky top-0 z-10 px-4 py-3 border-b" style={{ background: 'rgba(8,8,8,0.92)', backdropFilter: 'blur(20px)', borderColor: 'var(--fsi-border)' }}>
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #4361EE, #7B2FFF)' }}>
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #F5B041, #E67E22)' }}>
               <Rocket size={15} color="#fff" />
             </div>
             <div>
@@ -251,7 +251,7 @@ export default function BusinessBuilderPage() {
           {step === 1 && (
             <motion.div key="s1" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} className="space-y-6 pt-4">
               <div className="text-center space-y-2">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs" style={{ background: 'rgba(67,97,238,0.12)', color: '#4361EE', border: '1px solid rgba(67,97,238,0.25)' }}>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs" style={{ background: 'rgba(67,97,238,0.12)', color: '#F5B041', border: '1px solid rgba(67,97,238,0.25)' }}>
                   <Sparkles size={11} /> AI Business Builder
                 </div>
                 <h2 className="font-black text-2xl sm:text-3xl" style={{ color: 'var(--fsi-text)' }}>What do you want to build?</h2>
@@ -278,7 +278,7 @@ export default function BusinessBuilderPage() {
                     {NICHES.map(n => (
                       <button key={n} onClick={() => setNiche(n === niche ? '' : n)}
                         className="px-3 py-1.5 rounded-lg text-xs transition-all"
-                        style={{ background: niche === n ? 'rgba(67,97,238,0.15)' : 'var(--fsi-surface)', color: niche === n ? '#4361EE' : 'var(--fsi-text-muted)', border: `1px solid ${niche === n ? 'rgba(67,97,238,0.4)' : 'var(--fsi-border)'}` }}>
+                        style={{ background: niche === n ? 'rgba(67,97,238,0.15)' : 'var(--fsi-surface)', color: niche === n ? '#F5B041' : 'var(--fsi-text-muted)', border: `1px solid ${niche === n ? 'rgba(67,97,238,0.4)' : 'var(--fsi-border)'}` }}>
                         {n}
                       </button>
                     ))}
@@ -313,7 +313,7 @@ export default function BusinessBuilderPage() {
                 onClick={generate}
                 disabled={generating || idea.trim().length < 10}
                 className="w-full py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-3 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-                style={{ background: 'linear-gradient(135deg, #4361EE, #7B2FFF)', color: '#fff', boxShadow: idea.length > 10 ? '0 0 30px rgba(67,97,238,0.35)' : 'none' }}
+                style={{ background: 'linear-gradient(135deg, #F5B041, #E67E22)', color: '#fff', boxShadow: idea.length > 10 ? '0 0 30px rgba(67,97,238,0.35)' : 'none' }}
               >
                 {generating
                   ? <><Loader2 size={18} className="animate-spin" />{GEN_MESSAGES[genMsg]}</>
@@ -346,7 +346,7 @@ export default function BusinessBuilderPage() {
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--fsi-text-muted)' }}>{bp.businessModel.description}</p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {bp.businessModel.revenueStreams.map(r => (
-                    <span key={r} className="text-xs px-2.5 py-1 rounded-full" style={{ background: 'rgba(67,97,238,0.1)', color: '#4361EE', border: '1px solid rgba(67,97,238,0.2)' }}>{r}</span>
+                    <span key={r} className="text-xs px-2.5 py-1 rounded-full" style={{ background: 'rgba(67,97,238,0.1)', color: '#F5B041', border: '1px solid rgba(67,97,238,0.2)' }}>{r}</span>
                   ))}
                 </div>
               </Section>
@@ -363,7 +363,7 @@ export default function BusinessBuilderPage() {
                 <button onClick={restart} className="flex-1 py-3 rounded-xl text-sm font-semibold transition-all" style={{ background: 'var(--fsi-surface)', color: 'var(--fsi-text-muted)', border: '1px solid var(--fsi-border)' }}>
                   <RefreshCw size={14} className="inline mr-2" />Start Over
                 </button>
-                <button onClick={next} className="flex-1 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2" style={{ background: 'linear-gradient(135deg, #4361EE, #7B2FFF)', color: '#fff' }}>
+                <button onClick={next} className="flex-1 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2" style={{ background: 'linear-gradient(135deg, #F5B041, #E67E22)', color: '#fff' }}>
                   Continue Building <ArrowRight size={14} />
                 </button>
               </div>
@@ -393,7 +393,7 @@ export default function BusinessBuilderPage() {
                 <CopyBtn text={bp.brandIdentity.uniqueSellingProposition} />
               </Section>
               <div className="rounded-xl p-4 flex items-start gap-3" style={{ background: 'rgba(67,97,238,0.08)', border: '1px solid rgba(67,97,238,0.2)' }}>
-                <Zap size={16} style={{ color: '#4361EE', flexShrink: 0, marginTop: 2 }} />
+                <Zap size={16} style={{ color: '#F5B041', flexShrink: 0, marginTop: 2 }} />
                 <p className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>
                   Tip: Check that this name is available as a domain and on social media before committing.
                 </p>
@@ -456,14 +456,14 @@ export default function BusinessBuilderPage() {
                     <div className="text-2xl mb-2">{a.icon}</div>
                     <p className="text-xs font-bold mb-1" style={{ color: 'var(--fsi-text)' }}>{a.title}</p>
                     <p className="text-[11px] mb-3" style={{ color: 'var(--fsi-text-muted)' }}>{a.desc}</p>
-                    <Link to={a.route} className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: '#4361EE' }}>
+                    <Link to={a.route} className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: '#F5B041' }}>
                       {a.action} <ChevronRight size={11} />
                     </Link>
                   </div>
                 ))}
               </div>
               <div className="rounded-xl p-4" style={{ background: 'rgba(67,97,238,0.08)', border: '1px solid rgba(67,97,238,0.2)' }}>
-                <p className="text-xs font-bold mb-1" style={{ color: '#4361EE' }}>Pro Tip</p>
+                <p className="text-xs font-bold mb-1" style={{ color: '#F5B041' }}>Pro Tip</p>
                 <p className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>Use the Image Generator (in the sidebar) with your brand colors ({bp.brandIdentity.colorPalette.join(', ')}) and the tone "{bp.brandIdentity.tone}" for consistent assets.</p>
               </div>
             </motion.div>
@@ -532,10 +532,10 @@ export default function BusinessBuilderPage() {
               </Section>
               <div className="rounded-xl p-4 flex items-center justify-between" style={{ background: 'rgba(67,97,238,0.08)', border: '1px solid rgba(67,97,238,0.2)' }}>
                 <div>
-                  <p className="text-xs font-bold" style={{ color: '#4361EE' }}>Need a website built?</p>
+                  <p className="text-xs font-bold" style={{ color: '#F5B041' }}>Need a website built?</p>
                   <p className="text-[11px]" style={{ color: 'var(--fsi-text-muted)' }}>Web Studio — landing pages delivered in 1 hour</p>
                 </div>
-                <Link to="/services" className="text-xs font-bold px-3 py-1.5 rounded-lg" style={{ background: '#4361EE', color: '#fff' }}>
+                <Link to="/services" className="text-xs font-bold px-3 py-1.5 rounded-lg" style={{ background: '#F5B041', color: '#fff' }}>
                   Order Now
                 </Link>
               </div>
@@ -570,7 +570,7 @@ export default function BusinessBuilderPage() {
               <Section title="3-Phase Revenue Plan">
                 {[bp.monetizationPlan.phase1, bp.monetizationPlan.phase2, bp.monetizationPlan.phase3].map((p, i) => (
                   <div key={i} className="flex items-start gap-3 py-3 border-b border-white/6 last:border-0">
-                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0" style={{ background: 'rgba(67,97,238,0.2)', color: '#4361EE' }}>{i+1}</div>
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0" style={{ background: 'rgba(67,97,238,0.2)', color: '#F5B041' }}>{i+1}</div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-0.5">
                         <span className="text-xs font-bold" style={{ color: 'var(--fsi-gold)' }}>{p.timeline}</span>
@@ -594,23 +594,23 @@ export default function BusinessBuilderPage() {
 
               {/* ThePaperWorkSquad */}
               <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(67,97,238,0.3)' }}>
-                <div className="p-1" style={{ background: 'linear-gradient(90deg, #4361EE, #7B2FFF)' }} />
+                <div className="p-1" style={{ background: 'linear-gradient(90deg, #F5B041, #E67E22)' }} />
                 <div className="p-5" style={{ background: 'var(--fsi-surface)' }}>
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(67,97,238,0.15)' }}>
-                      <FileText size={18} style={{ color: '#4361EE' }} />
+                      <FileText size={18} style={{ color: '#F5B041' }} />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-bold text-sm" style={{ color: 'var(--fsi-text)' }}>ThePaperWorkSquad</h3>
                       <p className="text-xs mt-0.5 mb-3" style={{ color: 'var(--fsi-text-muted)' }}>Business registration, LLC formation, EIN, contracts, compliance — handled by experts so you can focus on building.</p>
                       <div className="flex flex-wrap gap-2 mb-4">
                         {['LLC Formation','EIN Registration','Business Contracts','Compliance Filing','Trademark Help'].map(s => (
-                          <span key={s} className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: 'rgba(67,97,238,0.1)', color: '#4361EE', border: '1px solid rgba(67,97,238,0.2)' }}>{s}</span>
+                          <span key={s} className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: 'rgba(67,97,238,0.1)', color: '#F5B041', border: '1px solid rgba(67,97,238,0.2)' }}>{s}</span>
                         ))}
                       </div>
                       <a href="https://thepaperworksquad.com" target="_blank" rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all"
-                        style={{ background: '#4361EE', color: '#fff' }}>
+                        style={{ background: '#F5B041', color: '#fff' }}>
                         Get Your Paperwork Done <ExternalLink size={11} />
                       </a>
                     </div>
@@ -659,7 +659,7 @@ export default function BusinessBuilderPage() {
                 <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', delay: 0.1 }}
                   className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3"
                   style={{ background: 'linear-gradient(135deg, rgba(67,97,238,0.2), rgba(123,47,255,0.2))', border: '2px solid rgba(67,97,238,0.4)' }}>
-                  <Rocket size={28} style={{ color: '#4361EE' }} />
+                  <Rocket size={28} style={{ color: '#F5B041' }} />
                 </motion.div>
                 <h2 className="font-black text-2xl mb-1" style={{ color: 'var(--fsi-text)' }}>
                   {bp.businessName} is Ready to Launch
@@ -671,7 +671,7 @@ export default function BusinessBuilderPage() {
                 <div className="space-y-2">
                   {bp.nextSteps.map((s, i) => (
                     <div key={i} className="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all hover:bg-white/4" style={{ borderBottom: '1px solid var(--fsi-border)' }}>
-                      <div className="w-5 h-5 rounded flex items-center justify-center shrink-0 text-[10px] font-black" style={{ background: 'rgba(67,97,238,0.15)', color: '#4361EE' }}>{i+1}</div>
+                      <div className="w-5 h-5 rounded flex items-center justify-center shrink-0 text-[10px] font-black" style={{ background: 'rgba(67,97,238,0.15)', color: '#F5B041' }}>{i+1}</div>
                       <p className="text-sm flex-1" style={{ color: 'var(--fsi-text)' }}>{s}</p>
                       <ChevronRight size={13} style={{ color: 'var(--fsi-text-muted)' }} />
                     </div>
@@ -681,7 +681,7 @@ export default function BusinessBuilderPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { label: 'Order Services', desc: 'Ads, design, web, copy', icon: Briefcase, to: '/services', color: '#4361EE' },
+                  { label: 'Order Services', desc: 'Ads, design, web, copy', icon: Briefcase, to: '/services', color: '#F5B041' },
                   { label: 'Browse Market', desc: 'Ready-made businesses', icon: BarChart3, to: '/marketplace', color: 'var(--fsi-gold)' },
                 ].map(a => (
                   <Link key={a.label} to={a.to} className="flex items-center gap-3 p-4 rounded-xl transition-all" style={{ background: 'var(--fsi-surface)', border: '1px solid var(--fsi-border)' }}>
@@ -714,7 +714,7 @@ export default function BusinessBuilderPage() {
             )}
             {step < 10 && (
               <button onClick={next} className="flex-1 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2"
-                style={{ background: 'linear-gradient(135deg, #4361EE, #7B2FFF)', color: '#fff' }}>
+                style={{ background: 'linear-gradient(135deg, #F5B041, #E67E22)', color: '#fff' }}>
                 {STEPS[step]?.label} <ArrowRight size={14} />
               </button>
             )}

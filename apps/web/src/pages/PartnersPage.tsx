@@ -39,7 +39,7 @@ const partners: Partner[] = [
       'Business License Research',
     ],
     icon: <Shield size={28} />,
-    accentColor: '#4361EE',
+    accentColor: '#F5B041',
     borderColor: 'border-blue-600/40',
     tagBg: 'bg-blue-900/30',
     tagText: 'text-blue-300',
@@ -115,7 +115,7 @@ export default function PartnersPage() {
         style={{ background: 'rgba(5,5,5,0.92)', borderColor: 'var(--fsi-border, #1a1a2e)', backdropFilter: 'blur(12px)' }}
       >
         <Link to="/" className="flex items-center gap-2">
-          <span className="font-extrabold text-xl tracking-tight" style={{ color: '#4361EE' }}>
+          <span className="font-extrabold text-xl tracking-tight" style={{ color: '#F5B041' }}>
             BayParee
           </span>
         </Link>
@@ -132,9 +132,9 @@ export default function PartnersPage() {
           <Link
             to="/builder"
             className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-all"
-            style={{ background: '#4361EE', color: '#fff' }}
+            style={{ background: '#F5B041', color: '#fff' }}
             onMouseEnter={e => (e.currentTarget.style.background = '#3451d1')}
-            onMouseLeave={e => (e.currentTarget.style.background = '#4361EE')}
+            onMouseLeave={e => (e.currentTarget.style.background = '#F5B041')}
           >
             Start Building <ArrowRight size={14} />
           </Link>
@@ -150,7 +150,7 @@ export default function PartnersPage() {
         >
           <div
             className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium mb-6"
-            style={{ background: 'rgba(67,97,238,0.12)', border: '1px solid rgba(67,97,238,0.35)', color: '#4361EE' }}
+            style={{ background: 'rgba(67,97,238,0.12)', border: '1px solid rgba(67,97,238,0.35)', color: '#F5B041' }}
           >
             <ExternalLink size={13} /> Partner Ecosystem
           </div>
@@ -159,7 +159,7 @@ export default function PartnersPage() {
             style={{ letterSpacing: '-0.02em' }}
           >
             Our{' '}
-            <span style={{ color: '#4361EE' }}>Partner</span>{' '}
+            <span style={{ color: '#F5B041' }}>Partner</span>{' '}
             Ecosystem
           </h1>
           <p className="text-lg max-w-2xl mx-auto" style={{ color: 'var(--fsi-text-muted, #9ca3af)' }}>
@@ -232,9 +232,9 @@ export default function PartnersPage() {
                 <Link
                   to="/builder"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all"
-                  style={{ background: '#4361EE', color: '#fff' }}
+                  style={{ background: '#F5B041', color: '#fff' }}
                   onMouseEnter={e => (e.currentTarget.style.background = '#3451d1')}
-                  onMouseLeave={e => (e.currentTarget.style.background = '#4361EE')}
+                  onMouseLeave={e => (e.currentTarget.style.background = '#F5B041')}
                 >
                   Get Started <ArrowRight size={14} />
                 </Link>
@@ -306,7 +306,7 @@ export default function PartnersPage() {
                 step: '01',
                 label: 'Build Your Plan',
                 detail: 'Use the AI Business Builder to map your business strategy step by step.',
-                color: '#4361EE',
+                color: '#F5B041',
               },
               {
                 step: '02',

@@ -5,7 +5,7 @@ import { useState } from 'react'
 import {
   MessageSquare, Image, Wrench, CreditCard, LayoutDashboard,
   LogOut, ChevronLeft, ChevronRight, Shield, Menu, DollarSign,
-  Store, Briefcase, TrendingUp, Users,
+  Store, Briefcase, TrendingUp, Users, Globe2,
 } from 'lucide-react'
 import { cn, getSubscriptionBadge } from '@/lib/utils'
 
@@ -21,6 +21,7 @@ export default function Layout() {
     { to: '/image',         icon: Image,           label: t.sidebarImage },
     { to: '/tools',         icon: Wrench,          label: t.sidebarTools },
     { to: '/builder',      icon: TrendingUp,      label: 'AI Builder',    highlight: true },
+    { to: '/hub',          icon: Globe2,          label: 'Business Hub' },
     { to: '/marketplace',  icon: Store,           label: 'Marketplace' },
     { to: '/services',     icon: Briefcase,       label: 'Services' },
     { to: '/partners',     icon: Users,           label: 'Partners' },
