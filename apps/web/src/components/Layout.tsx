@@ -5,7 +5,7 @@ import { useState } from 'react'
 import {
   MessageSquare, Image, Wrench, CreditCard, LayoutDashboard,
   LogOut, ChevronLeft, ChevronRight, Shield, Menu, DollarSign,
-  Store, Briefcase, TrendingUp,
+  Store, Briefcase, TrendingUp, Users,
 } from 'lucide-react'
 import { cn, getSubscriptionBadge } from '@/lib/utils'
 
@@ -20,11 +20,12 @@ export default function Layout() {
     { to: '/chat',          icon: MessageSquare,   label: t.sidebarChat },
     { to: '/image',         icon: Image,           label: t.sidebarImage },
     { to: '/tools',         icon: Wrench,          label: t.sidebarTools },
-    { to: '/money-machine', icon: TrendingUp,      label: 'BI Builder',    highlight: true },
-    { to: '/marketplace',   icon: Store,           label: 'Marketplace' },
-    { to: '/services',      icon: Briefcase,       label: 'Services' },
-    { to: '/dashboard',     icon: LayoutDashboard, label: t.sidebarDashboard },
-    { to: '/payment',       icon: CreditCard,      label: t.sidebarPayment },
+    { to: '/builder',      icon: TrendingUp,      label: 'AI Builder',    highlight: true },
+    { to: '/marketplace',  icon: Store,           label: 'Marketplace' },
+    { to: '/services',     icon: Briefcase,       label: 'Services' },
+    { to: '/partners',     icon: Users,           label: 'Partners' },
+    { to: '/dashboard',    icon: LayoutDashboard, label: t.sidebarDashboard },
+    { to: '/payment',      icon: CreditCard,      label: t.sidebarPayment },
   ]
 
   const handleLogout = () => { logout(); navigate('/') }
@@ -40,14 +41,14 @@ export default function Layout() {
         style={{ borderColor: 'var(--fsi-border)' }}>
         <div className="w-9 h-9 rounded-xl overflow-hidden shrink-0 flex items-center justify-center"
           style={{ boxShadow: '0 0 16px rgba(245,176,65,0.35)' }}>
-          <img src="/fsi-icon.svg" alt="F-Bi" className="w-9 h-9" />
+          <img src="/fsi-icon.svg" alt="BayParee" className="w-9 h-9" />
         </div>
         {!collapsed && (
           <div>
             <h1 className="font-display font-bold text-base leading-none" style={{ color: 'var(--fsi-text)' }}>
-              <span style={{ color: 'var(--fsi-gold)' }}>Freakin BI</span>
+              <span style={{ color: 'var(--fsi-gold)' }}>BayParee</span>
             </h1>
-            <p className="text-xs mt-0.5" style={{ color: 'var(--fsi-text-muted)' }}>Freakin Business Intelligence</p>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--fsi-text-muted)' }}>AI Business Builder</p>
           </div>
         )}
       </div>
@@ -173,7 +174,7 @@ export default function Layout() {
           <button onClick={() => setMobileOpen(true)} style={{ color: 'var(--fsi-gold)' }}>
             <Menu size={22} />
           </button>
-          <span className="font-display font-bold text-sm" style={{ color: 'var(--fsi-text)' }}><span style={{ color: 'var(--fsi-gold)' }}>Freakin BI</span></span>
+          <span className="font-display font-bold text-sm" style={{ color: 'var(--fsi-text)' }}><span style={{ color: 'var(--fsi-gold)' }}>BayParee</span></span>
           <button onClick={toggle} className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>
             {lang === 'bn' ? '🇬🇧 EN' : '🇧🇩 বাং'}
           </button>

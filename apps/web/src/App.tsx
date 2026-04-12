@@ -12,10 +12,11 @@ import PricingPage    from '@/pages/PricingPage'
 import PaymentPage    from '@/pages/PaymentPage'
 import DashboardPage  from '@/pages/DashboardPage'
 import AdminPage         from '@/pages/AdminPage'
-import MoneyMachinePage from '@/pages/MoneyMachinePage'
+import BusinessBuilderPage from '@/pages/BusinessBuilderPage'
 import MarketplacePage   from '@/pages/MarketplacePage'
 import ServicesPage      from '@/pages/ServicesPage'
 import GrowthCheckPage   from '@/pages/GrowthCheckPage'
+import PartnersPage      from '@/pages/PartnersPage'
 import Layout            from '@/components/Layout'
 
 // ── DEV MODE: skip all auth gates so every page is accessible without login ──
@@ -30,10 +31,10 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
       <div className="text-center space-y-4">
         <div className="w-16 h-16 rounded-2xl overflow-hidden mx-auto animate-pulse"
           style={{ boxShadow: '0 0 30px rgba(245,176,65,0.5)' }}>
-          <img src="/fsi-icon.svg" alt="F-Bi" className="w-full h-full" />
+          <img src="/fsi-icon.svg" alt="BayParee" className="w-full h-full" />
         </div>
-        <p className="font-display font-semibold tracking-wide" style={{ color: 'var(--fsi-gold)' }}>Freakin BI</p>
-        <p className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>Freakin Business Intelligence</p>
+        <p className="font-display font-semibold tracking-wide" style={{ color: 'var(--fsi-gold)' }}>BayParee</p>
+        <p className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>AI Business Builder</p>
       </div>
     </div>
   )
@@ -58,6 +59,7 @@ function AppRoutes() {
       <Route path="/register"element={!DEV && user ? <Navigate to="/chat" replace /> : <RegisterPage />} />
       <Route path="/pricing"      element={<PricingPage />} />
       <Route path="/growth-check" element={<GrowthCheckPage />} />
+      <Route path="/partners"     element={<PartnersPage />} />
 
       <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route path="/chat"                  element={<ChatPage />} />
@@ -66,7 +68,7 @@ function AppRoutes() {
         <Route path="/tools"                 element={<ToolsPage />} />
         <Route path="/payment"               element={<PaymentPage />} />
         <Route path="/dashboard"             element={<DashboardPage />} />
-        <Route path="/money-machine"         element={<MoneyMachinePage />} />
+        <Route path="/builder"         element={<BusinessBuilderPage />} />
         <Route path="/marketplace"           element={<MarketplacePage />} />
         <Route path="/services"              element={<ServicesPage />} />
       </Route>

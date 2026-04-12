@@ -1,5 +1,5 @@
 /**
- * Freakin BI — Growth Check
+ * BayParee — Growth Check
  * Free business assessment tool (ported from DhandaBuzz, US-market focused)
  * 8 questions → growth score + AI recommendations
  */
@@ -165,8 +165,8 @@ export default function GrowthCheckPage() {
       <nav className="border-b border-white/8 bg-[#080808]">
         <div className="max-w-[900px] mx-auto px-6 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2.5">
-            <img src="/fsi-icon.svg" alt="F-Bi" className="w-6 h-6" />
-            <span className="font-black text-sm tracking-widest" style={{ color: '#F5B041' }}>FREAKIN BI</span>
+            <img src="/fsi-icon.svg" alt="BayParee" className="w-6 h-6" />
+            <span className="font-black text-sm tracking-widest" style={{ color: '#F5B041' }}>BAYPAREE</span>
           </Link>
           <Link to="/" className="text-xs text-white/40 hover:text-white transition-colors flex items-center gap-1.5">
             <ArrowLeft size={12} /> Back

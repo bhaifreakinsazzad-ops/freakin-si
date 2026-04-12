@@ -41,14 +41,14 @@ export default function LoginPage() {
           <Link to="/" className="inline-flex flex-col items-center gap-3 group">
             <div className="w-16 h-16 rounded-2xl overflow-hidden flex items-center justify-center"
               style={{ boxShadow: '0 0 30px rgba(245,176,65,0.35)' }}>
-              <img src="/fsi-icon.svg" alt="F-Bi Logo" className="w-full h-full" />
+              <img src="/fsi-icon.svg" alt="BayParee Logo" className="w-full h-full" />
             </div>
             <div>
               <div className="font-display text-2xl font-bold" style={{ color: 'var(--fsi-text)' }}>
-                <span style={{ color: 'var(--fsi-gold)' }}>Freakin BI</span>
+                <span style={{ color: 'var(--fsi-gold)' }}>BayParee</span>
               </div>
               <p className="text-xs mt-1" style={{ color: 'var(--fsi-text-muted)' }}>
-                Freakin Business Intelligence
+                AI Business Builder
               </p>
             </div>
           </Link>

@@ -1,5 +1,5 @@
 /**
- * Freakin BI — Business Marketplace
+ * BayParee — Business Marketplace
  * Browse, search, and buy AI-generated businesses
  */
 
@@ -231,7 +231,7 @@ export default function MarketplacePage() {
             <p className="text-xs mt-0.5" style={{ color: 'var(--fsi-text-muted)' }}>Buy & Sell AI Businesses</p>
           </div>
         </div>
-        <Link to="/money-machine"
+        <Link to="/builder"
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
           style={{ background: 'rgba(245,176,65,0.1)', color: 'var(--fsi-gold)', border: '1px solid rgba(245,176,65,0.2)' }}>
           <Plus size={13} />
@@ -310,7 +310,7 @@ export default function MarketplacePage() {
             <p className="text-sm mt-1 mb-5" style={{ color: 'var(--fsi-text-muted)' }}>
               Generate a business blueprint and list it here
             </p>
-            <Link to="/money-machine"
+            <Link to="/builder"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold"
               style={{ background: 'linear-gradient(135deg, #F5B041, #D4830A)', color: '#000' }}>
               <Sparkles size={15} />
@@ -339,7 +339,7 @@ export default function MarketplacePage() {
               <p className="font-semibold text-sm" style={{ color: 'var(--fsi-text)' }}>Have a business blueprint?</p>
               <p className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>List it on the marketplace and get offers from buyers</p>
             </div>
-            <Link to="/money-machine"
+            <Link to="/builder"
               className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap"
               style={{ background: 'linear-gradient(135deg, #F5B041, #D4830A)', color: '#000' }}>
               List Now <ExternalLink size={12} />

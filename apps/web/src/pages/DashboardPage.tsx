@@ -121,15 +121,15 @@ export default function DashboardPage() {
           style={{ background: 'linear-gradient(135deg, rgba(245,176,65,0.06), rgba(212,131,10,0.03))', border: '1px solid rgba(245,176,65,0.15)' }}>
           <div className="flex items-center justify-between">
             <h2 className="font-bold flex items-center gap-2 text-sm" style={{ color: 'var(--fsi-gold)' }}>
-              <Sparkles size={16} style={{ color: 'var(--fsi-gold)' }} /> Freakin Business Intelligence
+              <Sparkles size={16} style={{ color: 'var(--fsi-gold)' }} /> AI Business Builder
             </h2>
-            <Link to="/money-machine" className="text-xs flex items-center gap-1" style={{ color: 'var(--fsi-text-muted)' }}>
-              Open BI Builder <ArrowRight size={12} />
+            <Link to="/builder" className="text-xs flex items-center gap-1" style={{ color: 'var(--fsi-text-muted)' }}>
+              Open AI Builder <ArrowRight size={12} />
             </Link>
           </div>
           <div className="grid grid-cols-3 gap-3">
             {[
-              { icon: Sparkles, label: 'BI Builder', sublabel: 'Create blueprints', to: '/money-machine', color: '#F5B041' },
+              { icon: Sparkles, label: 'AI Builder', sublabel: 'Create blueprints', to: '/builder', color: '#F5B041' },
               { icon: Briefcase, label: 'Services',   sublabel: 'Hire experts',      to: '/services',      color: '#3B82F6' },
               { icon: Store,     label: 'Marketplace', sublabel: 'Buy & sell',       to: '/marketplace',   color: '#00C27A' },
             ].map(({ icon: Icon, label, sublabel, to, color }) => (

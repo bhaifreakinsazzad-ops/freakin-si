@@ -33,7 +33,7 @@ const AuthContext = createContext<AuthContextType | null>(null)
 // ── DEV mock user — auto-populated in development so every page is browsable ──
 const DEV_USER: User = {
   id: 'dev-preview-user',
-  email: 'dev@bhaifreakin.online',
+  email: 'dev@bayparee.ai',
   name: 'Dev Preview',
   subscription: 'premium',
   daily_usage: 3,

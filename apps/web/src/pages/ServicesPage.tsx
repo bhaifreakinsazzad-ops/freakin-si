@@ -1,5 +1,5 @@
 /**
- * Freakin BI — Service Request Portal
+ * BayParee — Service Request Portal
  * Request professional Ads, Dev, Design, Copy, SEO, Social services
  */
 

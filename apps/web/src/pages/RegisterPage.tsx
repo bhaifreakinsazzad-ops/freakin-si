@@ -67,10 +67,10 @@ export default function RegisterPage() {
           <Link to="/" className="inline-flex flex-col items-center gap-3 group">
             <div className="w-14 h-14 rounded-2xl overflow-hidden flex items-center justify-center"
               style={{ boxShadow: '0 0 24px rgba(245,176,65,0.35)' }}>
-              <img src="/fsi-icon.svg" alt="F-Bi Logo" className="w-full h-full" />
+              <img src="/fsi-icon.svg" alt="BayParee Logo" className="w-full h-full" />
             </div>
             <div className="font-display text-xl font-bold" style={{ color: 'var(--fsi-text)' }}>
-              <span style={{ color: 'var(--fsi-gold)' }}>Freakin BI</span>
+              <span style={{ color: 'var(--fsi-gold)' }}>BayParee</span>
             </div>
           </Link>
           <p className="text-xs mt-1" style={{ color: 'var(--fsi-text-muted)' }}>{t.registerSubtitle}</p>
