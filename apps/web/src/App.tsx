@@ -13,8 +13,9 @@ import PaymentPage    from '@/pages/PaymentPage'
 import DashboardPage  from '@/pages/DashboardPage'
 import AdminPage         from '@/pages/AdminPage'
 import MoneyMachinePage from '@/pages/MoneyMachinePage'
-import MarketplacePage  from '@/pages/MarketplacePage'
-import ServicesPage     from '@/pages/ServicesPage'
+import MarketplacePage   from '@/pages/MarketplacePage'
+import ServicesPage      from '@/pages/ServicesPage'
+import GrowthCheckPage   from '@/pages/GrowthCheckPage'
 import Layout            from '@/components/Layout'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -48,7 +49,8 @@ function AppRoutes() {
       <Route path="/"        element={user ? <Navigate to="/chat" replace /> : <LandingPage />} />
       <Route path="/login"   element={user ? <Navigate to="/chat" replace /> : <LoginPage />} />
       <Route path="/register"element={user ? <Navigate to="/chat" replace /> : <RegisterPage />} />
-      <Route path="/pricing" element={<PricingPage />} />
+      <Route path="/pricing"      element={<PricingPage />} />
+      <Route path="/growth-check" element={<GrowthCheckPage />} />
 
       <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route path="/chat"                  element={<ChatPage />} />

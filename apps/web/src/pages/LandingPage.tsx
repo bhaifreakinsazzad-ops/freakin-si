@@ -1,389 +1,629 @@
 /**
- * Freakin BI — Landing Page
- * "Unlock the Code to Billions" · Made in Bangladesh · Built for the World
+ * Freakin BI — Landing Page v4.0
+ * Electric Editorial · 1590px wide · US Market · Zero glass morphism
+ * Design: Sharp color blocks, kinetic clip-reveal text, inverted gold section
  */
 import { Link } from 'react-router-dom'
-import { motion, useInView } from 'framer-motion'
-import {
-  ArrowRight, CheckCircle, Sparkles, TrendingUp, Store,
-  Briefcase, Globe, Zap, Shield, Code2, Star, Play,
-} from 'lucide-react'
-import { useLang } from '@/contexts/LanguageContext'
+import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
+import {
+  ArrowRight, Zap, Shield, TrendingUp, Code2, Palette,
+  Globe, Target, Users, BarChart3, MessageSquare,
+  CheckCircle, Star, ChevronRight, Play, Lock, Sparkles,
+} from 'lucide-react'
 
-/* ── Animated counter ────────────────────────────────────────────────────── */
-function Counter({ target, suffix = '' }: { target: number; suffix?: string }) {
-  const [count, setCount] = useState(0)
+/* ── Animated counter ─────────────────────────────────────────────────────── */
+function Counter({ target, suffix = '', prefix = '' }: { target: number; suffix?: string; prefix?: string }) {
+  const [v, setV] = useState(0)
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref, { once: true })
   useEffect(() => {
     if (!inView) return
-    let v = 0; const inc = target / (1500 / 16)
-    const t = setInterval(() => { v += inc; if (v >= target) { setCount(target); clearInterval(t) } else setCount(Math.floor(v)) }, 16)
+    let cur = 0
+    const inc = target / 80
+    const t = setInterval(() => {
+      cur += inc
+      if (cur >= target) { setV(target); clearInterval(t) } else setV(Math.floor(cur))
+    }, 16)
     return () => clearInterval(t)
   }, [inView, target])
-  return <span ref={ref}>{count}{suffix}</span>
+  return <span ref={ref}>{prefix}{v.toLocaleString()}{suffix}</span>
 }
 
-/* ── Hex grid SVG background ─────────────────────────────────────────────── */
-function HexGrid() {
+/* ── Left-edge scroll progress bar ───────────────────────────────────────── */
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll()
+  const h = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
   return (
-    <svg className="absolute inset-0 w-full h-full opacity-[0.06] pointer-events-none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <pattern id="hex" x="0" y="0" width="56" height="48" patternUnits="userSpaceOnUse">
-          <polygon points="14,2 42,2 56,24 42,46 14,46 0,24" fill="none" stroke="#F5B041" strokeWidth="0.8"/>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#hex)"/>
-    </svg>
+    <div className="fixed left-0 top-0 w-[3px] h-screen z-50 bg-white/5">
+      <motion.div style={{ height: h, background: '#F5B041' }} className="w-full" />
+    </div>
   )
 }
 
-/* ── Main ────────────────────────────────────────────────────────────────── */
-export default function LandingPage() {
-  const { t, lang, toggle } = useLang()
-
-  const pillars = [
-    { icon: Sparkles, label: 'CREATE', sub: 'AI-generate a full business blueprint in seconds', color: '#F5B041', to: '/register' },
-    { icon: Play,     label: 'RUN',    sub: 'Hire expert help: ads, dev, design, copy, SEO', color: '#3B82F6', to: '/register' },
-    { icon: Store,    label: 'SELL',   sub: 'List your blueprint on the F-Bi marketplace',    color: '#00C27A', to: '/register' },
-    { icon: TrendingUp, label: 'GROW', sub: 'Scale revenue with your 4-phase roadmap',        color: '#8B5CF6', to: '/register' },
-  ]
-
-  const stats = [
-    { n: 40, s: '+', label: lang === 'bn' ? 'AI মডেল' : 'AI Models' },
-    { n: 20, s: '+', label: lang === 'bn' ? 'টুলস' : 'Tools' },
-    { n: 3,  s: '',  label: lang === 'bn' ? 'ভাষা' : 'Languages' },
-    { n: 100,s: '%', label: lang === 'bn' ? 'ফ্রি শুরু' : 'Free Start' },
-  ]
-
-  const features = [
-    { icon: Zap,      color: '#F5B041', label: lang === 'bn' ? 'BI Blueprint Generator' : 'BI Blueprint Generator', desc: 'Full business plan with brand, offers, landing page copy & ad hooks — in under 60 seconds.' },
-    { icon: Store,    color: '#00C27A', label: 'Marketplace',    desc: 'Buy and sell AI-built businesses. Verified listings, escrow-safe transactions.' },
-    { icon: Briefcase,color: '#3B82F6', label: 'Expert Services', desc: 'On-demand ads, dev, design, SEO, and social — delivered in 24–72 hours.' },
-    { icon: Globe,    color: '#8B5CF6', label: '3 Languages',    desc: 'Bengali, English & Hinglish. Real-time AI chat across all 6 specialized modes.' },
-    { icon: Code2,    color: '#EC4899', label: '40+ AI Models',  desc: 'Groq LLaMA, Gemini, DeepSeek, Command A — always picking the best for your task.' },
-    { icon: Shield,   color: '#00C27A', label: 'Secure & Private', desc: 'JWT auth, row-level security, Supabase-backed. Your data stays yours.' },
-  ]
-
-  const providers = [
-    { name: 'Groq',       badge: '⚡ Ultra Fast',   models: ['LLaMA 3.3 70B', 'LLaMA 3.2 Vision', 'Mixtral 8x7B'], color: '#F5B041' },
-    { name: 'Google',     badge: '🧠 Massive CTX',  models: ['Gemini 2.0 Flash', 'Gemini 1.5 Pro', 'Gemini 1.5 Flash'], color: '#3B82F6' },
-    { name: 'OpenRouter', badge: '🆓 Verified Free', models: ['DeepSeek R1', 'Gemma 3 12B', 'Hermes 3 405B'], color: '#8B5CF6' },
-    { name: 'Cohere',     badge: '📚 RAG Optimized', models: ['Command A (2025)', 'Command R+', 'Command R'], color: '#00C27A' },
-  ]
-
-  const plans = [
-    { name: lang === 'bn' ? 'ফ্রি ট্রায়াল' : 'Free Trial', price: '৳0',    period: lang === 'bn' ? '৭ দিন' : '7 days',   features: ['20 messages/day', '5 images/day', '20+ tools', '1 BI Blueprint'], hot: false },
-    { name: lang === 'bn' ? 'স্ট্যান্ডার্ড' : 'Standard',   price: '৳499',  period: '/month', features: ['100 messages/day', 'All free models', 'Image generation', '5 BI Blueprints/mo'], hot: false },
-    { name: lang === 'bn' ? 'প্রিমিয়াম' : 'Premium',       price: '৳999',  period: '/month', features: ['Unlimited messages', 'Pro models (GPT-4o)', 'Priority speed', 'Unlimited BI Blueprints'], hot: true  },
-    { name: lang === 'bn' ? 'এন্টারপ্রাইজ' : 'Enterprise',  price: '৳2499', period: '/month', features: ['Everything', 'API access', 'White-label', 'Dedicated support'], hot: false },
-  ]
-
+/* ── Clip-reveal text animation ───────────────────────────────────────────── */
+function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-60px' })
   return (
-    <div className="min-h-screen overflow-x-hidden" style={{ background: '#060810', color: '#F0F6FF' }}>
+    <div ref={ref} style={{ overflow: 'hidden' }}>
+      <motion.div
+        initial={{ y: '110%', opacity: 0 }}
+        animate={inView ? { y: '0%', opacity: 1 } : {}}
+        transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {children}
+      </motion.div>
+    </div>
+  )
+}
 
-      {/* ── NAVBAR ── */}
-      <nav className="sticky top-0 z-50 flex items-center justify-between px-6 py-4 max-w-7xl mx-auto"
-        style={{ background: 'rgba(6,8,16,0.85)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(245,176,65,0.1)' }}>
-        <Link to="/" className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl overflow-hidden" style={{ boxShadow: '0 0 14px rgba(245,176,65,0.5)' }}>
-            <img src="/fsi-icon.svg" alt="F-Bi" className="w-full h-full" />
+/* ── Service card ─────────────────────────────────────────────────────────── */
+interface SCardProps {
+  icon: React.ElementType; name: string; desc: string
+  price: string; color: string; badge?: string; delay?: number
+}
+function SCard({ icon: Icon, name, desc, price, color, badge, delay = 0 }: SCardProps) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-40px' })
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 32 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay, ease: 'easeOut' }}
+      whileHover={{ y: -4 }}
+      className="group relative bg-[#0D0D0D] border border-white/8 p-6 cursor-pointer"
+      style={{ borderLeft: `3px solid ${color}` }}
+    >
+      {badge && (
+        <span
+          className="absolute top-4 right-4 text-[10px] font-bold tracking-widest px-2 py-0.5"
+          style={{ background: color, color: '#000' }}
+        >{badge}</span>
+      )}
+      <div
+        className="w-10 h-10 flex items-center justify-center mb-4"
+        style={{ background: color + '18', border: `1px solid ${color}30` }}
+      >
+        <Icon size={18} style={{ color }} />
+      </div>
+      <h3 className="font-bold text-white mb-1.5 text-sm tracking-wide">{name}</h3>
+      <p className="text-white/40 text-xs leading-relaxed mb-4">{desc}</p>
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-bold" style={{ color }}>From {price}</span>
+        <ChevronRight size={14} className="text-white/20 group-hover:text-white/60 transition-colors" />
+      </div>
+    </motion.div>
+  )
+}
+
+/* ── Live dashboard mockup ────────────────────────────────────────────────── */
+function DashMockup() {
+  const [live, setLive] = useState(4281)
+  useEffect(() => {
+    const t = setInterval(() => setLive(n => n + Math.floor(Math.random() * 3)), 2800)
+    return () => clearInterval(t)
+  }, [])
+  const bars = [35, 55, 42, 78, 62, 88, 95]
+  return (
+    <div className="relative w-full max-w-[540px] ml-auto select-none">
+      <div
+        className="absolute inset-0 blur-[80px] opacity-20 pointer-events-none"
+        style={{ background: 'radial-gradient(circle, #F5B041 0%, #7B2FFF 60%, transparent 100%)' }}
+      />
+      <div className="relative bg-[#0A0A0A] border border-white/10" style={{ fontFamily: 'monospace' }}>
+        {/* titlebar */}
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-white/8">
+          <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
+          <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
+          <div className="w-3 h-3 rounded-full bg-[#28C840]" />
+          <span className="text-white/30 text-xs ml-2">freakin-bi — live dashboard</span>
+          <span className="ml-auto flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00FF94] animate-pulse" />
+            <span className="text-[10px] text-[#00FF94]">LIVE</span>
+          </span>
+        </div>
+        <div className="p-4 space-y-3">
+          {/* kpi row */}
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { label: 'Active Biz', val: live.toLocaleString(), color: '#F5B041' },
+              { label: 'Revenue',    val: '$2.4M',               color: '#00FF94' },
+              { label: 'AI Tasks',   val: '847K',                color: '#7B2FFF' },
+            ].map(s => (
+              <div key={s.label} className="bg-white/4 p-3 border border-white/6">
+                <div className="text-[10px] text-white/40 mb-1">{s.label}</div>
+                <div className="text-base font-bold" style={{ color: s.color }}>{s.val}</div>
+              </div>
+            ))}
           </div>
-          <div>
-            <span className="font-display font-bold text-lg" style={{ color: '#F5B041' }}>Freakin BI</span>
-            <span className="hidden sm:inline text-xs ml-2" style={{ color: 'rgba(245,176,65,0.5)' }}>F-Bi</span>
+          {/* bar chart */}
+          <div className="bg-white/4 border border-white/6 p-3">
+            <div className="text-[10px] text-white/40 mb-3">Revenue · Last 7 Days</div>
+            <div className="flex items-end gap-1.5 h-14">
+              {bars.map((h, i) => (
+                <motion.div
+                  key={i}
+                  className="flex-1"
+                  initial={{ height: 0 }}
+                  animate={{ height: `${h}%` }}
+                  transition={{ duration: 0.6, delay: 0.08 * i }}
+                  style={{
+                    background: i === 6 ? '#F5B041' : `rgba(245,176,65,${0.12 + i * 0.1})`,
+                    minWidth: 8,
+                  }}
+                />
+              ))}
+            </div>
           </div>
-        </Link>
-        <div className="flex items-center gap-3">
-          <button onClick={toggle} className="text-xs px-3 py-1.5 rounded-lg transition-all hidden sm:block"
-            style={{ border: '1px solid rgba(245,176,65,0.15)', color: 'rgba(240,246,255,0.5)' }}>
-            {lang === 'bn' ? '🇬🇧 EN' : '🇧🇩 বাং'}
-          </button>
-          <Link to="/login" className="text-sm px-4 py-2 rounded-xl transition-all"
-            style={{ border: '1px solid rgba(245,176,65,0.2)', color: 'rgba(240,246,255,0.7)' }}>
-            {t.login}
+          {/* activity feed */}
+          <div className="space-y-1.5">
+            {[
+              { type: 'Blueprint', name: 'FashionBD Dropship', status: '✓',  color: '#00FF94' },
+              { type: 'AdScale',   name: 'FB Campaign live',   status: '→',  color: '#F5B041' },
+              { type: 'Escrow',    name: '$240 deal secured',  status: '🔒', color: '#7B2FFF' },
+            ].map(row => (
+              <div key={row.name} className="flex items-center gap-3 text-[11px] bg-white/3 px-3 py-2">
+                <span className="text-white/30 w-16 shrink-0">{row.type}</span>
+                <span className="text-white/70 flex-1 truncate">{row.name}</span>
+                <span style={{ color: row.color }}>{row.status}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ── Services list ────────────────────────────────────────────────────────── */
+const SERVICES: SCardProps[] = [
+  { icon: Sparkles,      name: 'AI Blueprint',       desc: 'Complete business plans, brand identity, offer structure & revenue model in minutes.',        price: 'Free',   color: '#F5B041', badge: 'POPULAR' },
+  { icon: Target,        name: 'AdScale Engine',     desc: 'Facebook & Instagram ad management with live ROAS tracking, A/B testing, AI optimization.',    price: '$49/mo', color: '#EF4444', badge: 'HIGH ROI' },
+  { icon: Palette,       name: 'Creative Engine',    desc: 'AI-powered graphics, video creatives, social posts and brand kits. Delivered in 24 hrs.',       price: '$19',    color: '#EC4899' },
+  { icon: Code2,         name: 'Web Studio',         desc: 'Landing pages in 1 hr. E-commerce stores. Custom web apps. Mobile apps published.',            price: '$99',    color: '#3B82F6', badge: 'FAST' },
+  { icon: Shield,        name: 'Secure Escrow',      desc: 'Safe transactions with dispute resolution. Pay only when delivered. Zero risk.',                price: '2% fee', color: '#00FF94', badge: 'NEW' },
+  { icon: TrendingUp,    name: 'SEO & Content',      desc: 'Keyword-optimized posts and product descriptions. Rank on Google. Traffic that converts.',      price: '$29',    color: '#8B5CF6' },
+  { icon: Users,         name: 'Social Management',  desc: 'Trained human team runs your pages. Under 5-min response. Comments, DMs, growth.',             price: '$79/mo', color: '#F97316' },
+  { icon: BarChart3,     name: 'Growth Analytics',   desc: 'Revenue, leads, ROAS, conversion — all live in one dashboard updated in real-time.',           price: 'Pro',    color: '#06B6D4' },
+  { icon: MessageSquare, name: 'AI Chat Agent',      desc: '24/7 AI handles your inbox, qualifies leads and books appointments. Never miss a customer.',    price: '$39/mo', color: '#F5B041' },
+  { icon: Globe,         name: 'Marketplace',        desc: 'List and sell businesses or digital products to a global buyer pool. Free forever.',            price: 'Free',   color: '#10B981' },
+]
+
+/* ════════════════════════════ PAGE ═══════════════════════════════════════════ */
+export default function LandingPage() {
+  return (
+    <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
+      <ScrollProgress />
+
+      {/* ── NAV ──────────────────────────────────────────────────────────── */}
+      <nav
+        className="fixed top-0 left-0 right-0 z-40 border-b border-white/5"
+        style={{ background: 'rgba(5,5,5,0.92)', backdropFilter: 'blur(12px)' }}
+      >
+        <div className="max-w-[1590px] mx-auto px-6 h-14 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2.5">
+            <img src="/fsi-icon.svg" alt="F-Bi" className="w-7 h-7" />
+            <span className="font-black text-sm tracking-widest" style={{ color: '#F5B041' }}>FREAKIN BI</span>
           </Link>
-          <Link to="/register" className="btn-gold text-sm px-5 py-2 rounded-xl font-semibold">
-            {lang === 'bn' ? 'শুরু করুন' : 'Start Free'} <ArrowRight size={14} className="inline ml-1" />
-          </Link>
+          <div className="hidden md:flex items-center gap-8 text-[11px] text-white/50 font-semibold tracking-widest">
+            {([['#services', 'SERVICES'], ['#growth', 'GROWTH CHECK'], ['#pricing', 'PRICING'], ['#escrow', 'ESCROW']] as const).map(([href, label]) => (
+              <a key={href} href={href} className="hover:text-white transition-colors">{label}</a>
+            ))}
+          </div>
+          <div className="flex items-center gap-3">
+            <Link to="/login" className="text-xs text-white/50 hover:text-white transition-colors tracking-wide">LOGIN</Link>
+            <Link
+              to="/register"
+              className="text-xs font-black px-5 py-2.5 tracking-widest transition-all hover:opacity-90"
+              style={{ background: '#F5B041', color: '#000' }}
+            >START FREE →</Link>
+          </div>
         </div>
       </nav>
 
-      {/* ── HERO ── */}
-      <section className="relative overflow-hidden min-h-[92vh] flex items-center">
-        <HexGrid />
-        {/* Glow orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(245,176,65,0.08) 0%, transparent 70%)', filter: 'blur(40px)' }} />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)', filter: 'blur(40px)' }} />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 w-full">
-          <div className="max-w-4xl mx-auto text-center">
-
-            {/* Made in BD badge */}
-            <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8 text-xs font-semibold tracking-wider uppercase"
-              style={{ background: 'rgba(245,176,65,0.08)', border: '1px solid rgba(245,176,65,0.25)', color: '#F5B041' }}>
-              🇧🇩 {lang === 'bn' ? 'বাংলাদেশে তৈরি — বিশ্বের জন্য' : 'Made in Bangladesh — Built for the World'}
-            </motion.div>
-
-            {/* F-Bi logo mark */}
-            <motion.div initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', delay: 0.1 }}
-              className="flex justify-center mb-8">
-              <div className="relative">
-                <div className="w-24 h-24 rounded-3xl overflow-hidden" style={{ boxShadow: '0 0 60px rgba(245,176,65,0.4), 0 0 120px rgba(245,176,65,0.15)' }}>
-                  <img src="/fsi-logo.svg" alt="Freakin BI" className="w-full h-full" />
-                </div>
-                {/* Pulse ring */}
-                <div className="absolute -inset-3 rounded-3xl border border-[rgba(245,176,65,0.2)] animate-pulse pointer-events-none" />
+      {/* ── HERO ─────────────────────────────────────────────────────────── */}
+      <section className="pt-32 pb-20 max-w-[1590px] mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          {/* left */}
+          <div>
+            <Reveal>
+              <div className="inline-flex items-center gap-2 border border-[#F5B041]/30 px-3 py-1 mb-8">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00FF94] animate-pulse" />
+                <span className="text-[10px] tracking-[0.3em] text-[#F5B041] font-bold">
+                  AI BUSINESS INTELLIGENCE · 🇧🇩 MADE IN BANGLADESH · BUILT FOR THE WORLD
+                </span>
               </div>
-            </motion.div>
+            </Reveal>
 
-            {/* Main headline */}
-            <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-              className="font-display font-black leading-[1.0] mb-6"
-              style={{ fontSize: 'clamp(2.5rem, 7vw, 5.5rem)' }}>
-              <span style={{ color: '#F0F6FF' }}>
-                {lang === 'bn' ? 'বিলিয়নের' : 'UNLOCK THE'}
-              </span>
-              <br />
-              <span style={{ background: 'linear-gradient(90deg, #F8C97A, #F5B041, #D4830A)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                {lang === 'bn' ? 'কোড আনলক করো' : 'CODE TO BILLIONS'}
-              </span>
-            </motion.h1>
-
-            <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="text-lg sm:text-xl mb-4 max-w-2xl mx-auto" style={{ color: 'rgba(240,246,255,0.65)' }}>
-              {lang === 'bn'
-                ? 'আপনার আইডিয়া দিন। ৬০ সেকেন্ডে পান সম্পূর্ণ ব্যবসায়িক ব্লুপ্রিন্ট — ব্র্যান্ড, অফার, ল্যান্ডিং পেজ, বিজ্ঞাপন ও রেভিনিউ রোডম্যাপ।'
-                : 'Give us your idea. Get a complete business blueprint in 60 seconds — brand, offers, landing page copy, ad hooks & revenue roadmap.'}
-            </motion.p>
-
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }}
-              className="text-sm mb-10 font-semibold tracking-widest uppercase" style={{ color: 'rgba(245,176,65,0.6)' }}>
-              {lang === 'bn' ? 'আপনার ডেটা। আপনার সাম্রাজ্য।' : 'Your Data. Your Empire. Start Now.'}
-            </motion.p>
-
-            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/register" className="btn-gold text-base px-8 py-4 rounded-2xl font-bold w-full sm:w-auto text-center"
-                style={{ boxShadow: '0 0 40px rgba(245,176,65,0.35)' }}>
-                {lang === 'bn' ? '🚀 ফ্রিতে শুরু করুন' : '🚀 Build My Blueprint Free'}
-              </Link>
-              <Link to="/money-machine" className="flex items-center justify-center gap-2 text-base px-8 py-4 rounded-2xl font-semibold w-full sm:w-auto"
-                style={{ border: '1px solid rgba(245,176,65,0.25)', color: 'rgba(240,246,255,0.75)', background: 'rgba(245,176,65,0.04)' }}>
-                <Play size={16} />
-                {lang === 'bn' ? 'BI Builder দেখুন' : 'See BI Builder'}
-              </Link>
-            </motion.div>
-
-            {/* Trust row */}
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
-              className="flex flex-wrap items-center justify-center gap-6 mt-10 text-xs" style={{ color: 'rgba(240,246,255,0.35)' }}>
-              {['✓ No credit card', '✓ 7-day free trial', '✓ bKash & Nagad accepted', '✓ Cancel anytime'].map(t2 => (
-                <span key={t2}>{t2}</span>
+            <div className="space-y-0 mb-8">
+              {(['BUILD YOUR', 'EMPIRE', 'WITH AI.'] as const).map((line, i) => (
+                <Reveal key={line} delay={0.05 * i}>
+                  <h1
+                    className="font-black leading-none tracking-tight"
+                    style={{
+                      fontSize: 'clamp(52px, 6vw, 88px)',
+                      color: i === 1 ? '#F5B041' : i === 2 ? 'rgba(250,250,250,0.15)' : '#FAFAFA',
+                    }}
+                  >{line}</h1>
+                </Reveal>
               ))}
-            </motion.div>
+            </div>
+
+            <Reveal delay={0.2}>
+              <p className="text-white/50 text-base leading-relaxed mb-10 max-w-[440px]">
+                The only platform combining AI business blueprints, digital services,
+                secure escrow and growth analytics — for entrepreneurs who mean business.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.25}>
+              <div className="flex flex-wrap items-center gap-4 mb-6">
+                <Link
+                  to="/register"
+                  className="inline-flex items-center gap-2 px-8 py-4 font-black text-sm tracking-widest transition-all hover:gap-4"
+                  style={{ background: '#F5B041', color: '#000' }}
+                >START FOR FREE <ArrowRight size={16} /></Link>
+                <a
+                  href="#services"
+                  className="inline-flex items-center gap-2 px-8 py-4 font-bold text-sm tracking-widest border border-white/15 text-white/70 hover:border-white/40 hover:text-white transition-all"
+                ><Play size={14} /> SEE SERVICES</a>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.3}>
+              <div className="flex items-center gap-1.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} size={12} fill="#F5B041" className="text-[#F5B041]" />
+                ))}
+                <span className="text-xs text-white/40 ml-1">4.9 · Trusted by 4,200+ businesses</span>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* right */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <DashMockup />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── STATS STRIP ──────────────────────────────────────────────────── */}
+      <div className="border-y border-white/8 bg-[#080808]">
+        <div className="max-w-[1590px] mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/8">
+            {[
+              { val: 4200, suf: '+',   label: 'Businesses Built',   color: '#F5B041' },
+              { val: 2,    suf: 'M+',  label: 'Revenue Generated',  color: '#00FF94', pre: '$' },
+              { val: 98,   suf: '%',   label: 'Client Satisfaction', color: '#7B2FFF' },
+              { val: 24,   suf: ' hrs', label: 'Avg Delivery Time',  color: '#F5B041' },
+            ].map((s, i) => (
+              <div key={i} className="py-8 px-8 text-center">
+                <div className="font-black text-3xl mb-1" style={{ color: s.color }}>
+                  <Counter target={s.val} suffix={s.suf} prefix={s.pre} />
+                </div>
+                <div className="text-[11px] tracking-widest text-white/30 font-medium">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── SERVICES ─────────────────────────────────────────────────────── */}
+      <section id="services" className="py-24 max-w-[1590px] mx-auto px-6">
+        <div className="mb-16">
+          <Reveal>
+            <p className="text-[10px] tracking-[0.4em] text-[#F5B041] font-bold mb-4">EVERYTHING YOU NEED</p>
+          </Reveal>
+          <div className="flex items-end justify-between gap-8 flex-wrap">
+            <Reveal delay={0.05}>
+              <h2 className="font-black text-4xl md:text-5xl leading-none">
+                10 SERVICES.<br /><span className="text-white/25">ONE PLATFORM.</span>
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <Link to="/services" className="text-xs text-white/40 hover:text-[#F5B041] transition-colors tracking-widest flex items-center gap-2">
+                VIEW ALL <ArrowRight size={12} />
+              </Link>
+            </Reveal>
+          </div>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-px bg-white/5">
+          {SERVICES.map((s, i) => <SCard key={s.name} {...s} delay={i * 0.04} />)}
+        </div>
+      </section>
+
+      {/* ── GROWTH CHECK — INVERTED GOLD SECTION ─────────────────────────── */}
+      <section id="growth" style={{ background: '#F5B041' }}>
+        <div className="max-w-[1590px] mx-auto px-6 py-24">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <p className="text-[10px] tracking-[0.4em] text-black/50 font-bold mb-4">FREE TOOL · 2 MINUTES</p>
+              <h2
+                className="font-black leading-none text-black mb-6"
+                style={{ fontSize: 'clamp(40px, 5vw, 68px)' }}
+              >WHAT IS YOUR<br />BUSINESS<br />SCORE?</h2>
+              <p className="text-black/60 text-base mb-8 max-w-[400px]">
+                Answer 8 questions. Get a personalized growth score, your top 3 bottlenecks,
+                and an AI-generated action plan — free, instant, no BS.
+              </p>
+              <Link
+                to="/growth-check"
+                className="inline-flex items-center gap-3 px-10 py-5 bg-black text-white font-black text-sm tracking-widest hover:gap-5 transition-all"
+              >GET MY FREE SCORE <ArrowRight size={16} /></Link>
+            </div>
+            {/* score preview */}
+            <div className="bg-black p-8 space-y-4">
+              <div className="text-white/40 text-[10px] tracking-widest mb-4">SAMPLE REPORT</div>
+              <div className="text-center py-6 border border-white/10">
+                <div className="text-7xl font-black" style={{ color: '#F5B041' }}>74</div>
+                <div className="text-white/40 text-[10px] tracking-widest mt-2">GROWTH SCORE / 100</div>
+              </div>
+              {[
+                { label: 'Lead Generation', score: 82, color: '#00FF94' },
+                { label: 'Conversion Rate', score: 61, color: '#F5B041' },
+                { label: 'Content Quality', score: 74, color: '#7B2FFF' },
+                { label: 'Ad Performance',  score: 45, color: '#EF4444' },
+              ].map(item => (
+                <div key={item.label} className="space-y-1">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-white/50">{item.label}</span>
+                    <span style={{ color: item.color }}>{item.score}</span>
+                  </div>
+                  <div className="h-1 bg-white/10">
+                    <motion.div
+                      className="h-full"
+                      style={{ background: item.color }}
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${item.score}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8, ease: 'easeOut' }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── STATS ── */}
-      <section className="py-12 px-6" style={{ borderTop: '1px solid rgba(245,176,65,0.08)', borderBottom: '1px solid rgba(245,176,65,0.08)', background: 'rgba(245,176,65,0.02)' }}>
-        <div className="max-w-3xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-6">
-          {stats.map(s => (
-            <div key={s.label} className="text-center">
-              <p className="font-display font-black text-3xl sm:text-4xl" style={{ color: '#F5B041' }}>
-                <Counter target={s.n} suffix={s.s} />
-              </p>
-              <p className="text-sm mt-1" style={{ color: 'rgba(240,246,255,0.45)' }}>{s.label}</p>
+      {/* ── ESCROW ───────────────────────────────────────────────────────── */}
+      <section id="escrow" className="py-24 bg-[#080808]">
+        <div className="max-w-[1590px] mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-1">
+              {[
+                { step: '01', label: 'Buyer creates deal and funds escrow',          Icon: Lock,        color: '#F5B041' },
+                { step: '02', label: 'Seller delivers with proof of work',           Icon: CheckCircle, color: '#00FF94' },
+                { step: '03', label: 'Buyer confirms — funds released instantly',    Icon: Zap,         color: '#7B2FFF' },
+              ].map((row, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.15 }}
+                  className="flex items-center gap-6 bg-[#0D0D0D] border border-white/6 p-6"
+                  style={{ borderLeft: `3px solid ${row.color}` }}
+                >
+                  <span className="font-black text-2xl text-white/10 w-8 shrink-0">{row.step}</span>
+                  <row.Icon size={20} style={{ color: row.color, flexShrink: 0 }} />
+                  <span className="text-white/70 text-sm">{row.label}</span>
+                </motion.div>
+              ))}
+              <div className="bg-[#00FF94]/8 border border-[#00FF94]/20 p-6 mt-4">
+                <div className="flex items-center gap-3">
+                  <Shield size={20} className="text-[#00FF94] shrink-0" />
+                  <div>
+                    <div className="font-bold text-sm text-[#00FF94]">Dispute? We step in.</div>
+                    <div className="text-xs text-white/40">Admin resolves every contested transaction. Always fair.</div>
+                  </div>
+                </div>
+              </div>
             </div>
+            <div>
+              <p className="text-[10px] tracking-[0.4em] text-[#00FF94] font-bold mb-4">SECURE DEALS · ZERO RISK</p>
+              <h2 className="font-black text-4xl md:text-5xl leading-none mb-6">
+                CLOSE DEALS<br /><span className="text-white/25">WITHOUT FEAR.</span>
+              </h2>
+              <p className="text-white/50 text-base mb-8 max-w-[420px]">
+                Hiring a freelancer, buying a business, or closing a client —
+                our escrow holds funds until both sides are satisfied. No scams. No disputes.
+              </p>
+              <div className="flex flex-wrap gap-4 mb-8">
+                {['2% flat fee', 'Dispute resolution', 'Proof of delivery', 'Escrow chat', 'Instant release'].map(f => (
+                  <div key={f} className="flex items-center gap-2 text-xs text-white/50">
+                    <CheckCircle size={11} className="text-[#00FF94] shrink-0" />{f}
+                  </div>
+                ))}
+              </div>
+              <Link
+                to="/register"
+                className="inline-flex items-center gap-2 px-8 py-4 font-bold text-sm tracking-widest border border-[#00FF94]/30 text-[#00FF94] hover:bg-[#00FF94]/10 transition-all"
+              >TRY ESCROW FREE <ArrowRight size={14} /></Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
+      <section className="py-24 max-w-[1590px] mx-auto px-6">
+        <div className="mb-16 text-center">
+          <Reveal><p className="text-[10px] tracking-[0.4em] text-[#F5B041] font-bold mb-4">SIMPLE PROCESS</p></Reveal>
+          <Reveal delay={0.05}>
+            <h2 className="font-black text-4xl md:text-5xl">
+              IDEA TO INCOME<br /><span className="text-white/20">IN 3 STEPS.</span>
+            </h2>
+          </Reveal>
+        </div>
+        <div className="grid md:grid-cols-3 gap-px bg-white/5">
+          {[
+            { n: '1', title: 'DESCRIBE YOUR BUSINESS', desc: 'Tell our AI your niche, audience and goals. Takes 90 seconds.', color: '#F5B041' },
+            { n: '2', title: 'GET YOUR BLUEPRINT',     desc: 'Receive a complete strategy: brand, offer, landing page, ad plan, revenue model.', color: '#7B2FFF' },
+            { n: '3', title: 'EXECUTE WITH US',        desc: 'Order ads, design, web or SEO directly. Track all results live in your dashboard.', color: '#00FF94' },
+          ].map((step, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="bg-[#0D0D0D] p-10"
+            >
+              <div className="font-black text-[100px] leading-none mb-4" style={{ color: step.color, opacity: 0.1 }}>{step.n}</div>
+              <h3 className="font-black text-lg mb-3" style={{ color: step.color }}>{step.title}</h3>
+              <p className="text-white/40 text-sm leading-relaxed">{step.desc}</p>
+            </motion.div>
           ))}
         </div>
       </section>
 
-      {/* ── 4 PILLARS ── */}
-      <section className="py-24 px-6 relative overflow-hidden">
-        <HexGrid />
-        <div className="max-w-7xl mx-auto relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-            <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: '#F5B041' }}>THE FRAMEWORK</p>
-            <h2 className="font-display font-black text-4xl sm:text-5xl" style={{ color: '#F0F6FF' }}>
-              CREATE · RUN · SELL · GROW
-            </h2>
-            <p className="mt-4 text-lg max-w-xl mx-auto" style={{ color: 'rgba(240,246,255,0.5)' }}>
-              {lang === 'bn' ? 'চারটি ধাপে আপনার সাম্রাজ্য গড়ুন' : 'Four steps to build, operate, monetize and scale any business'}
-            </p>
-          </motion.div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {pillars.map(({ icon: Icon, label, sub, color, to }, i) => (
-              <motion.div key={label} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
-                <Link to={to} className="block rounded-2xl p-6 h-full group transition-all hover:scale-[1.02]"
-                  style={{ background: `${color}08`, border: `1px solid ${color}20` }}>
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                    style={{ background: `${color}15` }}>
-                    <Icon size={22} style={{ color }} />
+      {/* ── PRICING ──────────────────────────────────────────────────────── */}
+      <section id="pricing" className="py-24 bg-[#080808]">
+        <div className="max-w-[1590px] mx-auto px-6">
+          <div className="mb-16">
+            <Reveal><p className="text-[10px] tracking-[0.4em] text-[#F5B041] font-bold mb-4">TRANSPARENT PRICING</p></Reveal>
+            <Reveal delay={0.05}>
+              <h2 className="font-black text-4xl md:text-5xl">NO HIDDEN FEES.<br /><span className="text-white/20">EVER.</span></h2>
+            </Reveal>
+          </div>
+          <div className="grid md:grid-cols-3 gap-px bg-white/5">
+            {[
+              {
+                name: 'STARTER', price: 'Free', per: 'forever', color: '#ffffff',
+                desc: 'Explore the full platform.',
+                features: ['5 AI blueprints / mo', '1 active service', 'Basic analytics', 'Community support', 'Marketplace access'],
+                highlight: false,
+              },
+              {
+                name: 'PRO', price: '$29', per: '/month', color: '#F5B041',
+                desc: 'For serious entrepreneurs.',
+                features: ['Unlimited blueprints', '5 active services', 'Live dashboard', 'Priority support', 'Escrow included', 'AdScale access'],
+                highlight: true,
+              },
+              {
+                name: 'PREMIUM', price: '$79', per: '/month', color: '#7B2FFF',
+                desc: 'For agencies and power users.',
+                features: ['Everything in Pro', 'White-label reports', 'Dedicated manager', 'API access', 'Custom integrations', 'Team seats (5)'],
+                highlight: false,
+              },
+            ].map((plan, i) => (
+              <motion.div
+                key={plan.name}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-[#0D0D0D] p-10 relative"
+                style={plan.highlight ? { borderTop: '3px solid #F5B041' } : {}}
+              >
+                {plan.highlight && (
+                  <div className="absolute -top-3 left-10 text-[10px] font-bold tracking-widest px-3 py-0.5 bg-[#F5B041] text-black">
+                    MOST POPULAR
                   </div>
-                  <p className="font-display font-black text-xl mb-2" style={{ color }}>{label}</p>
-                  <p className="text-sm leading-relaxed" style={{ color: 'rgba(240,246,255,0.55)' }}>{sub}</p>
-                  <div className="mt-4 flex items-center gap-1 text-xs font-semibold" style={{ color }}>
-                    {lang === 'bn' ? 'শুরু করুন' : 'Get started'} <ArrowRight size={12} />
-                  </div>
+                )}
+                <div className="text-[10px] tracking-[0.3em] font-bold mb-4" style={{ color: plan.color }}>{plan.name}</div>
+                <div className="mb-2">
+                  <span className="font-black text-4xl text-white">{plan.price}</span>
+                  <span className="text-white/30 text-sm">{plan.per}</span>
+                </div>
+                <p className="text-white/40 text-xs mb-8">{plan.desc}</p>
+                <ul className="space-y-3 mb-10">
+                  {plan.features.map(f => (
+                    <li key={f} className="flex items-center gap-3 text-sm text-white/60">
+                      <CheckCircle size={13} style={{ color: plan.color, flexShrink: 0 }} />{f}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to="/register"
+                  className="block text-center py-3.5 font-bold text-sm tracking-widest transition-all hover:opacity-90"
+                  style={plan.highlight
+                    ? { background: '#F5B041', color: '#000' }
+                    : { border: `1px solid ${plan.color}40`, color: plan.color }}
+                >
+                  {plan.name === 'STARTER' ? 'Start Free' : plan.name === 'PRO' ? 'Go Pro' : 'Go Premium'} →
                 </Link>
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ── FEATURES ── */}
-      <section className="py-20 px-6" style={{ background: 'rgba(0,0,0,0.3)' }}>
-        <div className="max-w-7xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
-            <h2 className="font-display font-black text-4xl sm:text-5xl">
-              <span style={{ color: '#F0F6FF' }}>{lang === 'bn' ? 'কেন ' : 'Why '}</span>
-              <span style={{ background: 'linear-gradient(90deg, #F8C97A, #F5B041)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Freakin BI?</span>
-            </h2>
-          </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {features.map(({ icon: Icon, color, label, desc }, i) => (
-              <motion.div key={label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.07 }}
-                className="rounded-2xl p-6" style={{ background: '#0C1220', border: '1px solid rgba(245,176,65,0.08)' }}>
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4" style={{ background: `${color}15` }}>
-                  <Icon size={20} style={{ color }} />
-                </div>
-                <h3 className="font-bold text-base mb-2" style={{ color: '#F0F6FF' }}>{label}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: 'rgba(240,246,255,0.5)' }}>{desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── AI MODELS ── */}
-      <section className="py-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
-            <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: '#F5B041' }}>POWERED BY</p>
-            <h2 className="font-display font-black text-4xl" style={{ color: '#F0F6FF' }}>
-              {lang === 'bn' ? '৪০+ AI মডেল — এক প্ল্যাটফর্মে' : '40+ AI Models — One Platform'}
-            </h2>
-          </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {providers.map(({ name, badge, models, color }, i) => (
-              <motion.div key={name} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.07 }}
-                className="rounded-2xl p-5" style={{ background: '#0C1220', border: `1px solid ${color}20` }}>
-                <p className="font-bold text-base mb-1" style={{ color }}>{name}</p>
-                <span className="text-xs px-2 py-0.5 rounded-full mb-3 inline-block" style={{ background: `${color}15`, color }}>{badge}</span>
-                <ul className="space-y-1.5">
-                  {models.map(m => (
-                    <li key={m} className="flex items-center gap-2 text-xs" style={{ color: 'rgba(240,246,255,0.55)' }}>
-                      <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: color }} />
-                      {m}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── PRICING ── */}
-      <section className="py-20 px-6 relative overflow-hidden" style={{ background: 'rgba(0,0,0,0.3)' }}>
-        <HexGrid />
-        <div className="max-w-6xl mx-auto relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
-            <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: '#F5B041' }}>PRICING</p>
-            <h2 className="font-display font-black text-4xl sm:text-5xl" style={{ color: '#F0F6FF' }}>
-              {lang === 'bn' ? 'BDT মূল্য' : 'BDT Pricing'}
-            </h2>
-            <p className="mt-3 text-base" style={{ color: 'rgba(240,246,255,0.5)' }}>
-              {lang === 'bn' ? 'bKash ও Nagad-এ পেমেন্ট — কোনো ক্রেডিট কার্ড লাগবে না' : 'Pay via bKash & Nagad — no credit card needed'}
-            </p>
-          </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {plans.map(({ name, price, period, features: fs, hot }, i) => (
-              <motion.div key={name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.07 }}
-                className="rounded-2xl p-6 relative" style={{
-                  background: hot ? 'linear-gradient(135deg, rgba(245,176,65,0.1), rgba(212,131,10,0.06))' : '#0C1220',
-                  border: `1px solid ${hot ? 'rgba(245,176,65,0.4)' : 'rgba(245,176,65,0.08)'}`,
-                }}>
-                {hot && <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-xs font-bold"
-                  style={{ background: '#F5B041', color: '#000' }}>★ POPULAR</div>}
-                <p className="font-bold text-sm mb-3" style={{ color: hot ? '#F5B041' : 'rgba(240,246,255,0.7)' }}>{name}</p>
-                <div className="flex items-end gap-1 mb-4">
-                  <span className="font-display font-black text-3xl" style={{ color: '#F0F6FF' }}>{price}</span>
-                  <span className="text-sm mb-1" style={{ color: 'rgba(240,246,255,0.4)' }}>{period}</span>
-                </div>
-                <ul className="space-y-2 mb-6">
-                  {fs.map(f => (
-                    <li key={f} className="flex items-start gap-2 text-xs" style={{ color: 'rgba(240,246,255,0.6)' }}>
-                      <CheckCircle size={13} className="shrink-0 mt-0.5" style={{ color: hot ? '#F5B041' : '#00C27A' }} />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link to="/register" className={`block text-center py-2.5 rounded-xl text-sm font-semibold transition-all ${hot ? 'btn-gold' : ''}`}
-                  style={hot ? {} : { border: '1px solid rgba(245,176,65,0.2)', color: 'rgba(240,246,255,0.7)' }}>
-                  {lang === 'bn' ? 'শুরু করুন' : 'Get Started'}
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── FINAL CTA ── */}
-      <section className="py-28 px-6 relative overflow-hidden text-center">
-        <HexGrid />
-        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, rgba(245,176,65,0.07) 0%, transparent 70%)' }} />
-        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative z-10 max-w-3xl mx-auto">
-          <div className="w-20 h-20 rounded-3xl overflow-hidden mx-auto mb-8" style={{ boxShadow: '0 0 60px rgba(245,176,65,0.4)' }}>
-            <img src="/fsi-logo.svg" alt="Freakin BI" className="w-full h-full" />
-          </div>
-          <h2 className="font-display font-black leading-tight mb-4" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', color: '#F0F6FF' }}>
-            {lang === 'bn' ? 'আপনার সাম্রাজ্য শুরু হোক আজ থেকে' : 'Your Empire Starts Today'}
-          </h2>
-          <p className="text-lg mb-10" style={{ color: 'rgba(240,246,255,0.5)' }}>
-            {lang === 'bn' ? 'bhaifreakin.online — বিনামূল্যে শুরু, কোনো ক্রেডিট কার্ড নেই' : 'bhaifreakin.online — Free to start. No credit card required.'}
+          <p className="text-center text-xs text-white/25 mt-6 tracking-wide">
+            30-day money-back guarantee · No contracts · Cancel anytime
           </p>
-          <Link to="/register" className="btn-gold text-lg px-10 py-5 rounded-2xl font-black inline-block"
-            style={{ boxShadow: '0 0 60px rgba(245,176,65,0.4)' }}>
-            🚀 {lang === 'bn' ? 'এখনই শুরু করুন — বিনামূল্যে' : 'Start Building Free Now'}
-          </Link>
-          <p className="mt-6 text-xs" style={{ color: 'rgba(245,176,65,0.4)' }}>
-            {lang === 'bn' ? '🇧🇩 বাংলাদেশে তৈরি · সারা বিশ্বের জন্য · Freakin Studio' : '🇧🇩 Made in Bangladesh · Built for the World · Freakin Studio'}
-          </p>
-        </motion.div>
+        </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="py-8 px-6" style={{ borderTop: '1px solid rgba(245,176,65,0.08)', background: '#040608' }}>
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg overflow-hidden">
-              <img src="/fsi-icon.svg" alt="F-Bi" className="w-full h-full" />
+      {/* ── FINAL CTA ────────────────────────────────────────────────────── */}
+      <section className="py-32 max-w-[1590px] mx-auto px-6">
+        <div className="grid lg:grid-cols-[1fr_auto] gap-16 items-center border-t border-white/8 pt-24">
+          <div>
+            <Reveal>
+              <h2 className="font-black leading-none mb-6" style={{ fontSize: 'clamp(52px, 7vw, 104px)' }}>
+                READY TO<br /><span style={{ color: '#F5B041' }}>BUILD?</span>
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <p className="text-white/40 text-base max-w-[380px]">
+                Join 4,200+ entrepreneurs. Start free. Upgrade when you grow.
+              </p>
+            </Reveal>
+          </div>
+          <div className="flex flex-col gap-4 min-w-[280px]">
+            <Link
+              to="/register"
+              className="inline-flex items-center justify-center gap-3 px-10 py-5 font-black text-sm tracking-widest transition-all hover:gap-5"
+              style={{ background: '#F5B041', color: '#000' }}
+            >CREATE FREE ACCOUNT <ArrowRight size={16} /></Link>
+            <Link
+              to="/growth-check"
+              className="inline-flex items-center justify-center gap-2 px-10 py-5 font-bold text-sm tracking-widest border border-white/10 text-white/50 hover:border-white/30 hover:text-white transition-all"
+            >GET FREE BUSINESS SCORE</Link>
+            <p className="text-center text-[10px] text-white/25 tracking-widest">NO CREDIT CARD REQUIRED</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FOOTER ───────────────────────────────────────────────────────── */}
+      <footer className="border-t border-white/8 bg-[#030303]">
+        <div className="max-w-[1590px] mx-auto px-6 py-16">
+          <div className="grid md:grid-cols-4 gap-12 mb-16">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <img src="/fsi-icon.svg" alt="F-Bi" className="w-6 h-6" />
+                <span className="font-black text-xs tracking-widest" style={{ color: '#F5B041' }}>FREAKIN BI</span>
+              </div>
+              <p className="text-white/30 text-xs leading-relaxed">
+                Freakin Business Intelligence.<br />Made in Bangladesh.<br />Built for the World.
+              </p>
             </div>
-            <span className="font-display font-bold text-sm" style={{ color: '#F5B041' }}>Freakin BI</span>
-            <span className="text-xs" style={{ color: 'rgba(245,176,65,0.35)' }}>by Freakin Studio</span>
+            {[
+              { heading: 'PLATFORM', links: ['AI Blueprint', 'Services', 'Marketplace', 'Escrow', 'Dashboard'] },
+              { heading: 'SERVICES', links: ['AdScale Engine', 'Creative Engine', 'Web Studio', 'SEO & Content', 'Social Management'] },
+              { heading: 'COMPANY',  links: ['Growth Check', 'Pricing', 'Login', 'Register', 'Contact'] },
+            ].map(col => (
+              <div key={col.heading}>
+                <p className="text-[10px] tracking-[0.3em] text-white/30 font-bold mb-4">{col.heading}</p>
+                <ul className="space-y-2.5">
+                  {col.links.map(l => (
+                    <li key={l}>
+                      <a href="#" className="text-xs text-white/40 hover:text-white/80 transition-colors">{l}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
-          <p className="text-xs" style={{ color: 'rgba(240,246,255,0.25)' }}>
-            {`© 2025 Freakin BI — Freakin Business Intelligence`}
-          </p>
-          <div className="flex gap-5 text-xs" style={{ color: 'rgba(240,246,255,0.4)' }}>
-            <Link to="/pricing" className="hover:text-[#F5B041] transition-colors">{lang === 'bn' ? 'মূল্য' : 'Pricing'}</Link>
-            <Link to="/login"   className="hover:text-[#F5B041] transition-colors">{lang === 'bn' ? 'লগইন' : 'Login'}</Link>
-            <Link to="/register" className="hover:text-[#F5B041] transition-colors">{lang === 'bn' ? 'রেজিস্ট্রেশন' : 'Register'}</Link>
+          <div className="border-t border-white/5 pt-8 flex flex-wrap items-center justify-between gap-4 text-[10px] text-white/20 tracking-widest">
+            <span>{`\u00A9 ${new Date().getFullYear()} FREAKIN BI \u2014 FREAKIN BUSINESS INTELLIGENCE`}</span>
+            <span>BHAIFREAKIN.ONLINE</span>
           </div>
         </div>
       </footer>
-
     </div>
   )
 }

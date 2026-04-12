@@ -7,23 +7,32 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Target, Code2, Palette, FileText, TrendingUp, Users,
-  CheckCircle, Send, Briefcase, Clock, Loader2, ArrowLeft,
-  Zap, RefreshCw,
+  CheckCircle, Send, Briefcase, Clock, Loader2,
+  Zap, RefreshCw, Shield, BarChart3, Smartphone, MessageSquare,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
 
+/* Services available for order request (maps to backend enum) */
 const SERVICES = [
-  { id: 'ads',    icon: Target,    label: 'Ads',    desc: 'Facebook, Google, TikTok ads', color: '#E74C3C' },
-  { id: 'dev',    icon: Code2,     label: 'Dev',    desc: 'Website, landing page, store',  color: '#3B82F6' },
-  { id: 'design', icon: Palette,   label: 'Design', desc: 'Brand, UI/UX, graphics',        color: '#8B5CF6' },
-  { id: 'copy',   icon: FileText,  label: 'Copy',   desc: 'Emails, sales copy, content',   color: '#F5B041' },
-  { id: 'seo',    icon: TrendingUp,label: 'SEO',    desc: 'Blog posts, keyword strategy',  color: '#00C27A' },
-  { id: 'social', icon: Users,     label: 'Social', desc: 'Content calendar, management',  color: '#EC4899' },
+  { id: 'ads',    icon: Target,       label: 'AdScale',    desc: 'Facebook & Instagram ads, ROAS tracking',  color: '#EF4444', price: 'From $49/mo' },
+  { id: 'dev',    icon: Code2,        label: 'Web Studio', desc: 'Landing pages, stores, web & mobile apps', color: '#3B82F6', price: 'From $99' },
+  { id: 'design', icon: Palette,      label: 'Creative',   desc: 'Graphics, video, brand kits, social posts', color: '#EC4899', price: 'From $19' },
+  { id: 'copy',   icon: FileText,     label: 'Copy',       desc: 'Sales copy, emails, ad scripts, articles',  color: '#F5B041', price: 'From $29' },
+  { id: 'seo',    icon: TrendingUp,   label: 'SEO',        desc: 'Blog posts, keyword strategy, rankings',    color: '#8B5CF6', price: 'From $29' },
+  { id: 'social', icon: Users,        label: 'Social Mgmt',desc: 'Page management, DMs, community growth',    color: '#F97316', price: 'From $79/mo' },
 ]
 
-const BUDGETS  = ['Under $500', '$500–$1K', '$1K–$2.5K', '$2.5K–$5K', '$5K+']
+/* Showcase-only services (DhandaBuzz merged — link to external or future pages) */
+const SHOWCASE_EXTRAS = [
+  { icon: Shield,       label: 'Secure Escrow',  desc: 'Safe deals, dispute resolution, 2% fee',     color: '#00FF94', href: '/register' },
+  { icon: BarChart3,    label: 'Growth Analytics',desc: 'Live revenue, ROAS, conversion dashboard',   color: '#06B6D4', href: '/dashboard' },
+  { icon: MessageSquare,label: 'AI Chat Agent',   desc: '24/7 inbox, lead qualification, bookings',   color: '#F5B041', href: '/register' },
+  { icon: Smartphone,   label: 'Mobile App',      desc: 'Android & iOS, published to app stores',     color: '#3B82F6', href: '/register' },
+]
+
+const BUDGETS   = ['Under $500', '$500–$1K', '$1K–$2.5K', '$2.5K–$5K', '$5K+']
 const DEADLINES = ['ASAP (Rush)', '3 days', '1 week', '2 weeks', 'Flexible']
 
 export default function ServicesPage() {
@@ -151,6 +160,24 @@ export default function ServicesPage() {
                 </p>
               </div>
 
+              {/* Extra services showcase (DhandaBuzz merged) */}
+              <div className="grid grid-cols-2 gap-2">
+                {SHOWCASE_EXTRAS.map(s => (
+                  <a key={s.label} href={s.href}
+                    className="flex items-start gap-3 p-3 rounded-xl transition-all"
+                    style={{ background: 'var(--fsi-surface)', border: '1px solid var(--fsi-border)' }}>
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                      style={{ background: s.color + '18' }}>
+                      <s.icon size={15} style={{ color: s.color }} />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold leading-tight" style={{ color: s.color }}>{s.label}</p>
+                      <p className="text-[11px] leading-snug mt-0.5" style={{ color: 'var(--fsi-text-muted)' }}>{s.desc}</p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+
               {/* Service type selector */}
               <div className="space-y-2">
                 <label className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--fsi-text-muted)' }}>
@@ -172,6 +199,7 @@ export default function ServicesPage() {
                       <div>
                         <p className="text-sm font-bold" style={{ color: serviceType === s.id ? s.color : 'var(--fsi-text)' }}>{s.label}</p>
                         <p className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>{s.desc}</p>
+                        <p className="text-[11px] font-bold mt-0.5" style={{ color: serviceType === s.id ? s.color : 'rgba(255,255,255,0.3)' }}>{s.price}</p>
                       </div>
                     </motion.button>
                   ))}
