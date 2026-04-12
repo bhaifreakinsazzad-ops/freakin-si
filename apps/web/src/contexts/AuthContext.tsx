@@ -30,12 +30,28 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null)
 
+// ── DEV mock user — auto-populated in development so every page is browsable ──
+const DEV_USER: User = {
+  id: 'dev-preview-user',
+  email: 'dev@bhaifreakin.online',
+  name: 'Dev Preview',
+  subscription: 'premium',
+  daily_usage: 3,
+  daily_limit: 999,
+  image_daily_usage: 0,
+  image_daily_limit: 999,
+  is_admin: true,
+  trial_ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [token, setToken] = useState<string | null>(localStorage.getItem('ai_shala_token'))
-  const [loading, setLoading] = useState(true)
+  const isDev = import.meta.env.DEV
+  const [user, setUser]   = useState<User | null>(isDev ? DEV_USER : null)
+  const [token, setToken] = useState<string | null>(isDev ? 'dev-token' : localStorage.getItem('ai_shala_token'))
+  const [loading, setLoading] = useState(!isDev) // dev: skip loading spinner
 
   useEffect(() => {
+    if (isDev) return // dev: mock user already set, skip API call
     if (token) {
       authApi.me()
         .then((res) => setUser(res.data.user))

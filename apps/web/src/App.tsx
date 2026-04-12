@@ -18,8 +18,13 @@ import ServicesPage      from '@/pages/ServicesPage'
 import GrowthCheckPage   from '@/pages/GrowthCheckPage'
 import Layout            from '@/components/Layout'
 
+// ── DEV MODE: skip all auth gates so every page is accessible without login ──
+const DEV = import.meta.env.DEV
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
+  // In development, render directly — no login required
+  if (DEV) return <>{children}</>
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--fsi-void)' }}>
       <div className="text-center space-y-4">
@@ -37,6 +42,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 function AdminRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
+  if (DEV) return <>{children}</>
   if (loading) return null
   return user?.is_admin ? <>{children}</> : <Navigate to="/" replace />
 }
@@ -46,9 +52,10 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/"        element={user ? <Navigate to="/chat" replace /> : <LandingPage />} />
-      <Route path="/login"   element={user ? <Navigate to="/chat" replace /> : <LoginPage />} />
-      <Route path="/register"element={user ? <Navigate to="/chat" replace /> : <RegisterPage />} />
+      {/* In DEV: landing page always visible, login/register reachable too */}
+      <Route path="/"        element={!DEV && user ? <Navigate to="/chat" replace /> : <LandingPage />} />
+      <Route path="/login"   element={!DEV && user ? <Navigate to="/chat" replace /> : <LoginPage />} />
+      <Route path="/register"element={!DEV && user ? <Navigate to="/chat" replace /> : <RegisterPage />} />
       <Route path="/pricing"      element={<PricingPage />} />
       <Route path="/growth-check" element={<GrowthCheckPage />} />
 
