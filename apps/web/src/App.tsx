@@ -20,8 +20,9 @@ import PartnersPage      from '@/pages/PartnersPage'
 import HubPage           from '@/pages/HubPage'
 import Layout            from '@/components/Layout'
 
-// ── DEV MODE: skip all auth gates so every page is accessible without login ──
-const DEV = import.meta.env.DEV
+// ── PUBLIC ACCESS: skip all auth gates until explicitly re-enabled ──
+// Set VITE_PUBLIC_ACCESS=false in .env.production to re-enable auth
+const DEV = import.meta.env.DEV || import.meta.env.VITE_PUBLIC_ACCESS === 'true'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
