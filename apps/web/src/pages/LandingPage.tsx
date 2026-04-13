@@ -97,11 +97,11 @@ function HeroMockup() {
   return (
     <div style={{
       background: 'rgba(15,15,15,0.85)',
-      border: '1px solid rgba(67,97,238,0.3)',
+      border: '1px solid rgba(245,176,65,0.22)',
       borderRadius: 16,
       padding: '24px 20px',
       backdropFilter: 'blur(20px)',
-      boxShadow: '0 0 60px rgba(67,97,238,0.15), 0 24px 80px rgba(0,0,0,0.6)',
+      boxShadow: '0 0 60px rgba(245,176,65,0.10), 0 24px 80px rgba(0,0,0,0.6)',
       minWidth: 260,
     }}>
       <div style={{ fontSize: 11, color: '#F5B041', fontWeight: 700, letterSpacing: '0.1em', marginBottom: 16, textTransform: 'uppercase' }}>
@@ -117,8 +117,8 @@ function HeroMockup() {
               gap: 10,
               padding: '8px 12px',
               borderRadius: 8,
-              background: i === 2 ? 'rgba(67,97,238,0.25)' : 'rgba(255,255,255,0.03)',
-              border: i === 2 ? '1px solid rgba(67,97,238,0.5)' : '1px solid transparent',
+              background: i === 2 ? 'rgba(245,176,65,0.15)' : 'rgba(255,255,255,0.03)',
+              border: i === 2 ? '1px solid rgba(245,176,65,0.45)' : '1px solid transparent',
               transition: 'all 0.2s',
             }}
           >
@@ -160,7 +160,7 @@ function HeroMockup() {
           </div>
         ))}
       </div>
-      <div style={{ marginTop: 16, padding: '10px 12px', background: 'rgba(67,97,238,0.1)', borderRadius: 8, border: '1px solid rgba(67,97,238,0.2)' }}>
+      <div style={{ marginTop: 16, padding: '10px 12px', background: 'rgba(245,176,65,0.08)', borderRadius: 8, border: '1px solid rgba(245,176,65,0.12)' }}>
         <div style={{ fontSize: 11, color: '#888', marginBottom: 4 }}>AI is analyzing your idea…</div>
         <div style={{ height: 4, background: 'rgba(255,255,255,0.08)', borderRadius: 2 }}>
           <div style={{ width: '35%', height: '100%', background: 'linear-gradient(90deg, #F5B041, #E67E22)', borderRadius: 2 }} />
@@ -176,7 +176,7 @@ function Hero() {
       {/* Ambient blobs */}
       <div style={{
         position: 'absolute', top: -200, left: -200, width: 700, height: 700,
-        background: 'radial-gradient(circle, rgba(67,97,238,0.18) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(245,176,65,0.12) 0%, transparent 70%)',
         borderRadius: '50%', pointerEvents: 'none',
       }} />
       <div style={{
@@ -187,7 +187,7 @@ function Hero() {
       {/* Diagonal accent line */}
       <div style={{
         position: 'absolute', top: 0, right: '30%', width: 1, height: '100%',
-        background: 'linear-gradient(to bottom, transparent, rgba(67,97,238,0.2), transparent)',
+        background: 'linear-gradient(to bottom, transparent, rgba(245,176,65,0.12), transparent)',
         transform: 'skewX(-15deg)',
         pointerEvents: 'none',
       }} />
@@ -197,7 +197,7 @@ function Hero() {
         <div>
           {/* Pill badge */}
           <Reveal delay={0}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 16px', borderRadius: 100, background: 'rgba(67,97,238,0.12)', border: '1px solid rgba(67,97,238,0.35)', marginBottom: 32 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 16px', borderRadius: 100, background: 'rgba(245,176,65,0.08)', border: '1px solid rgba(245,176,65,0.35)', marginBottom: 32 }}>
               <Sparkles size={13} color="#F5B041" />
               <span style={{ fontSize: 13, fontWeight: 600, color: '#F5B041', letterSpacing: '0.03em' }}>
                 AI Business Builder · Free to Start
@@ -239,9 +239,9 @@ function Hero() {
                 padding: '16px 32px', borderRadius: 8, fontSize: 16, fontWeight: 700,
                 background: '#F5B041', color: '#fff', textDecoration: 'none',
                 transition: 'all 0.2s', letterSpacing: '0.01em',
-                boxShadow: '0 0 40px rgba(67,97,238,0.4)',
+                boxShadow: '0 0 40px rgba(245,176,65,0.30)',
               }}
-                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#3451d1'; (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(-2px)' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#D4830A'; (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(-2px)' }}
                 onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#F5B041'; (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(0)' }}
               >
                 Build My Business <ArrowRight size={18} />
@@ -363,7 +363,7 @@ function JourneySection() {
             }}
               onMouseEnter={e => {
                 const el = e.currentTarget as HTMLDivElement
-                el.style.borderColor = 'rgba(67,97,238,0.4)'
+                el.style.borderColor = 'rgba(245,176,65,0.30)'
                 el.style.transform = 'translateY(-4px)'
               }}
               onMouseLeave={e => {
@@ -377,7 +377,7 @@ function JourneySection() {
               </div>
               <div style={{
                 width: 40, height: 40, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                background: 'rgba(67,97,238,0.12)', color: '#F5B041', marginBottom: 14,
+                background: 'rgba(245,176,65,0.08)', color: '#F5B041', marginBottom: 14,
               }}>
                 {s.icon}
               </div>
@@ -387,7 +387,7 @@ function JourneySection() {
               {i < JOURNEY_STEPS.length - 1 && (
                 <div style={{
                   position: 'absolute', right: -11, top: '50%', transform: 'translateY(-50%)',
-                  width: 22, height: 2, background: 'rgba(67,97,238,0.25)', zIndex: 1,
+                  width: 22, height: 2, background: 'rgba(245,176,65,0.15)', zIndex: 1,
                 }} />
               )}
             </div>
@@ -400,11 +400,11 @@ function JourneySection() {
           <Link to="/builder" style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
             padding: '14px 28px', borderRadius: 8, fontSize: 15, fontWeight: 700,
-            background: 'rgba(67,97,238,0.1)', color: '#F5B041', textDecoration: 'none',
-            border: '1px solid rgba(67,97,238,0.3)', transition: 'all 0.2s',
+            background: 'rgba(245,176,65,0.08)', color: '#F5B041', textDecoration: 'none',
+            border: '1px solid rgba(245,176,65,0.22)', transition: 'all 0.2s',
           }}
             onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#F5B041'; (e.currentTarget as HTMLAnchorElement).style.color = '#fff' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(67,97,238,0.1)'; (e.currentTarget as HTMLAnchorElement).style.color = '#F5B041' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(245,176,65,0.08)'; (e.currentTarget as HTMLAnchorElement).style.color = '#F5B041' }}
           >
             Start Your 10-Step Journey <ArrowRight size={16} />
           </Link>
@@ -435,7 +435,7 @@ const PARTNERS = [
     tagline: 'Funding · Capital · Credit',
     desc: 'Access startup capital, business credit coaching, and funding introductions to accelerate your launch.',
     bg: 'rgba(20,40,100,0.4)',
-    border: 'rgba(67,97,238,0.3)',
+    border: 'rgba(245,176,65,0.22)',
     color: '#F5B041',
     badge: 'Integrated in Step 9',
   },
@@ -620,7 +620,7 @@ function GrowthCheckCTA() {
       }} />
       <div style={{
         position: 'absolute', top: -100, right: -200, width: 500, height: 500,
-        background: 'radial-gradient(circle, rgba(67,97,238,0.12) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(245,176,65,0.08) 0%, transparent 70%)',
         borderRadius: '50%', pointerEvents: 'none',
       }} />
 
@@ -854,10 +854,7 @@ function Footer() {
           <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.25)' }}>© 2025 BayParee. Built with AI.</div>
           <div style={{ display: 'flex', gap: 24 }}>
             {['Privacy Policy', 'Terms of Service'].map(t => (
-              <a key={t} href="#" style={{ fontSize: 13, color: 'rgba(255,255,255,0.25)', textDecoration: 'none', transition: 'color 0.2s' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,255,255,0.55)' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,255,255,0.25)' }}
-              >{t}</a>
+              <span key={t} style={{ fontSize: 13, color: 'rgba(255,255,255,0.25)' }}>{t}</span>
             ))}
           </div>
         </div>
@@ -910,7 +907,7 @@ function Nav() {
             background: '#F5B041', padding: '8px 20px', borderRadius: 6,
             transition: 'background 0.2s',
           }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#3451d1' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#D4830A' }}
             onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#F5B041' }}
           >
             Start Building
