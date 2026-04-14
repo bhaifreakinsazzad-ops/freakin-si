@@ -11,16 +11,16 @@ import { cn, getSubscriptionBadge } from '@/lib/utils'
 
 export default function Layout() {
   const { user, logout } = useAuth()
-  const { t, lang, toggle } = useLang()
+  const { t, lang } = useLang()
   const navigate = useNavigate()
   const [collapsed,   setCollapsed]   = useState(false)
   const [mobileOpen, setMobileOpen]  = useState(false)
 
   const navItems = [
-    { to: '/chat',          icon: MessageSquare,   label: t.sidebarChat },
-    { to: '/image',         icon: Image,           label: t.sidebarImage },
-    { to: '/tools',         icon: Wrench,          label: t.sidebarTools },
-    { to: '/builder',      icon: TrendingUp,      label: 'AI Builder',    highlight: true },
+    { to: '/chat',         icon: MessageSquare,   label: t.sidebarChat },
+    { to: '/image',        icon: Image,           label: t.sidebarImage },
+    { to: '/tools',        icon: Wrench,          label: t.sidebarTools },
+    { to: '/builder',      icon: TrendingUp,      label: 'AI Builder',   highlight: true },
     { to: '/hub',          icon: Globe2,          label: 'Business Hub' },
     { to: '/marketplace',  icon: Store,           label: 'Marketplace' },
     { to: '/services',     icon: Briefcase,       label: 'Services' },
@@ -38,10 +38,14 @@ export default function Layout() {
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className={cn('p-4 border-b flex items-center gap-3', collapsed && 'justify-center')}
-        style={{ borderColor: 'var(--fsi-border)' }}>
-        <div className="w-9 h-9 rounded-xl overflow-hidden shrink-0 flex items-center justify-center"
-          style={{ boxShadow: '0 0 16px rgba(245,176,65,0.35)' }}>
+      <div
+        className={cn('p-4 border-b flex items-center gap-3', collapsed && 'justify-center')}
+        style={{ borderColor: 'var(--fsi-border)' }}
+      >
+        <div
+          className="w-9 h-9 rounded-xl overflow-hidden shrink-0 flex items-center justify-center"
+          style={{ boxShadow: '0 0 16px rgba(245,176,65,0.30)' }}
+        >
           <img src="/fsi-icon.svg" alt="BayParee" className="w-9 h-9" />
         </div>
         {!collapsed && (
@@ -49,13 +53,23 @@ export default function Layout() {
             <h1 className="font-display font-bold text-base leading-none" style={{ color: 'var(--fsi-text)' }}>
               <span style={{ color: 'var(--fsi-gold)' }}>BayParee</span>
             </h1>
-            <p className="text-xs mt-0.5" style={{ color: 'var(--fsi-text-muted)' }}>AI Business Builder</p>
+            <p
+              className="mt-0.5"
+              style={{
+                color: 'rgba(255,255,255,0.35)',
+                fontSize: '10px',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+              }}
+            >
+              AI Business Builder
+            </p>
           </div>
         )}
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+      <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
         {navItems.map(({ to, icon: Icon, label, highlight }) => (
           <NavLink
             key={to}
@@ -68,11 +82,41 @@ export default function Layout() {
                 ? 'fsi-card-active text-[var(--fsi-gold)]'
                 : highlight
                   ? 'text-[var(--fsi-gold)] bg-[rgba(245,176,65,0.07)] hover:bg-[rgba(245,176,65,0.13)] border border-[rgba(245,176,65,0.20)]'
-                  : 'text-[var(--fsi-text-muted)] hover:text-[var(--fsi-text)] hover:bg-[var(--fsi-surface-2)]'
+                  : 'hover:bg-[rgba(255,255,255,0.04)]'
             )}
+            style={({ isActive }) => ({
+              color: isActive
+                ? 'var(--fsi-gold)'
+                : highlight
+                  ? 'var(--fsi-gold)'
+                  : undefined,
+            })}
           >
-            <Icon size={17} className="shrink-0" />
-            {!collapsed && <span className="text-sm font-medium">{label}</span>}
+            {({ isActive }) => (
+              <>
+                <Icon
+                  size={17}
+                  className="shrink-0"
+                  style={{
+                    color: isActive || highlight
+                      ? 'var(--fsi-gold)'
+                      : 'rgba(255,255,255,0.55)',
+                  }}
+                />
+                {!collapsed && (
+                  <span
+                    className="text-sm font-medium"
+                    style={{
+                      color: isActive || highlight
+                        ? 'var(--fsi-gold)'
+                        : 'rgba(255,255,255,0.55)',
+                    }}
+                  >
+                    {label}
+                  </span>
+                )}
+              </>
+            )}
           </NavLink>
         ))}
 
@@ -96,29 +140,38 @@ export default function Layout() {
 
       {/* User info + controls */}
       <div className="p-3 space-y-1" style={{ borderTop: '1px solid var(--fsi-border)' }}>
-        {/* Language toggle — cycles EN → BN */}
-        <button
-          onClick={toggle}
-          className={cn(
-            'flex items-center gap-2 w-full px-3 py-2 rounded-xl text-sm transition-all',
-            collapsed ? 'justify-center' : '',
-            'text-[var(--fsi-text-muted)] hover:text-[var(--fsi-text)] hover:bg-[var(--fsi-surface-2)]'
-          )}
-        >
-          <span className="text-base">{lang === 'bn' ? '🇬🇧' : '🇧🇩'}</span>
-          {!collapsed && <span>{lang === 'bn' ? 'English' : 'বাংলা'}</span>}
-        </button>
-
+        {/* User card */}
         {!collapsed && (
-          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl" style={{ background: 'var(--fsi-surface-2)' }}>
+          <div
+            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all duration-200 cursor-default"
+            style={{
+              background: 'var(--fsi-surface-2)',
+              border: '1px solid transparent',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.08)'
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLDivElement).style.borderColor = 'transparent'
+            }}
+          >
             <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center text-sm font-bold shrink-0"
-              style={{ background: 'rgba(255,182,40,0.18)', color: 'var(--fsi-gold)' }}
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-sm shrink-0"
+              style={{
+                background: 'rgba(245,176,65,0.15)',
+                color: 'var(--fsi-gold)',
+                fontWeight: 700,
+              }}
             >
               {user?.name?.[0]?.toUpperCase() || 'U'}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate" style={{ color: 'var(--fsi-text)' }}>{user?.name}</p>
+              <p
+                className="truncate"
+                style={{ fontSize: '14px', fontWeight: 600, color: 'rgba(255,255,255,0.9)' }}
+              >
+                {user?.name}
+              </p>
               <span className={cn('text-xs px-1.5 py-0.5 rounded-md font-mono', getSubscriptionBadge(user?.subscription || 'free'))}>
                 {subLabel}
               </span>
@@ -126,6 +179,7 @@ export default function Layout() {
           </div>
         )}
 
+        {/* Logout */}
         <button
           onClick={handleLogout}
           className={cn(
@@ -149,10 +203,26 @@ export default function Layout() {
         style={{ borderRight: '1px solid var(--fsi-border)' }}
       >
         <SidebarContent />
+        {/* Collapse button */}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="absolute -right-3 top-20 w-6 h-6 rounded-full flex items-center justify-center transition-all z-20"
-          style={{ background: 'var(--fsi-surface-2)', border: '1px solid var(--fsi-border)', color: 'var(--fsi-gold)' }}
+          className="absolute -right-3 top-20 w-6 h-6 flex items-center justify-center transition-all duration-200 z-20"
+          style={{
+            background: 'var(--fsi-surface-2)',
+            border: '1px solid var(--fsi-border)',
+            borderRadius: '12px',
+            color: 'rgba(255,255,255,0.55)',
+          }}
+          onMouseEnter={e => {
+            const el = e.currentTarget as HTMLButtonElement
+            el.style.background = 'rgba(255,255,255,0.04)'
+            el.style.color = 'var(--fsi-gold)'
+          }}
+          onMouseLeave={e => {
+            const el = e.currentTarget as HTMLButtonElement
+            el.style.background = 'var(--fsi-surface-2)'
+            el.style.color = 'rgba(255,255,255,0.55)'
+          }}
         >
           {collapsed ? <ChevronRight size={11} /> : <ChevronLeft size={11} />}
         </button>
@@ -175,10 +245,11 @@ export default function Layout() {
           <button onClick={() => setMobileOpen(true)} style={{ color: 'var(--fsi-gold)' }}>
             <Menu size={22} />
           </button>
-          <span className="font-display font-bold text-sm" style={{ color: 'var(--fsi-text)' }}><span style={{ color: 'var(--fsi-gold)' }}>BayParee</span></span>
-          <button onClick={toggle} className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>
-            {lang === 'bn' ? '🇬🇧 EN' : '🇧🇩 বাং'}
-          </button>
+          <span className="font-display font-bold text-sm" style={{ color: 'var(--fsi-text)' }}>
+            <span style={{ color: 'var(--fsi-gold)' }}>BayParee</span>
+          </span>
+          {/* empty placeholder to keep title centered */}
+          <div className="w-6" />
         </div>
 
         <div className="flex-1 overflow-hidden">

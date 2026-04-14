@@ -2,64 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── BhaiFreakin'sBI — Design Tokens ────────────────────── */
+/* ── BayParee — Design Tokens ────────────────────── */
 
 @layer base {
   :root {
-    /* Brand Colors — Gold Premium */
-    --fsi-gold:        #F5B041;
-    --fsi-gold-glow:   #F8C97A;
-    --fsi-gold-muted:  rgba(245,176,65,0.35);
-    --fsi-gold-subtle: rgba(245,176,65,0.08);
-    --fsi-amber:       #E67E22;
-    --fsi-amber-glow:  rgba(230,126,34,0.30);
-    --fsi-teal:        #1A8A7A;
-    --fsi-green:       #00C27A;
-    --fsi-green-dark:  #007A4D;
-    --fsi-red:         #E74C3C;
-    --fsi-blue:        #3B82F6;
+    /* Brand */
+    --fsi-gold:           #F5B041;
+    --fsi-gold-bright:    #F8C97A;
+    --fsi-gold-dim:       rgba(245,176,65,0.12);
+    --fsi-gold-muted:     rgba(245,176,65,0.30);
+    --fsi-gold-subtle:    rgba(245,176,65,0.06);
+    --fsi-amber:          #E67E22;
 
-    /* Radix compat aliases */
-    --fsi-violet:      #D4900A;
-    --fsi-violet-glow: #F8C97A;
+    /* Status */
+    --fsi-green:          #22C55E;
+    --fsi-red:            #EF4444;
+    --fsi-blue:           #6366F1;
+    --fsi-teal:           #14B8A6;
 
-    /* Backgrounds */
-    --fsi-void:      #080808;
-    --fsi-surface:   #111111;
-    --fsi-surface-2: #191919;
-    --fsi-surface-3: #222222;
+    /* Backgrounds — near-black with cool undertone */
+    --fsi-void:           #050508;
+    --fsi-surface:        #0C0C0F;
+    --fsi-surface-2:      #131318;
+    --fsi-surface-3:      #1A1A20;
+    --fsi-surface-4:      #222228;
 
-    /* Borders */
-    --fsi-border:        rgba(245,176,65,0.10);
-    --fsi-border-hover:  rgba(245,176,65,0.30);
-    --fsi-border-active: rgba(245,176,65,0.55);
+    /* Borders — WHITE-based for premium neutral feel */
+    --fsi-border:         rgba(255,255,255,0.06);
+    --fsi-border-hover:   rgba(255,255,255,0.12);
+    --fsi-border-active:  rgba(255,255,255,0.20);
+    --fsi-border-gold:    rgba(245,176,65,0.25);
 
-    /* Text */
-    --fsi-text:       #F4F6FA;
-    --fsi-text-muted: #A7ACB8;
-    --fsi-text-dim:   #5a5f6e;
+    /* Text — white-based */
+    --fsi-text:           rgba(255,255,255,0.95);
+    --fsi-text-muted:     rgba(255,255,255,0.55);
+    --fsi-text-dim:       rgba(255,255,255,0.25);
 
-    /* Radix UI token mapping */
+    /* Radix UI compat (keep exact same) */
     --background:             0 0% 3%;
-    --foreground:             40 20% 96%;
-    --card:                   0 0% 7%;
-    --card-foreground:        40 20% 96%;
-    --popover:                0 0% 7%;
-    --popover-foreground:     40 20% 96%;
+    --foreground:             0 0% 95%;
+    --card:                   240 6% 5%;
+    --card-foreground:        0 0% 95%;
+    --popover:                240 6% 5%;
+    --popover-foreground:     0 0% 95%;
     --primary:                37 90% 61%;
     --primary-foreground:     0 0% 0%;
-    --secondary:              0 0% 10%;
-    --secondary-foreground:   40 20% 96%;
-    --muted:                  0 0% 12%;
-    --muted-foreground:       220 9% 55%;
-    --accent:                 32 80% 50%;
-    --accent-foreground:      40 20% 96%;
+    --secondary:              240 4% 8%;
+    --secondary-foreground:   0 0% 95%;
+    --muted:                  240 4% 10%;
+    --muted-foreground:       240 5% 55%;
+    --accent:                 37 80% 50%;
+    --accent-foreground:      0 0% 95%;
     --destructive:            0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border:                 37 90% 61% / 0.12;
-    --input:                  0 0% 10%;
+    --border:                 240 6% 12%;
+    --input:                  240 4% 8%;
     --ring:                   37 90% 61%;
-    --radius:                 0.625rem;
+    --radius:                 0.75rem;
   }
 }
 
@@ -78,14 +77,17 @@
   body {
     background-color: var(--fsi-void);
     color: var(--fsi-text);
-    font-family: 'Inter', 'Hind Siliguri', sans-serif;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
 
-  h1, h2, h3 {
-    font-family: 'Space Grotesk', 'Inter', sans-serif;
+  h1, h2, h3, h4 {
+    font-family: 'Sora', 'Space Grotesk', 'Inter', sans-serif;
+    letter-spacing: -0.02em;
   }
 
   code, pre, .font-mono {
@@ -161,6 +163,11 @@
 @keyframes shimmer {
   0%   { background-position: -200% 0; }
   100% { background-position: 200% 0; }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
 @keyframes particle-rise {
@@ -318,6 +325,11 @@
   /* Keep legacy alias */
   .gradient-text-gold { @apply gradient-text; }
 
+  /* ── Font display ── */
+  .font-display {
+    font-family: 'Sora', 'Space Grotesk', 'Inter', sans-serif;
+  }
+
   /* ── Buttons ── */
   .btn-gold {
     background: linear-gradient(135deg, #F5B041, #E67E22);
@@ -349,13 +361,111 @@
     transform: translateY(-2px);
     box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 20px rgba(255,182,40,0.08);
   }
+
+  /* Active sidebar item */
   .fsi-card-active {
-    border-left: 3px solid var(--fsi-gold) !important;
-    border-color: var(--fsi-border-active);
-    background: var(--fsi-surface-2);
+    background: rgba(245,176,65,0.08);
+    border: 1px solid rgba(245,176,65,0.18);
   }
 
-  /* ── Shimmer ── */
+  /* ── Premium card — white border, hover gold glow ── */
+  .bp-card {
+    background: var(--fsi-surface);
+    border: 1px solid var(--fsi-border);
+    border-radius: 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .bp-card:hover {
+    border-color: var(--fsi-border-hover);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  }
+
+  /* Gold accent card */
+  .bp-card-gold {
+    background: var(--fsi-surface);
+    border: 1px solid var(--fsi-border-gold);
+    border-radius: 16px;
+    box-shadow: 0 0 40px rgba(245,176,65,0.08);
+  }
+
+  /* Gold filled button */
+  .bp-btn-gold {
+    background: #F5B041;
+    color: #000000;
+    font-weight: 700;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+  }
+  .bp-btn-gold:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+    box-shadow: 0 0 32px rgba(245,176,65,0.35);
+  }
+
+  /* Ghost button */
+  .bp-btn-ghost {
+    background: transparent;
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .bp-btn-ghost:hover {
+    border-color: rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.04);
+  }
+
+  /* Section label (small caps, gold, letter-spaced) */
+  .bp-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fsi-gold);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  /* Premium input */
+  .bp-input {
+    background: var(--fsi-surface-2);
+    border: 1px solid var(--fsi-border);
+    border-radius: 10px;
+    color: var(--fsi-text);
+    padding: 12px 16px;
+    font-size: 15px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .bp-input:focus {
+    border-color: var(--fsi-border-gold);
+    box-shadow: 0 0 0 3px rgba(245,176,65,0.08);
+  }
+  .bp-input::placeholder {
+    color: var(--fsi-text-dim);
+  }
+
+  /* Gradient text */
+  .bp-gradient-text {
+    background: linear-gradient(135deg, #F5B041 0%, #F8C97A 50%, #E67E22 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Shimmer animation */
+  .bp-shimmer {
+    background: linear-gradient(90deg, transparent 0%, rgba(245,176,65,0.15) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* ── Shimmer card ── */
   .shimmer-card {
     position: relative;
     overflow: hidden;

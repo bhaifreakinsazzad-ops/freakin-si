@@ -219,7 +219,7 @@ export default function BusinessBuilderPage() {
   return (
     <div className="h-full overflow-y-auto" style={{ background: 'var(--fsi-void)' }}>
       {/* ── Header ─────────────────────────────────────────────────────── */}
-      <div className="sticky top-0 z-10 px-4 py-3 border-b" style={{ background: 'rgba(8,8,8,0.92)', backdropFilter: 'blur(20px)', borderColor: 'var(--fsi-border)' }}>
+      <div className="sticky top-0 z-10 px-4 py-3 border-b" style={{ background: 'rgba(5,5,8,0.95)', backdropFilter: 'blur(20px)', borderColor: 'var(--fsi-border)' }}>
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #F5B041, #E67E22)' }}>
@@ -251,7 +251,7 @@ export default function BusinessBuilderPage() {
           {step === 1 && (
             <motion.div key="s1" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} className="space-y-6 pt-4">
               <div className="text-center space-y-2">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs" style={{ background: 'rgba(67,97,238,0.12)', color: '#F5B041', border: '1px solid rgba(67,97,238,0.25)' }}>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs" style={{ background: 'rgba(245,176,65,0.08)', color: '#F5B041', border: '1px solid rgba(245,176,65,0.20)' }}>
                   <Sparkles size={11} /> AI Business Builder
                 </div>
                 <h2 className="font-black text-2xl sm:text-3xl" style={{ color: 'var(--fsi-text)' }}>What do you want to build?</h2>
@@ -266,7 +266,7 @@ export default function BusinessBuilderPage() {
                 placeholder="e.g. A subscription box for busy moms who want healthy snacks delivered monthly..."
                 rows={5}
                 className="w-full rounded-xl px-4 py-3 text-sm resize-none outline-none transition-all"
-                style={{ background: 'var(--fsi-surface)', border: `1px solid ${idea.length > 10 ? 'rgba(67,97,238,0.5)' : 'var(--fsi-border)'}`, color: 'var(--fsi-text)' }}
+                style={{ background: 'var(--fsi-surface)', border: `1px solid ${idea.length > 10 ? 'rgba(245,176,65,0.40)' : 'var(--fsi-border)'}`, color: 'var(--fsi-text)' }}
                 maxLength={500}
               />
               <div className="text-right text-xs" style={{ color: 'var(--fsi-text-muted)' }}>{idea.length}/500</div>
@@ -278,7 +278,7 @@ export default function BusinessBuilderPage() {
                     {NICHES.map(n => (
                       <button key={n} onClick={() => setNiche(n === niche ? '' : n)}
                         className="px-3 py-1.5 rounded-lg text-xs transition-all"
-                        style={{ background: niche === n ? 'rgba(67,97,238,0.15)' : 'var(--fsi-surface)', color: niche === n ? '#F5B041' : 'var(--fsi-text-muted)', border: `1px solid ${niche === n ? 'rgba(67,97,238,0.4)' : 'var(--fsi-border)'}` }}>
+                        style={{ background: niche === n ? 'rgba(245,176,65,0.10)' : 'var(--fsi-surface)', color: niche === n ? '#F5B041' : 'var(--fsi-text-muted)', border: `1px solid ${niche === n ? 'rgba(245,176,65,0.35)' : 'var(--fsi-border)'}` }}>
                         {n}
                       </button>
                     ))}
@@ -313,7 +313,7 @@ export default function BusinessBuilderPage() {
                 onClick={generate}
                 disabled={generating || idea.trim().length < 10}
                 className="w-full py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-3 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-                style={{ background: 'linear-gradient(135deg, #F5B041, #E67E22)', color: '#fff', boxShadow: idea.length > 10 ? '0 0 30px rgba(67,97,238,0.35)' : 'none' }}
+                style={{ background: 'linear-gradient(135deg, #F5B041, #E67E22)', color: '#fff', boxShadow: idea.length > 10 ? '0 0 30px rgba(245,176,65,0.30)' : 'none' }}
               >
                 {generating
                   ? <><Loader2 size={18} className="animate-spin" />{GEN_MESSAGES[genMsg]}</>
@@ -325,7 +325,7 @@ export default function BusinessBuilderPage() {
           {/* ── STEP 2: OVERVIEW ──────────────────────────────────────── */}
           {step === 2 && bp && (
             <motion.div key="s2" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} className="space-y-4 pt-4">
-              <div className="rounded-2xl p-6 text-center" style={{ background: 'linear-gradient(135deg, rgba(67,97,238,0.12), rgba(123,47,255,0.08))', border: '1px solid rgba(67,97,238,0.25)' }}>
+              <div className="rounded-2xl p-6 text-center" style={{ background: 'linear-gradient(135deg, rgba(245,176,65,0.08), rgba(245,176,65,0.04))', border: '1px solid rgba(245,176,65,0.20)' }}>
                 <div className="text-3xl font-black mb-1" style={{ color: 'var(--fsi-text)' }}>{bp.businessName}</div>
                 <div className="text-sm mb-4" style={{ color: 'var(--fsi-text-muted)' }}>{bp.tagline}</div>
                 <div className="grid grid-cols-3 gap-3 text-center">
@@ -597,7 +597,7 @@ export default function BusinessBuilderPage() {
                 <div className="p-1" style={{ background: 'linear-gradient(90deg, #F5B041, #E67E22)' }} />
                 <div className="p-5" style={{ background: 'var(--fsi-surface)' }}>
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(67,97,238,0.15)' }}>
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(245,176,65,0.10)' }}>
                       <FileText size={18} style={{ color: '#F5B041' }} />
                     </div>
                     <div className="flex-1">
@@ -658,7 +658,7 @@ export default function BusinessBuilderPage() {
               <div className="text-center">
                 <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', delay: 0.1 }}
                   className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3"
-                  style={{ background: 'linear-gradient(135deg, rgba(67,97,238,0.2), rgba(123,47,255,0.2))', border: '2px solid rgba(67,97,238,0.4)' }}>
+                  style={{ background: 'linear-gradient(135deg, rgba(67,97,238,0.2), rgba(123,47,255,0.2))', border: '2px solid rgba(245,176,65,0.35)' }}>
                   <Rocket size={28} style={{ color: '#F5B041' }} />
                 </motion.div>
                 <h2 className="font-black text-2xl mb-1" style={{ color: 'var(--fsi-text)' }}>
@@ -671,7 +671,7 @@ export default function BusinessBuilderPage() {
                 <div className="space-y-2">
                   {bp.nextSteps.map((s, i) => (
                     <div key={i} className="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all hover:bg-white/4" style={{ borderBottom: '1px solid var(--fsi-border)' }}>
-                      <div className="w-5 h-5 rounded flex items-center justify-center shrink-0 text-[10px] font-black" style={{ background: 'rgba(67,97,238,0.15)', color: '#F5B041' }}>{i+1}</div>
+                      <div className="w-5 h-5 rounded flex items-center justify-center shrink-0 text-[10px] font-black" style={{ background: 'rgba(245,176,65,0.10)', color: '#F5B041' }}>{i+1}</div>
                       <p className="text-sm flex-1" style={{ color: 'var(--fsi-text)' }}>{s}</p>
                       <ChevronRight size={13} style={{ color: 'var(--fsi-text-muted)' }} />
                     </div>
