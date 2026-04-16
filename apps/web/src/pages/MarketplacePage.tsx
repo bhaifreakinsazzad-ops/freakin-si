@@ -3,7 +3,7 @@
  * 4-tab marketplace: Ready-Made Businesses, Websites & Apps, Tools & Assets, Custom AI Agents
  */
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import {
@@ -376,7 +376,7 @@ function BusinessesTab() {
   const [category, setCategory] = useState('all')
   const [selected, setSelected] = useState<Listing | null>(null)
 
-  const fetchListings = async () => {
+  const fetchListings = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams()
@@ -391,13 +391,13 @@ function BusinessesTab() {
       setListings([])
     }
     setLoading(false)
-  }
+  }, [category, search, token])
 
-  useEffect(() => { fetchListings() }, [category])
+  useEffect(() => { fetchListings() }, [category, fetchListings])
   useEffect(() => {
     const t = setTimeout(fetchListings, 400)
     return () => clearTimeout(t)
-  }, [search])
+  }, [search, fetchListings])
 
   return (
     <div className="space-y-6">

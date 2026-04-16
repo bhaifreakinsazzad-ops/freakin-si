@@ -656,6 +656,59 @@ export default function LandingPage() {
       </section>
 
       {/* ════════════════════════════════════════════════════════════
+          SECTION 4.5 — BUSINESS HUB PROMO STRIP
+      ════════════════════════════════════════════════════════════ */}
+      <section style={{ paddingBottom: 80 }}>
+        <div className="bp-container">
+          <FadeUp>
+            <Link to="/hub" style={{ textDecoration: 'none', display: 'block' }}>
+              <div style={{
+                background: 'linear-gradient(135deg, rgba(245,176,65,0.08) 0%, rgba(230,126,34,0.04) 100%)',
+                border: '1px solid rgba(245,176,65,0.22)',
+                borderRadius: 20, padding: '36px 40px',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24,
+                cursor: 'pointer', transition: 'border-color 0.2s',
+                flexWrap: 'wrap',
+              }}
+              onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(245,176,65,0.5)'}
+              onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(245,176,65,0.22)'}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 20, flex: 1, minWidth: 240 }}>
+                  <div style={{
+                    width: 52, height: 52, borderRadius: 14, flexShrink: 0,
+                    background: 'rgba(245,176,65,0.12)', border: '1px solid rgba(245,176,65,0.25)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24,
+                  }}>🏢</div>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', color: '#F5B041' }}>NEW</span>
+                      <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.08em' }}>BUSINESS HUB</span>
+                    </div>
+                    <h3 style={{ fontSize: 18, fontWeight: 700, color: 'rgba(255,255,255,0.92)', margin: 0 }}>
+                      Your entire business ecosystem — one place.
+                    </h3>
+                    <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.45)', margin: '4px 0 0', lineHeight: 1.5 }}>
+                      Hire talent · Check funding eligibility · Learn · AI agents · Mobile AI engine
+                    </p>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+                  {['Hire', 'Fund', 'Learn', 'AI'].map(tag => (
+                    <span key={tag} style={{
+                      fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 6,
+                      background: 'rgba(245,176,65,0.1)', color: '#F5B041',
+                      border: '1px solid rgba(245,176,65,0.2)',
+                    }}>{tag}</span>
+                  ))}
+                  <span style={{ color: '#F5B041', fontSize: 18, marginLeft: 8 }}>→</span>
+                </div>
+              </div>
+            </Link>
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════════════════════════
           SECTION 5 — WHAT YOU GET (BENTO GRID)
       ════════════════════════════════════════════════════════════ */}
       <section id="features" style={{ paddingBottom: 120 }}>

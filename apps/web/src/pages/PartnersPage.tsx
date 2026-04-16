@@ -23,8 +23,8 @@ const partners: Partner[] = [
   {
     id: 'paperworksquad',
     letter: 'P',
-    avatarBg: 'bg-blue-600',
-    avatarColor: 'text-white',
+    avatarBg: 'bg-amber-500',
+    avatarColor: 'text-black',
     name: 'ThePaperWorkSquad',
     tagline: 'Business Formation & Compliance Experts',
     tags: ['LLC Formation', 'Registered Agent', 'Compliance', 'Business Paperwork'],
@@ -40,9 +40,9 @@ const partners: Partner[] = [
     ],
     icon: <Shield size={28} />,
     accentColor: '#F5B041',
-    borderColor: 'border-blue-600/40',
-    tagBg: 'bg-blue-900/30',
-    tagText: 'text-blue-300',
+    borderColor: 'border-amber-500/40',
+    tagBg: 'bg-amber-900/30',
+    tagText: 'text-amber-300',
   },
   {
     id: 'cgwsystems',

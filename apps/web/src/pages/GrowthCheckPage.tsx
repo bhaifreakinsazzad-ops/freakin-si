@@ -112,7 +112,7 @@ function calcResults(answers: Record<string, { value: string; score: number }>) 
     recs.push({ title: 'Launch AdScale Engine', desc: 'Your ads are underperforming. Our managed Facebook & Instagram campaigns average 3.2x ROAS for clients at your stage.', color: '#EF4444', cta: 'Start AdScale', ctaTo: '/services' })
   }
   if (answers.website?.value === 'none' || answers.website?.value === 'basic') {
-    recs.push({ title: 'Build a Converting Landing Page', desc: 'A professional landing page can 4× your conversion rate. We deliver in under 1 hour.', color: '#3B82F6', cta: 'Get Web Studio', ctaTo: '/services' })
+    recs.push({ title: 'Build a Converting Landing Page', desc: 'A professional landing page can 4× your conversion rate. We deliver in under 1 hour.', color: '#F5B041', cta: 'Get Web Studio', ctaTo: '/services' })
   }
   if (answers.content?.value === 'none' || answers.content?.value === 'occasional') {
     recs.push({ title: 'Activate Creative Engine', desc: 'Consistent content builds trust. Our AI delivers graphics, videos and posts on autopilot.', color: '#EC4899', cta: 'Get Creative', ctaTo: '/services' })
