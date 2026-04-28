@@ -247,8 +247,8 @@ const translations = {
 
   en: {
     // Brand
-    brand: 'AI Shala',
-    tagline: "Bangladesh's First AI Super App",
+    brand: 'Black Sheep AI',
+    tagline: "Divorcing The Game™ — Exit Survival Mode",
 
     // Nav
     navFeatures: 'Features',
@@ -273,7 +273,7 @@ const translations = {
     stat4Label: 'Bangla Support',
 
     // Features section
-    featuresTitle: 'Why AI Shala?',
+    featuresTitle: 'Why Black Sheep AI?',
     featuresSub: 'Built for Bangladesh, speaks Bangla',
     feat1Title: 'AI Chat',
     feat1Desc: 'Chat with 40+ AI models. LLaMA, Gemini, Mistral — all in one place.',
@@ -382,7 +382,7 @@ const translations = {
     // Chat page
     chatNewChat: 'New Chat',
     chatNoConvs: 'No conversations',
-    chatWelcome: 'Welcome to AI Shala!',
+    chatWelcome: 'Welcome to Black Sheep AI!',
     chatWelcomeSub: 'Start a new chat or use an example below',
     chatPrompt1: 'Write a story in Bangla',
     chatPrompt2: 'Write Python code for me',
@@ -505,13 +505,13 @@ const LanguageContext = createContext<LanguageContextType>({
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>(() => {
-    return (localStorage.getItem('ai_shala_lang') as Lang) || 'en'
+    return (localStorage.getItem('lang') as Lang) || 'en'
   })
 
   const toggle = () => {
     setLang(prev => {
-      const next = prev === 'bn' ? 'en' : 'bn'
-      localStorage.setItem('ai_shala_lang', next)
+      const next = prev === 'en' ? 'bn' : 'en'
+      localStorage.setItem('lang', next)
       return next
     })
   }

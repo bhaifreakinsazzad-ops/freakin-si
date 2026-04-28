@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLang } from '@/contexts/LanguageContext'
 import { authApi, subscriptionApi } from '@/lib/api'
-import { MessageSquare, Image, Wrench, CreditCard, Crown, TrendingUp, Calendar, Zap, Briefcase, Store, Sparkles, ArrowRight } from 'lucide-react'
+import { MessageSquare, Image, Wrench, CreditCard, Crown, TrendingUp, Calendar, Zap, Briefcase, Store, Sparkles, ArrowRight, Shield, Target, FileText, ChevronRight } from 'lucide-react'
 import { cn, getSubscriptionBadge, formatDate } from '@/lib/utils'
 
 export default function DashboardPage() {
@@ -55,14 +55,36 @@ export default function DashboardPage() {
     <div className="h-full overflow-y-auto p-4 md:p-6">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-white">{t.dashTitle}</h1>
-            <p className="text-gray-500 text-sm mt-0.5">{t.dashWelcome} {user.name}!</p>
+            <div className="flex items-center gap-2 mb-1">
+              <Shield size={14} style={{ color: '#c9a449' }} />
+              <span style={{ fontSize:11, fontFamily:"'Montserrat',sans-serif", fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', color:'#c9a449' }}>
+                Divorcing The Game™
+              </span>
+            </div>
+            <h1 className="font-display font-bold" style={{ fontSize:'1.75rem', color:'#f5f0e8' }}>Legacy Dashboard</h1>
+            <p className="text-sm mt-0.5" style={{ color:'var(--bs-steel)' }}>Welcome home, {user.name}. Your vision becomes structure here.</p>
           </div>
           <span className={cn('px-3 py-1.5 rounded-full text-sm font-bold', getSubscriptionBadge(user.subscription))}>
             {subLabel}
           </span>
+        </div>
+
+        {/* Founder Status Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { label: 'Founder Status', value: 'Active', icon: Shield, color: '#c9a449' },
+            { label: 'Blueprint Progress', value: 'Start Now', icon: FileText, color: '#b5121b' },
+            { label: 'Gate Recommended', value: 'Uncover First', icon: Target, color: '#c9c9c9' },
+            { label: 'Next Best Step', value: 'Uncover My Gold', icon: Sparkles, color: '#e0c878' },
+          ].map(({ label, value, icon: Icon, color }) => (
+            <div key={label} style={{ background:'linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))', border:'1px solid rgba(201,201,201,0.14)', borderRadius:16, padding:'16px 20px', backdropFilter:'blur(12px)' }}>
+              <Icon size={16} style={{ color, marginBottom:8 }} />
+              <p style={{ fontSize:10, fontFamily:"'Montserrat',sans-serif", fontWeight:700, letterSpacing:'0.10em', textTransform:'uppercase', color:'var(--bs-steel)', marginBottom:4 }}>{label}</p>
+              <p style={{ fontSize:13, fontWeight:700, color:'#f5f0e8' }}>{value}</p>
+            </div>
+          ))}
         </div>
 
         {/* Trial banner */}
@@ -103,46 +125,50 @@ export default function DashboardPage() {
         {/* Quick access */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: t.sidebarChat, icon: MessageSquare, color: 'text-green-400', action: '/chat', actionLabel: t.dashChatNow },
-            { label: t.sidebarImage, icon: Image, color: 'text-blue-400', action: '/image', actionLabel: t.dashGenerate },
-            { label: t.sidebarTools, icon: Wrench, color: 'text-purple-400', action: '/tools', actionLabel: t.dashUseNow },
-            { label: t.dashUpgradeLabel, icon: Crown, color: 'text-yellow-400', action: '/payment', actionLabel: t.dashViewPlans },
-          ].map(({ label, icon: Icon, color, action, actionLabel }) => (
-            <Link key={label} to={action} className="glass-light rounded-xl p-4 border border-green-900/20 hover:border-green-500/30 transition-all group">
-              <Icon size={22} className={cn(color, 'mb-3')} />
-              <p className="font-medium text-gray-300 text-sm">{label}</p>
-              <p className="text-xs text-gray-600 group-hover:text-green-400 transition-colors mt-1">{actionLabel} →</p>
+            { label: 'Uncover My Gold', icon: Sparkles, colorHex: '#c9a449', action: '/builder', actionLabel: 'Start Now' },
+            { label: 'The Gate', icon: Store, colorHex: '#b5121b', action: '/marketplace', actionLabel: 'Enter' },
+            { label: 'Build Request', icon: Briefcase, colorHex: '#c9c9c9', action: '/services', actionLabel: 'Send Request' },
+            { label: 'Choose Your Gate', icon: Crown, colorHex: '#e0c878', action: '/payment', actionLabel: 'View Gates' },
+          ].map(({ label, icon: Icon, colorHex, action, actionLabel }) => (
+            <Link key={label} to={action}
+              className="rounded-xl p-4 transition-all group"
+              style={{ background:'linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))', border:'1px solid rgba(201,201,201,0.14)', backdropFilter:'blur(12px)' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = `${colorHex}40` }}
+              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(201,201,201,0.14)' }}
+            >
+              <Icon size={20} style={{ color: colorHex, marginBottom: 12 }} />
+              <p className="font-medium text-sm" style={{ color:'#f5f0e8' }}>{label}</p>
+              <p className="text-xs mt-1 transition-colors" style={{ color:'var(--bs-steel)' }}>{actionLabel} →</p>
             </Link>
           ))}
         </div>
 
-        {/* BI Overview */}
+        {/* Black Sheep Platform Overview */}
         <div className="rounded-2xl p-5 space-y-4"
-          style={{ background: 'linear-gradient(135deg, rgba(245,176,65,0.06), rgba(212,131,10,0.03))', border: '1px solid rgba(245,176,65,0.15)' }}>
+          style={{ background:'linear-gradient(135deg,rgba(181,18,27,0.08),rgba(201,164,73,0.04))', border:'1px solid rgba(201,164,73,0.22)' }}>
           <div className="flex items-center justify-between">
-            <h2 className="font-bold flex items-center gap-2 text-sm" style={{ color: 'var(--fsi-gold)' }}>
-              <Sparkles size={16} style={{ color: 'var(--fsi-gold)' }} /> AI Business Builder
+            <h2 className="font-bold flex items-center gap-2 text-sm" style={{ color:'#c9a449', fontFamily:"'Montserrat',sans-serif", letterSpacing:'0.05em', textTransform:'uppercase' }}>
+              <Shield size={14} style={{ color:'#c9a449' }} /> Black Sheep Platform
             </h2>
-            <Link to="/builder" className="text-xs flex items-center gap-1" style={{ color: 'var(--fsi-text-muted)' }}>
-              Open AI Builder <ArrowRight size={12} />
+            <Link to="/builder" className="text-xs flex items-center gap-1" style={{ color:'var(--bs-steel)' }}>
+              Uncover My Gold <ArrowRight size={12} />
             </Link>
           </div>
           <div className="grid grid-cols-3 gap-3">
             {[
-              { icon: Sparkles, label: 'AI Builder', sublabel: 'Create blueprints', to: '/builder', color: '#F5B041' },
-              { icon: Briefcase, label: 'Services',   sublabel: 'Hire experts',      to: '/services',      color: '#3B82F6' },
-              { icon: Store,     label: 'Marketplace', sublabel: 'Buy & sell',       to: '/marketplace',   color: '#00C27A' },
+              { icon: Sparkles, label: 'Uncover My Gold', sublabel: 'Build your blueprint', to: '/builder',    color: '#c9a449' },
+              { icon: Briefcase, label: 'Build Request',  sublabel: 'Send project request', to: '/services',   color: '#c9c9c9' },
+              { icon: Store,     label: 'The Gate',       sublabel: 'Enter & explore',       to: '/marketplace', color: '#b5121b' },
             ].map(({ icon: Icon, label, sublabel, to, color }) => (
               <Link key={to} to={to}
                 className="rounded-xl p-3 flex flex-col items-center text-center gap-2 transition-all hover:scale-105"
-                style={{ background: `${color}0F`, border: `1px solid ${color}25` }}>
-                <div className="w-9 h-9 rounded-lg flex items-center justify-center"
-                  style={{ background: `${color}18` }}>
+                style={{ background:`${color}0F`, border:`1px solid ${color}25` }}>
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background:`${color}18` }}>
                   <Icon size={16} style={{ color }} />
                 </div>
                 <div>
-                  <p className="text-xs font-bold" style={{ color: 'var(--fsi-text)' }}>{label}</p>
-                  <p className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>{sublabel}</p>
+                  <p className="text-xs font-bold" style={{ color:'#f5f0e8' }}>{label}</p>
+                  <p className="text-xs" style={{ color:'var(--bs-steel)' }}>{sublabel}</p>
                 </div>
               </Link>
             ))}

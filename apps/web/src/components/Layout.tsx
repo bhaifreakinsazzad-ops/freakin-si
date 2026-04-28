@@ -17,16 +17,16 @@ export default function Layout() {
   const [mobileOpen, setMobileOpen]  = useState(false)
 
   const navItems = [
-    { to: '/chat',         icon: MessageSquare,   label: t.sidebarChat },
-    { to: '/image',        icon: Image,           label: t.sidebarImage },
-    { to: '/tools',        icon: Wrench,          label: t.sidebarTools },
-    { to: '/builder',      icon: TrendingUp,      label: 'AI Builder',   highlight: true },
-    { to: '/hub',          icon: Globe2,          label: 'Business Hub' },
-    { to: '/marketplace',  icon: Store,           label: 'Marketplace' },
-    { to: '/services',     icon: Briefcase,       label: 'Services' },
-    { to: '/partners',     icon: Users,           label: 'Partners' },
-    { to: '/dashboard',    icon: LayoutDashboard, label: t.sidebarDashboard },
-    { to: '/payment',      icon: CreditCard,      label: t.sidebarPayment },
+    { to: '/dashboard',   icon: LayoutDashboard, label: 'Legacy Dashboard' },
+    { to: '/builder',     icon: TrendingUp,      label: 'Uncover My Gold', highlight: true },
+    { to: '/marketplace', icon: Store,           label: 'The Gate' },
+    { to: '/payment',     icon: CreditCard,      label: 'Choose Your Gate' },
+    { to: '/services',    icon: Briefcase,       label: 'Build Request' },
+    { to: '/chat',        icon: MessageSquare,   label: 'AI Chat' },
+    { to: '/image',       icon: Image,           label: 'AI Image' },
+    { to: '/tools',       icon: Wrench,          label: 'AI Tools' },
+    { to: '/hub',         icon: Globe2,          label: 'Business Hub' },
+    { to: '/partners',    icon: Users,           label: 'Partners' },
   ]
 
   const handleLogout = () => { logout(); navigate('/') }
@@ -44,14 +44,14 @@ export default function Layout() {
       >
         <div
           className="w-9 h-9 rounded-xl overflow-hidden shrink-0 flex items-center justify-center"
-          style={{ boxShadow: '0 0 16px rgba(245,176,65,0.30)' }}
+          style={{ background: 'rgba(200,16,46,0.15)', boxShadow: '0 0 16px rgba(200,16,46,0.25)' }}
         >
-          <img src="/fsi-icon.svg" alt="BayParee" className="w-9 h-9" />
+          <span style={{ fontWeight:900, fontSize:14, color:'#c8102e', fontFamily:"'Montserrat',sans-serif" }}>BS</span>
         </div>
         {!collapsed && (
           <div>
             <h1 className="font-display font-bold text-base leading-none" style={{ color: 'var(--fsi-text)' }}>
-              <span style={{ color: 'var(--fsi-gold)' }}>BayParee</span>
+              <span style={{ color: '#c8102e' }}>Black Sheep</span>
             </h1>
             <p
               className="mt-0.5"
@@ -62,7 +62,7 @@ export default function Layout() {
                 textTransform: 'uppercase',
               }}
             >
-              AI Business Builder
+              Divorcing The Game™
             </p>
           </div>
         )}
@@ -246,7 +246,7 @@ export default function Layout() {
             <Menu size={22} />
           </button>
           <span className="font-display font-bold text-sm" style={{ color: 'var(--fsi-text)' }}>
-            <span style={{ color: 'var(--fsi-gold)' }}>BayParee</span>
+            <span style={{ color: '#c8102e' }}>Black Sheep</span>
           </span>
           {/* empty placeholder to keep title centered */}
           <div className="w-6" />

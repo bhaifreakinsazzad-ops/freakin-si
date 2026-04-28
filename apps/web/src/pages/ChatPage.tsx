@@ -320,7 +320,7 @@ export default function ChatPage() {
                   className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1 text-xs font-bold"
                   style={{ background: activeMode.color + '22', border: `1px solid ${activeMode.color}44`, color: activeMode.color }}
                 >
-                  SI
+                  BS
                 </div>
               )}
               <div className={cn('max-w-[80%] xl:max-w-[70%]', msg.role === 'user' ? 'message-user px-4 py-3' : 'message-ai px-4 py-3')}>
@@ -353,7 +353,7 @@ export default function ChatPage() {
                 className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1 text-xs font-bold"
                 style={{ background: activeMode.color + '22', border: `1px solid ${activeMode.color}44`, color: activeMode.color }}
               >
-                SI
+                BS
               </div>
               <div className="message-ai px-4 py-3 max-w-[80%] xl:max-w-[70%]">
                 <div className="prose prose-invert prose-sm max-w-none">
@@ -371,7 +371,7 @@ export default function ChatPage() {
                 className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1 text-xs font-bold"
                 style={{ background: activeMode.color + '22', border: `1px solid ${activeMode.color}44`, color: activeMode.color }}
               >
-                SI
+                BS
               </div>
               <div className="message-ai px-4 py-3">
                 <div className="flex items-center gap-1">

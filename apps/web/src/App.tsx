@@ -22,6 +22,8 @@ const ServicesPage       = lazy(() => import('@/pages/ServicesPage'))
 const GrowthCheckPage    = lazy(() => import('@/pages/GrowthCheckPage'))
 const PartnersPage       = lazy(() => import('@/pages/PartnersPage'))
 const HubPage            = lazy(() => import('@/pages/HubPage'))
+const ChooseYourGatePage = lazy(() => import('@/pages/ChooseYourGatePage'))
+const FounderIntakePage  = lazy(() => import('@/pages/FounderIntakePage'))
 const Layout             = lazy(() => import('@/components/Layout'))
 
 // ── PUBLIC ACCESS: skip all auth gates until explicitly re-enabled ──────────
@@ -33,12 +35,15 @@ function PageLoader() {
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--fsi-void)' }}>
       <div className="text-center space-y-4">
-        <div className="w-14 h-14 rounded-2xl overflow-hidden mx-auto animate-pulse"
-          style={{ boxShadow: '0 0 28px rgba(245,176,65,0.45)' }}>
-          <img src="/fsi-icon.svg" alt="BayParee" className="w-full h-full" />
+        <div className="w-14 h-14 rounded-2xl overflow-hidden mx-auto animate-pulse flex items-center justify-center"
+          style={{ background: 'rgba(200,16,46,0.15)', boxShadow: '0 0 28px rgba(200,16,46,0.35)' }}>
+          <span style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:18, color:'#c8102e' }}>BS</span>
         </div>
         <p className="font-display font-semibold text-sm tracking-widest"
-          style={{ color: 'var(--fsi-gold)' }}>BAYPAREE</p>
+          style={{ color: '#c8102e' }}>BLACK SHEEP</p>
+        <p style={{ color:'rgba(255,255,255,0.35)', fontSize:10, letterSpacing:'0.15em', textTransform:'uppercase' }}>
+          Divorcing The Game™
+        </p>
       </div>
     </div>
   )
@@ -64,13 +69,16 @@ function AppRoutes() {
   return (
     <Routes>
       {/* Public routes */}
-      <Route path="/"           element={!DEV && user ? <Navigate to="/chat" replace /> : <LandingPage />} />
-      <Route path="/login"      element={!DEV && user ? <Navigate to="/chat" replace /> : <LoginPage />} />
-      <Route path="/register"   element={!DEV && user ? <Navigate to="/chat" replace /> : <RegisterPage />} />
-      <Route path="/pricing"      element={<PricingPage />} />
-      <Route path="/growth-check" element={<GrowthCheckPage />} />
-      <Route path="/partners"     element={<PartnersPage />} />
-      <Route path="/hub"          element={<HubPage />} />
+      <Route path="/"                element={!DEV && user ? <Navigate to="/chat" replace /> : <LandingPage />} />
+      <Route path="/login"           element={!DEV && user ? <Navigate to="/chat" replace /> : <LoginPage />} />
+      <Route path="/register"        element={!DEV && user ? <Navigate to="/chat" replace /> : <RegisterPage />} />
+      <Route path="/pricing"         element={<PricingPage />} />
+      <Route path="/choose-your-gate" element={<ChooseYourGatePage />} />
+      <Route path="/apply"           element={<FounderIntakePage />} />
+      <Route path="/founder-intake"  element={<FounderIntakePage />} />
+      <Route path="/growth-check"    element={<GrowthCheckPage />} />
+      <Route path="/partners"        element={<PartnersPage />} />
+      <Route path="/hub"             element={<HubPage />} />
 
       {/* Protected app routes — wrapped in Layout sidebar */}
       <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
@@ -81,8 +89,11 @@ function AppRoutes() {
         <Route path="/payment"              element={<PaymentPage />} />
         <Route path="/dashboard"            element={<DashboardPage />} />
         <Route path="/builder"              element={<BusinessBuilderPage />} />
+        <Route path="/uncover-my-gold"      element={<BusinessBuilderPage />} />
         <Route path="/marketplace"          element={<MarketplacePage />} />
+        <Route path="/the-gate"             element={<MarketplacePage />} />
         <Route path="/services"             element={<ServicesPage />} />
+        <Route path="/build-request"        element={<ServicesPage />} />
       </Route>
 
       {/* Admin */}

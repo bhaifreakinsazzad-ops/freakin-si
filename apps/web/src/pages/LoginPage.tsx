@@ -6,7 +6,7 @@ import { Eye, EyeOff, LogIn, TrendingUp } from 'lucide-react'
 
 export default function LoginPage() {
   const { login } = useAuth()
-  const { t, lang, toggle } = useLang()
+  const { t } = useLang()
   const navigate = useNavigate()
   const [form, setForm] = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
@@ -39,26 +39,19 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex flex-col items-center gap-3 group">
-            <div className="w-16 h-16 rounded-2xl overflow-hidden flex items-center justify-center"
-              style={{ boxShadow: '0 0 30px rgba(245,176,65,0.35)' }}>
-              <img src="/fsi-icon.svg" alt="BayParee Logo" className="w-full h-full" />
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center"
+              style={{ background: 'rgba(200,16,46,0.12)', boxShadow: '0 0 30px rgba(200,16,46,0.30)', border: '1px solid rgba(200,16,46,0.25)' }}>
+              <span style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:20, color:'#c8102e' }}>BS</span>
             </div>
             <div>
               <div className="font-display text-2xl font-bold" style={{ color: 'var(--fsi-text)' }}>
-                <span style={{ color: 'var(--fsi-gold)' }}>BayParee</span>
+                <span style={{ color: '#c8102e' }}>Black Sheep</span>
               </div>
               <p className="text-xs mt-1" style={{ color: 'var(--fsi-text-muted)' }}>
-                AI Business Builder
+                Divorcing The Game™ Platform
               </p>
             </div>
           </Link>
-          <button
-            onClick={toggle}
-            className="mt-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs transition-all"
-            style={{ border: '1px solid var(--fsi-border)', color: 'var(--fsi-text-muted)' }}
-          >
-            {lang === 'bn' ? '🇬🇧 Switch to English' : '🇧🇩 বাংলায় দেখুন'}
-          </button>
         </div>
 
         {/* Card */}

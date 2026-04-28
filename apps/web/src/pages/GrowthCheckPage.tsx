@@ -165,8 +165,8 @@ export default function GrowthCheckPage() {
       <nav className="border-b border-white/8 bg-[#080808]">
         <div className="max-w-[900px] mx-auto px-6 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2.5">
-            <img src="/fsi-icon.svg" alt="BayParee" className="w-6 h-6" />
-            <span className="font-black text-sm tracking-widest" style={{ color: '#F5B041' }}>BAYPAREE</span>
+            <span style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:14, color:'#c8102e', padding:'2px 8px', border:'1px solid rgba(200,16,46,0.3)', borderRadius:4 }}>BS</span>
+            <span className="font-black text-sm tracking-widest" style={{ color: '#c8102e' }}>BLACK SHEEP</span>
           </Link>
           <Link to="/" className="text-xs text-white/40 hover:text-white transition-colors flex items-center gap-1.5">
             <ArrowLeft size={12} /> Back

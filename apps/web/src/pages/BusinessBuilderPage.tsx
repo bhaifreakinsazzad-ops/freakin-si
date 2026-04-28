@@ -1,5 +1,5 @@
 /**
- * BayParee — AI Business Builder
+ * Black Sheep — Uncover My Gold (AI Business Builder)
  * 10-step guided wizard: Idea → Overview → Name → Brand → Assets →
  * Facebook → Website → Marketing → Paperwork/Funding → Launch
  */
@@ -226,7 +226,7 @@ export default function BusinessBuilderPage() {
               <Rocket size={15} color="#fff" />
             </div>
             <div>
-              <h1 className="font-bold text-sm" style={{ color: 'var(--fsi-gold)' }}>AI Builder</h1>
+              <h1 className="font-bold text-sm" style={{ color: 'var(--fsi-gold)' }}>Uncover My Gold</h1>
               <p className="text-[10px]" style={{ color: 'var(--fsi-text-muted)' }}>
                 {STEPS[step - 1]?.label} · Step {step} of 10
               </p>
@@ -252,7 +252,7 @@ export default function BusinessBuilderPage() {
             <motion.div key="s1" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} className="space-y-6 pt-4">
               <div className="text-center space-y-2">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs" style={{ background: 'rgba(245,176,65,0.08)', color: '#F5B041', border: '1px solid rgba(245,176,65,0.20)' }}>
-                  <Sparkles size={11} /> AI Business Builder
+                  <Sparkles size={11} /> Black Sheep AI Builder
                 </div>
                 <h2 className="font-black text-2xl sm:text-3xl" style={{ color: 'var(--fsi-text)' }}>What do you want to build?</h2>
                 <p className="text-sm" style={{ color: 'var(--fsi-text-muted)' }}>
@@ -646,7 +646,7 @@ export default function BusinessBuilderPage() {
               <div className="rounded-xl p-4 flex items-center gap-3" style={{ background: 'rgba(0,255,148,0.06)', border: '1px solid rgba(0,255,148,0.15)' }}>
                 <Shield size={16} style={{ color: '#00FF94', flexShrink: 0 }} />
                 <p className="text-xs" style={{ color: 'var(--fsi-text-muted)' }}>
-                  These are BayParee partner services. We connect you to trusted experts — no middleman markup.
+                  These are Black Sheep partner services. We connect you to trusted experts — no middleman markup.
                 </p>
               </div>
             </motion.div>

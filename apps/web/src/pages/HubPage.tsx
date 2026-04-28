@@ -73,9 +73,9 @@ export default function HubPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <span
             className="font-display"
-            style={{ fontSize: 18, fontWeight: 700, color: 'var(--fsi-gold, #F5B041)' }}
+            style={{ fontSize: 18, fontWeight: 700, color: '#c8102e' }}
           >
-            BayParee
+            Black Sheep
           </span>
           <ChevronRight size={14} style={{ color: 'var(--fsi-text-muted, #A7ACB8)', opacity: 0.6 }} />
           <span style={{ fontSize: 13, color: 'var(--fsi-text-muted, #A7ACB8)', letterSpacing: '0.04em' }}>

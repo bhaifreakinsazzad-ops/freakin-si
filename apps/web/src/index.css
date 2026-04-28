@@ -2,36 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── BayParee — Design Tokens ────────────────────── */
+/* ── Black Sheep / Divorcing The Game™ — Design Tokens (DESIGN.md source of truth) ── */
 
 @layer base {
   :root {
-    /* Brand */
-    --fsi-gold:           #F5B041;
-    --fsi-gold-bright:    #F8C97A;
-    --fsi-gold-dim:       rgba(245,176,65,0.12);
-    --fsi-gold-muted:     rgba(245,176,65,0.30);
-    --fsi-gold-subtle:    rgba(245,176,65,0.06);
-    --fsi-amber:          #E67E22;
+    /* ── DESIGN.md §6 Color System ── */
+    --bs-black:           #050505;
+    --bs-void:            #08080b;
+    --bs-charcoal:        #101014;
+    --bs-panel:           #17171d;
+    --bs-panel-soft:      #1e1e26;
+    --bs-border:          rgba(201,201,201,0.18);
+    --bs-border-strong:   rgba(201,164,73,0.38);
 
-    /* Status */
-    --fsi-green:          #22C55E;
-    --fsi-red:            #EF4444;
+    --bs-red:             #b5121b;
+    --bs-red-deep:        #7f0b12;
+    --bs-red-bright:      #ef233c;
+    --bs-red-glow:        rgba(239,35,60,0.32);
+
+    --bs-gold:            #c9a449;
+    --bs-gold-soft:       #e0c878;
+    --bs-silver:          #c9c9c9;
+    --bs-steel:           #8f9299;
+    --bs-ivory:           #f5f0e8;
+    --bs-muted:           #9ca3af;
+
+    --bs-success:         #3ddc97;
+    --bs-warning:         #f5b84b;
+    --bs-danger:          #ef4444;
+
+    /* Legacy aliases — kept so existing components don't break */
+    --bs-red-border:      rgba(181,18,27,0.30);
+    --bs-gold-bright:     #e0c878;
+
+    /* Legacy FSI aliases — mapped to BS design system */
+    --fsi-gold:           var(--bs-gold);
+    --fsi-gold-bright:    var(--bs-gold-soft);
+    --fsi-gold-dim:       rgba(201,164,73,0.12);
+    --fsi-gold-muted:     rgba(201,164,73,0.30);
+    --fsi-gold-subtle:    rgba(201,164,73,0.06);
+    --fsi-gold-glow:      rgba(201,164,73,0.25);
+    --fsi-amber:          #b5851e;
+
+    /* Status — mapped to BS */
+    --fsi-green:          var(--bs-success);
+    --fsi-red:            var(--bs-red);
     --fsi-blue:           #6366F1;
     --fsi-teal:           #14B8A6;
 
-    /* Backgrounds — near-black with cool undertone */
-    --fsi-void:           #050508;
-    --fsi-surface:        #0C0C0F;
-    --fsi-surface-2:      #131318;
-    --fsi-surface-3:      #1A1A20;
-    --fsi-surface-4:      #222228;
+    /* Backgrounds — mapped to BS panels */
+    --fsi-void:           var(--bs-void);
+    --fsi-surface:        var(--bs-panel);
+    --fsi-surface-2:      var(--bs-panel-soft);
+    --fsi-surface-3:      #252530;
+    --fsi-surface-4:      #2e2e3c;
 
-    /* Borders — WHITE-based for premium neutral feel */
-    --fsi-border:         rgba(255,255,255,0.06);
-    --fsi-border-hover:   rgba(255,255,255,0.12);
-    --fsi-border-active:  rgba(255,255,255,0.20);
-    --fsi-border-gold:    rgba(245,176,65,0.25);
+    /* Borders */
+    --fsi-border:         var(--bs-border);
+    --fsi-border-hover:   rgba(201,201,201,0.28);
+    --fsi-border-active:  rgba(201,201,201,0.42);
+    --fsi-border-gold:    var(--bs-border-strong);
 
     /* Text — white-based */
     --fsi-text:           rgba(255,255,255,0.95);
@@ -75,9 +105,13 @@
   }
 
   body {
-    background-color: var(--fsi-void);
+    background:
+      radial-gradient(circle at 20% 10%, rgba(181,18,27,0.16), transparent 28%),
+      radial-gradient(circle at 80% 0%, rgba(201,164,73,0.09), transparent 22%),
+      linear-gradient(180deg, #050505 0%, #101014 52%, #050505 100%);
+    background-attachment: fixed;
     color: var(--fsi-text);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Manrope', sans-serif;
     font-size: 16px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
@@ -86,8 +120,8 @@
   }
 
   h1, h2, h3, h4 {
-    font-family: 'Sora', 'Space Grotesk', 'Inter', sans-serif;
-    letter-spacing: -0.02em;
+    font-family: 'Playfair Display', 'Sora', serif;
+    letter-spacing: -0.01em;
   }
 
   code, pre, .font-mono {
@@ -230,17 +264,17 @@
 
   .grid-pattern {
     background-image:
-      linear-gradient(rgba(245,176,65,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(245,176,65,0.04) 1px, transparent 1px);
+      linear-gradient(rgba(181,18,27,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,164,73,0.025) 1px, transparent 1px);
     background-size: 60px 60px;
   }
 
-  /* ── Aurora orbs ── */
+  /* ── Aurora orbs — BS red/gold tones ── */
   .aurora-orb-1 {
     position: absolute;
     width: 700px; height: 700px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(245,176,65,0.12) 0%, rgba(200,120,20,0.06) 40%, transparent 70%);
+    background: radial-gradient(circle, rgba(181,18,27,0.14) 0%, rgba(127,11,18,0.06) 40%, transparent 70%);
     filter: blur(80px);
     animation: aurora 22s ease-in-out infinite;
     pointer-events: none;
@@ -249,7 +283,7 @@
     position: absolute;
     width: 550px; height: 550px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(230,126,34,0.10) 0%, rgba(180,80,10,0.06) 40%, transparent 70%);
+    background: radial-gradient(circle, rgba(201,164,73,0.09) 0%, rgba(160,124,46,0.05) 40%, transparent 70%);
     filter: blur(90px);
     animation: aurora2 28s ease-in-out infinite;
     pointer-events: none;
@@ -258,7 +292,7 @@
     position: absolute;
     width: 450px; height: 450px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(26,138,122,0.07) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(181,18,27,0.07) 0%, transparent 70%);
     filter: blur(60px);
     animation: aurora 18s ease-in-out infinite reverse;
     pointer-events: none;
@@ -325,28 +359,77 @@
   /* Keep legacy alias */
   .gradient-text-gold { @apply gradient-text; }
 
-  /* ── Font display ── */
+  /* ── Font display — Playfair Display for premium headings ── */
   .font-display {
-    font-family: 'Sora', 'Space Grotesk', 'Inter', sans-serif;
+    font-family: 'Playfair Display', 'Sora', serif;
+  }
+  .font-sans {
+    font-family: 'Inter', 'Manrope', sans-serif;
   }
 
-  /* ── Buttons ── */
-  .btn-gold {
-    background: linear-gradient(135deg, #F5B041, #E67E22);
-    color: #000;
+  /* ── DESIGN.md Primary Button — red gradient, gold border, pill ── */
+  .btn-primary {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #ef233c 0%, #b5121b 45%, #050505 100%);
+    border: 1px solid rgba(201,164,73,0.55);
+    box-shadow: 0 0 32px rgba(239,35,60,0.24);
+    border-radius: 999px;
+    color: #fff;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 13px;
+    padding: 14px 32px;
+    transition: all 220ms ease;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 48px rgba(239,35,60,0.40);
+    transform: translateY(-2px);
+    border-color: rgba(201,164,73,0.80);
+  }
+  .btn-primary:active { transform: translateY(0); }
+
+  /* Secondary button — charcoal transparent */
+  .btn-secondary {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,201,201,0.22);
+    border-radius: 999px;
+    color: #f5f0e8;
     font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 13px;
+    padding: 14px 32px;
+    transition: all 220ms ease;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(201,201,201,0.40);
+    transform: translateY(-1px);
+  }
+
+  /* Gold button — kept for platform UI */
+  .btn-gold {
+    background: linear-gradient(135deg, #c9a449, #a07c2e);
+    color: #050505;
+    font-weight: 700;
     border-radius: 10px;
     padding: 10px 20px;
-    transition: all 0.2s ease;
-    box-shadow: 0 0 20px rgba(245,176,65,0.4), 0 4px 15px rgba(0,0,0,0.3);
+    transition: all 220ms ease;
+    box-shadow: 0 0 20px rgba(201,164,73,0.35), 0 4px 15px rgba(0,0,0,0.3);
   }
   .btn-gold:hover {
-    box-shadow: 0 0 30px rgba(245,176,65,0.7), 0 6px 20px rgba(0,0,0,0.4);
+    box-shadow: 0 0 32px rgba(201,164,73,0.60), 0 6px 20px rgba(0,0,0,0.4);
     transform: translateY(-2px) scale(1.02);
   }
   .btn-gold:active { transform: translateY(0) scale(0.98); }
-
-  /* Legacy alias for green button — now gold */
   .btn-green { @apply btn-gold; }
 
   /* ── Cards ── */
@@ -364,8 +447,52 @@
 
   /* Active sidebar item */
   .fsi-card-active {
-    background: rgba(245,176,65,0.08);
-    border: 1px solid rgba(245,176,65,0.18);
+    background: rgba(201,164,73,0.08);
+    border: 1px solid rgba(201,164,73,0.22);
+  }
+
+  /* ── DESIGN.md §10.3 Cards ── */
+  .bs-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025));
+    border: 1px solid rgba(201,201,201,0.14);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 24px;
+    transition: all 220ms ease;
+  }
+  .bs-card:hover {
+    border-color: rgba(201,201,201,0.26);
+    transform: translateY(-3px);
+    box-shadow: 0 32px 100px rgba(0,0,0,0.45);
+  }
+  .bs-card-premium {
+    background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025));
+    border: 1px solid rgba(201,164,73,0.42);
+    box-shadow: 0 0 40px rgba(181,18,27,0.16), inset 0 1px 0 rgba(255,255,255,0.08);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 24px;
+    transition: all 220ms ease;
+  }
+  .bs-card-premium:hover {
+    box-shadow: 0 0 60px rgba(181,18,27,0.24), inset 0 1px 0 rgba(255,255,255,0.12);
+    transform: translateY(-3px);
+    border-color: rgba(201,164,73,0.65);
+  }
+
+  /* ── DESIGN.md §10.4 Badges ── */
+  .bs-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(181,18,27,0.10);
+    border: 1px solid rgba(201,164,73,0.30);
+    color: #e0c878;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    padding: 4px 14px;
   }
 
   /* ── Premium card — white border, hover gold glow ── */

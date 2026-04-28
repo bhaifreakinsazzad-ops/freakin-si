@@ -1,6 +1,6 @@
 /**
- * BayParee — Service Request Portal
- * Request professional Ads, Dev, Design, Copy, SEO, Social services
+ * Black Sheep — Build Request
+ * Send a Build Request: Ads, Dev, Design, Copy, SEO, Social services
  */
 
 import { useState } from 'react'
@@ -101,8 +101,8 @@ export default function ServicesPage() {
             <Briefcase size={16} color="#000" />
           </div>
           <div>
-            <h1 className="font-display font-bold text-sm leading-none" style={{ color: 'var(--fsi-gold)' }}>Services</h1>
-            <p className="text-xs mt-0.5" style={{ color: 'var(--fsi-text-muted)' }}>Request Expert Help</p>
+            <h1 className="font-display font-bold text-sm leading-none" style={{ color: 'var(--fsi-gold)' }}>Build Request</h1>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--fsi-text-muted)' }}>Send a Build Request</p>
           </div>
         </div>
       </div>

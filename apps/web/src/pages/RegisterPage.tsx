@@ -65,12 +65,12 @@ export default function RegisterPage() {
         {/* Logo */}
         <div className="text-center mb-6">
           <Link to="/" className="inline-flex flex-col items-center gap-3 group">
-            <div className="w-14 h-14 rounded-2xl overflow-hidden flex items-center justify-center"
-              style={{ boxShadow: '0 0 24px rgba(245,176,65,0.35)' }}>
-              <img src="/fsi-icon.svg" alt="BayParee Logo" className="w-full h-full" />
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
+              style={{ background: 'rgba(200,16,46,0.12)', boxShadow: '0 0 24px rgba(200,16,46,0.28)', border: '1px solid rgba(200,16,46,0.25)' }}>
+              <span style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:18, color:'#c8102e' }}>BS</span>
             </div>
             <div className="font-display text-xl font-bold" style={{ color: 'var(--fsi-text)' }}>
-              <span style={{ color: 'var(--fsi-gold)' }}>BayParee</span>
+              <span style={{ color: '#c8102e' }}>Black Sheep</span>
             </div>
           </Link>
           <p className="text-xs mt-1" style={{ color: 'var(--fsi-text-muted)' }}>{t.registerSubtitle}</p>
@@ -78,13 +78,6 @@ export default function RegisterPage() {
             <CheckCircle size={13} style={{ color: 'var(--fsi-gold)' }} />
             <span className="text-xs font-medium" style={{ color: 'var(--fsi-gold)' }}>{t.registerFreeTag}</span>
           </div>
-          <button
-            onClick={toggle}
-            className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs transition-all"
-            style={{ border: '1px solid var(--fsi-border)', color: 'var(--fsi-text-muted)' }}
-          >
-            {lang === 'bn' ? '🇬🇧 Switch to English' : '🇧🇩 বাংলায় দেখুন'}
-          </button>
         </div>
 
         {/* Card */}

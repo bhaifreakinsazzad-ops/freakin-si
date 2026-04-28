@@ -99,7 +99,7 @@ const fadeUp = {
 
 export default function PricingPage() {
   const { user } = useAuth()
-  const { t, lang, toggle } = useLang()
+  const { t } = useLang()
   const navigate = useNavigate()
   const [plans, setPlans] = useState<Plan[]>([])
   const [currency, setCurrency] = useState<'usd' | 'bdt'>('usd')
@@ -158,17 +158,10 @@ export default function PricingPage() {
       {/* ── Header (unchanged) ── */}
       <div className="border-b border-green-900/20 glass px-4 py-4 flex items-center justify-between sticky top-0 z-10">
         <Link to="/" className="flex items-center gap-2">
-          <span className="text-2xl">🤖</span>
-          <span className="font-bold text-green-400 font-mono">AI Shala</span>
+          <span style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:16, color:'#c8102e', background:'rgba(200,16,46,0.12)', padding:'2px 8px', borderRadius:6, border:'1px solid rgba(200,16,46,0.25)' }}>BS</span>
+          <span className="font-bold font-mono" style={{ color:'#c8102e' }}>Black Sheep</span>
         </Link>
         <div className="flex items-center gap-3">
-          <button
-            onClick={toggle}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-green-900/40 text-xs font-medium text-gray-300 hover:border-green-500/50 hover:text-green-400 transition-all"
-          >
-            <span>{lang === 'bn' ? '🇬🇧' : '🇧🇩'}</span>
-            <span>{lang === 'bn' ? 'EN' : 'বাং'}</span>
-          </button>
           {user ? (
             <Link to="/chat" className="text-sm text-green-400 hover:underline">{t.pricingGotoDash} →</Link>
           ) : (
@@ -244,7 +237,7 @@ export default function PricingPage() {
                 className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium mb-3"
                 style={{ background: 'rgba(67,97,238,0.12)', border: '1px solid rgba(67,97,238,0.35)', color: '#F5B041' }}
               >
-                BayParee USD Pricing
+                Black Sheep Platform — USD Pricing
               </div>
               <p className="text-gray-400 text-sm">
                 Billed monthly. Cancel any time.
@@ -344,7 +337,7 @@ export default function PricingPage() {
               <p className="text-sm text-gray-400">
                 <span className="font-semibold" style={{ color: '#F5B041' }}>Pro &amp; Elite</span> plans unlock the{' '}
                 <Link to="/partners" className="underline" style={{ color: '#F5B041' }}>Partner Ecosystem</Link>{' '}
-                — ThePaperWorkSquad (LLC formation), CGW Systems (business funding), and DhandaBuzz (digital marketing) — all integrated into Step 9 of your AI Business Builder.
+                — ThePaperWorkSquad (LLC formation), CGW Systems (business funding), and DhandaBuzz (digital marketing) — all integrated into Step 9 of your Black Sheep AI Builder.
               </p>
             </motion.div>
           </div>
@@ -473,7 +466,7 @@ export default function PricingPage() {
               { q: 'What do I get with the Free plan?', a: '50 daily AI messages, 5 image generations, all basic tools, and 25+ AI models.' },
               { q: 'How do I pay with bKash?', a: 'Go to the payment page, select "bKash", send the amount to the provided number, and submit your transaction ID.' },
               { q: 'Who do I contact if I have a problem?', a: 'WhatsApp or SMS the payment number, or write to us via AI Chat.' },
-              { q: 'What is included in Pro USD partner access?', a: 'Pro and Elite USD subscribers get access to ThePaperWorkSquad (LLC & compliance), CGW Systems (funding & credit), and DhandaBuzz (digital marketing) — all connected through Step 9 of your AI Business Builder.' },
+              { q: 'What is included in Pro USD partner access?', a: 'Pro and Elite USD subscribers get access to ThePaperWorkSquad (LLC & compliance), CGW Systems (funding & credit), and DhandaBuzz (digital marketing) — all connected through Step 9 of your Black Sheep AI Builder.' },
             ] : [
               { q: 'পেমেন্ট করলে কতক্ষণে অ্যাকাউন্ট আপগ্রেড হবে?', a: 'সাধারণত ২-২৪ ঘণ্টার মধ্যে অ্যাকাউন্ট আপগ্রেড হয়। রাত ১২টার পর করলে পরের দিন সকালে হয়।' },
               { q: 'ফ্রি প্ল্যানে কী কী পাব?', a: 'দৈনিক ৫০টি AI মেসেজ, ৫টি ছবি তৈরি, সব বেসিক টুলস এবং ২৫+ AI মডেল।' },

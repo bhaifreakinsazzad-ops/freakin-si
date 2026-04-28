@@ -15,7 +15,7 @@ export default class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error('[BayParee] Uncaught error:', error, info)
+    console.error('[BlackSheep] Uncaught error:', error, info)
   }
 
   render() {

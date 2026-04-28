@@ -115,8 +115,8 @@ export default function PartnersPage() {
         style={{ background: 'rgba(5,5,5,0.92)', borderColor: 'var(--fsi-border, #1a1a2e)', backdropFilter: 'blur(12px)' }}
       >
         <Link to="/" className="flex items-center gap-2">
-          <span className="font-extrabold text-xl tracking-tight" style={{ color: '#F5B041' }}>
-            BayParee
+          <span className="font-extrabold text-xl tracking-tight" style={{ color: '#c8102e' }}>
+            Black Sheep
           </span>
         </Link>
         <div className="flex items-center gap-4">
@@ -163,8 +163,8 @@ export default function PartnersPage() {
             Ecosystem
           </h1>
           <p className="text-lg max-w-2xl mx-auto" style={{ color: 'var(--fsi-text-muted, #9ca3af)' }}>
-            Expert services integrated directly into your BayParee journey — available at exactly
-            the moment you need them inside Step&nbsp;9 of the AI Business Builder.
+            Expert services integrated directly into your Black Sheep journey — available at exactly
+            the moment you need them inside Step&nbsp;9 of the AI Builder.
           </p>
         </motion.div>
       </div>
@@ -305,7 +305,7 @@ export default function PartnersPage() {
               {
                 step: '01',
                 label: 'Build Your Plan',
-                detail: 'Use the AI Business Builder to map your business strategy step by step.',
+                detail: 'Use the Black Sheep AI Builder to map your business strategy step by step.',
                 color: '#F5B041',
               },
               {
@@ -366,7 +366,7 @@ export default function PartnersPage() {
           <span style={{ color: '#F5B041' }}>right support?</span>
         </h2>
         <p className="mb-8 text-lg" style={{ color: 'var(--fsi-text-muted, #9ca3af)' }}>
-          Your partners are waiting inside the AI Business Builder — start your blueprint today.
+          Your partners are waiting inside the Black Sheep AI Builder — start your blueprint today.
         </p>
         <Link
           to="/builder"

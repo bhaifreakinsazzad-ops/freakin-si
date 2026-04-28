@@ -94,7 +94,7 @@ export default function AdminPage() {
           </Link>
           <div className="flex items-center gap-2">
             <Shield size={18} className="text-yellow-400" />
-            <span className="font-bold text-white">Admin Dashboard</span>
+            <span className="font-bold text-white">Black Sheep Command Center</span>
           </div>
           <span className="text-xs text-gray-600">— AI শালা</span>
         </div>

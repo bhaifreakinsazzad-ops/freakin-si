@@ -1,5 +1,5 @@
 /**
- * BayParee — Business Marketplace
+ * Black Sheep — The Gate (Marketplace)
  * 4-tab marketplace: Ready-Made Businesses, Websites & Apps, Tools & Assets, Custom AI Agents
  */
 
@@ -784,10 +784,10 @@ export default function MarketplacePage() {
           <div className="flex items-start justify-between mb-3">
             <div>
               <h1 className="font-display font-bold text-xl leading-none" style={{ color: 'var(--fsi-text)' }}>
-                Marketplace
+                Enter The Gate
               </h1>
               <p className="text-xs mt-0.5" style={{ color: 'var(--fsi-text-muted)' }}>
-                Build, Launch, Fund & Scale a Business
+                Choose the support your vision needs to become structured, visible, and ready to move.
               </p>
               <p className="text-xs mt-1" style={{ color: 'rgba(245,176,65,0.6)' }}>
                 27,403+ Businesses Built · 16,250 Funded · 4 Categories
