@@ -29,6 +29,8 @@ const allowedOrigins = [
   'http://localhost:4173',
   'https://bhaifreakin.online',
   'https://www.bhaifreakin.online',
+  'https://black-sheep.company',
+  'https://www.black-sheep.company',
   'https://powered-by-bhaisazzad.online',
 ];
 
