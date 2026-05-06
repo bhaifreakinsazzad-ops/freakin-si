@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AuthProvider, useAuth } from '@/contexts/AuthContext'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import { ChatModeProvider } from '@/contexts/ChatModeContext'
@@ -26,7 +26,7 @@ const ChooseYourGatePage = lazy(() => import('@/pages/ChooseYourGatePage'))
 const FounderIntakePage  = lazy(() => import('@/pages/FounderIntakePage'))
 const Layout             = lazy(() => import('@/components/Layout'))
 
-// Official DTG logo, compressed for lightweight header/loader/fav icon use.
+// Official DTG logo, compressed for lightweight public landing use only.
 const DTG_LOGO_DATA_URL = 'data:image/webp;base64,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'
 
 // ── PUBLIC ACCESS: skip all auth gates until explicitly re-enabled ──────────
@@ -34,8 +34,11 @@ const DTG_LOGO_DATA_URL = 'data:image/webp;base64,UklGRtYGAABXRUJQVlA4IMoGAAAQIA
 const DEV = import.meta.env.DEV || import.meta.env.VITE_PUBLIC_ACCESS === 'true'
 
 function ClientRevisionPatches() {
+  const location = useLocation()
+
   useEffect(() => {
     const isLanding = () => window.location.pathname === '/'
+    if (!isLanding()) return
 
     const addStyles = () => {
       if (document.getElementById('dtg-client-revision-styles')) return
@@ -107,7 +110,7 @@ function ClientRevisionPatches() {
     }
 
     const replaceTextNodes = () => {
-      if (!document.body) return
+      if (!isLanding() || !document.body) return
       const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
         acceptNode(node) {
           const parent = node.parentElement
@@ -136,6 +139,7 @@ function ClientRevisionPatches() {
     }
 
     const applyLogo = () => {
+      if (!isLanding()) return
       const existingIcon = document.querySelector<HTMLLinkElement>('link[rel="icon"]')
       const icon = existingIcon ?? document.createElement('link')
       icon.rel = 'icon'
@@ -209,7 +213,7 @@ function ClientRevisionPatches() {
         <div class="dtg-proof-inner">
           <div class="dtg-proof-kicker">Black Sheep Founder Proof</div>
           <h2>Real founders. Real structure. Clearer next moves.</h2>
-          <p>Lightweight proof has been added without loading heavy videos on the front-end. Full testimonial videos can stay in the backend/library so the public page stays fast and premium.</p>
+          <p>Short founder proof from people whose vision was turned into structure, without slowing the page with heavy videos.</p>
           <div class="dtg-proof-grid">
             <div class="dtg-proof-card"><strong>Montoiya Williams</strong><span>Vision moved from her head into a clear Silver Blueprint with direction, structure, and funding-path clarity.</span></div>
             <div class="dtg-proof-card"><strong>Willie Lee Burgess Jr.</strong><span>Constructive Landscaping™ founder spotlight proof for real-world business structure and ownership.</span></div>
@@ -224,6 +228,7 @@ function ClientRevisionPatches() {
     }
 
     const applyAll = () => {
+      if (!isLanding()) return
       addStyles()
       replaceTextNodes()
       applyLogo()
@@ -248,7 +253,7 @@ function ClientRevisionPatches() {
       observer.disconnect()
       window.clearInterval(interval)
     }
-  }, [])
+  }, [location.pathname])
 
   return null
 }
@@ -258,9 +263,9 @@ function PageLoader() {
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--fsi-void)' }}>
       <div className="text-center space-y-4">
-        <div className="w-16 h-16 rounded-2xl overflow-hidden mx-auto animate-pulse flex items-center justify-center"
+        <div className="w-14 h-14 rounded-2xl overflow-hidden mx-auto animate-pulse flex items-center justify-center"
           style={{ background: 'rgba(200,16,46,0.15)', boxShadow: '0 0 28px rgba(200,16,46,0.35)' }}>
-          <img src={DTG_LOGO_DATA_URL} alt="Divorcing The Game DTG Logo" className="h-full w-full object-contain p-1" />
+          <span style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:18, color:'#c8102e' }}>BS</span>
         </div>
         <p className="font-display font-semibold text-sm tracking-widest"
           style={{ color: '#c8102e' }}>BLACK SHEEP</p>
