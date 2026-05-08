@@ -63,11 +63,12 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
 
 function AppRoutes() {
   const { user, loading } = useAuth()
+  const rootRedirect = user ? '/chat' : '/login'
 
   return (
     <Routes>
       {/* Public routes */}
-      <Route path="/"                element={loading ? <PageLoader /> : <Navigate to={user ? "/chat" : "/login"} replace />} />
+      <Route path="/"                element={loading ? <PageLoader /> : <Navigate to={rootRedirect} replace />} />
       <Route path="/login"           element={!DEV && user ? <Navigate to="/chat" replace /> : <LoginPage />} />
       <Route path="/register"        element={!DEV && user ? <Navigate to="/chat" replace /> : <RegisterPage />} />
       <Route path="/pricing"         element={<PricingPage />} />
