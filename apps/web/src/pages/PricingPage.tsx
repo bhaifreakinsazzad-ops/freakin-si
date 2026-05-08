@@ -99,7 +99,7 @@ const fadeUp = {
 
 export default function PricingPage() {
   const { user } = useAuth()
-  const { t } = useLang()
+  const { t, lang } = useLang()
   const navigate = useNavigate()
   const [plans, setPlans] = useState<Plan[]>([])
   const [currency, setCurrency] = useState<'usd' | 'bdt'>('usd')
