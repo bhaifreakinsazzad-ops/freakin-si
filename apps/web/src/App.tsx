@@ -25,6 +25,7 @@ const ChooseYourGatePage = lazy(() => import('@/pages/ChooseYourGatePage'))
 const FounderIntakePage  = lazy(() => import('@/pages/FounderIntakePage'))
 const Layout             = lazy(() => import('@/components/Layout'))
 const AICEODashboardPage = lazy(() => import('@/pages/os/AICEODashboardPage'))
+const LaunchRoadPage     = lazy(() => import('@/pages/os/LaunchRoadPage'))
 const JourneyPage        = lazy(() => import('@/pages/os/JourneyPage'))
 const ModuleLibraryPage  = lazy(() => import('@/pages/os/ModuleLibraryPage'))
 const AssetsDocumentsPage= lazy(() => import('@/pages/os/AssetsDocumentsPage'))
@@ -94,7 +95,8 @@ function AppRoutes() {
 
       {/* Protected app routes wrapped in Layout sidebar */}
       <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-        <Route path="/dashboard"            element={<AICEODashboardPage />} />
+        <Route path="/dashboard"            element={<LaunchRoadPage />} />
+        <Route path="/dashboard-legacy"     element={<AICEODashboardPage />} />
         <Route path="/journey"              element={<JourneyPage />} />
         <Route path="/modules"              element={<ModuleLibraryPage />} />
         <Route path="/assets"               element={<AssetsDocumentsPage />} />
