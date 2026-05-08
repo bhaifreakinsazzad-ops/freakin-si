@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const memdb = require('../lib/memdb');
+const { getJwtSecret } = require('../lib/jwtSecret');
 
 // Export memdb as "supabase" so all existing routes keep working unchanged
 const supabase = memdb;
@@ -13,7 +14,7 @@ const authenticateToken = async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, getJwtSecret());
     const user = memdb.getUserById(decoded.userId);
 
     if (!user) {

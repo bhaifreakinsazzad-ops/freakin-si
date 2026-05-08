@@ -5,9 +5,10 @@ const { v4: uuidv4 } = require('uuid');
 const router = express.Router();
 const memdb = require('../lib/memdb');
 const { authenticateToken } = require('../middleware/auth');
+const { getJwtSecret } = require('../lib/jwtSecret');
 
 function makeToken(userId, email) {
-  return jwt.sign({ userId, email }, process.env.JWT_SECRET, { expiresIn: '30d' });
+  return jwt.sign({ userId, email }, getJwtSecret(), { expiresIn: '30d' });
 }
 
 function sanitizeUser(user) {
