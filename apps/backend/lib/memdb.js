@@ -15,6 +15,22 @@ const tables = {
   businesses: {},
   services: {},
   payments: {},
+  business_projects: {},
+  onboarding_answers: {},
+  step_progress: {},
+  generated_assets: {},
+  ai_modules: {},
+  ai_module_runs: {},
+  review_tickets: {},
+  support_threads: {},
+  support_messages: {},
+  marketplace_listings: {},
+  marketplace_orders: {},
+  documents: {},
+  notifications: {},
+  activity_logs: {},
+  admin_notes: {},
+  pricing_plans: {},
 };
 
 // Seed demo user (always available)
