@@ -32,6 +32,7 @@ const AuthContext = createContext<AuthContextType | null>(null)
 
 const LOCAL_USERS_KEY = 'black_sheep_local_users'
 const LOCAL_TOKEN_PREFIX = 'local-auth:'
+const PREVIEW_TOKEN = 'preview-token'
 
 type LocalUserRecord = {
   user: User
@@ -117,13 +118,16 @@ const DEV_USER: User = {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const isDev = import.meta.env.DEV
-  const [user, setUser]   = useState<User | null>(isDev ? DEV_USER : null)
-  const [token, setToken] = useState<string | null>(isDev ? 'dev-token' : localStorage.getItem('ai_shala_token'))
-  const [loading, setLoading] = useState(!isDev) // dev: skip loading spinner
+  const isPreview = import.meta.env.DEV || import.meta.env.VITE_PUBLIC_ACCESS === 'true' || import.meta.env.VITE_CLIENT_PREVIEW_MODE === 'true'
+  const [user, setUser]   = useState<User | null>(isPreview ? DEV_USER : null)
+  const [token, setToken] = useState<string | null>(isPreview ? PREVIEW_TOKEN : localStorage.getItem('ai_shala_token'))
+  const [loading, setLoading] = useState(!isPreview)
 
   useEffect(() => {
-    if (isDev) return // dev: mock user already set, skip API call
+    if (isPreview) {
+      localStorage.setItem('ai_shala_token', PREVIEW_TOKEN)
+      return
+    }
     if (token) {
       const localUser = findLocalUserByToken(token)
       if (localUser) {
@@ -138,7 +142,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } else {
       setLoading(false)
     }
-  }, [])
+  }, [isPreview, token])
 
   const login = async (email: string, password: string) => {
     try {

@@ -40,7 +40,7 @@ const PricingOSPage      = lazy(() => import('@/pages/os/PricingOSPage'))
 
 // ── PUBLIC ACCESS: skip all auth gates until explicitly re-enabled ──────────
 // To re-enable auth: set VITE_PUBLIC_ACCESS=false in Vercel env and redeploy
-const DEV = import.meta.env.DEV || import.meta.env.VITE_PUBLIC_ACCESS === 'true'
+const PREVIEW_MODE = import.meta.env.DEV || import.meta.env.VITE_PUBLIC_ACCESS === 'true' || import.meta.env.VITE_CLIENT_PREVIEW_MODE === 'true'
 
 function PageLoader() {
   return (
@@ -62,28 +62,28 @@ function PageLoader() {
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
-  if (DEV) return <>{children}</>
+  if (PREVIEW_MODE) return <>{children}</>
   if (loading) return <PageLoader />
   return user ? <>{children}</> : <Navigate to="/login" replace />
 }
 
 function AdminRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
-  if (DEV) return <>{children}</>
+  if (PREVIEW_MODE) return <>{children}</>
   if (loading) return null
   return user?.is_admin ? <>{children}</> : <Navigate to="/" replace />
 }
 
 function AppRoutes() {
   const { user, loading } = useAuth()
-  const rootRedirect = user ? '/chat' : '/login'
+  const rootRedirect = PREVIEW_MODE ? '/dashboard' : user ? '/chat' : '/login'
 
   return (
     <Routes>
       {/* Public routes */}
       <Route path="/"                element={loading ? <PageLoader /> : <Navigate to={rootRedirect} replace />} />
-      <Route path="/login"           element={!DEV && user ? <Navigate to="/chat" replace /> : <LoginPage />} />
-      <Route path="/register"        element={!DEV && user ? <Navigate to="/chat" replace /> : <RegisterPage />} />
+      <Route path="/login"           element={!PREVIEW_MODE && user ? <Navigate to="/chat" replace /> : <LoginPage />} />
+      <Route path="/register"        element={!PREVIEW_MODE && user ? <Navigate to="/chat" replace /> : <RegisterPage />} />
       <Route path="/pricing-legacy"  element={<PricingPage />} />
       <Route path="/choose-your-gate" element={<ChooseYourGatePage />} />
       <Route path="/apply"           element={<FounderIntakePage />} />

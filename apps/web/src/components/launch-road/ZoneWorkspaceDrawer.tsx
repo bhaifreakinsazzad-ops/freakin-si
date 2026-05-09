@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Copy, Download, Save, Send, WandSparkles, X } from 'lucide-react'
 import { aiModuleService, assetService, journeyService, reviewService } from '@/services'
 import type { JourneyStepState, ModuleDefinition } from '@/types/domain'
 import type { ZoneWorkspaceZone } from '@/types/launchRoad'
@@ -92,16 +93,18 @@ export default function ZoneWorkspaceDrawer({ open, zone, step, suggestedModule,
 
   return (
     <div className={`fixed inset-0 z-50 ${open ? 'pointer-events-auto' : 'pointer-events-none'}`}>
-      <div className={`absolute inset-0 bg-black/60 transition-opacity ${open ? 'opacity-100' : 'opacity-0'}`} onClick={onClose} />
-      <aside className={`absolute right-0 top-0 h-full w-full max-w-xl border-l border-[var(--fsi-border)] bg-[var(--fsi-void)] p-4 transition-transform duration-300 overflow-y-auto ${open ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div className={`absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity ${open ? 'opacity-100' : 'opacity-0'}`} onClick={onClose} />
+      <aside className={`lr-drawer-surface absolute right-0 top-0 h-full w-full max-w-xl max-w-[min(100vw,36rem)] border-l border-[rgba(202,208,218,0.22)] p-4 transition-transform duration-300 overflow-y-auto ${open ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="lr-panel-premium p-3">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="text-xs uppercase tracking-[0.16em] text-[var(--bs-gold)]">Zone Workspace</p>
-              <h2 className="text-xl font-semibold mt-1">{zone?.label ?? 'Select a zone'}</h2>
-              <p className="text-xs text-[var(--fsi-text-muted)] mt-1">{zone?.mission ?? 'Choose a zone on the road to continue the mission.'}</p>
+              <p className="text-xs uppercase text-[var(--bs-gold)]">Zone Workspace</p>
+              <h2 className="mt-1 text-xl font-semibold">{zone?.label ?? 'Select a zone'}</h2>
+              <p className="mt-1 text-xs leading-5 text-[var(--fsi-text-muted)]">{zone?.mission ?? 'Choose a zone on the road to continue the mission.'}</p>
             </div>
-            <button onClick={onClose} className="rounded-lg border border-[var(--fsi-border)] px-3 py-1.5 text-xs hover:border-[var(--bs-gold)] transition">Close</button>
+            <button onClick={onClose} className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--fsi-border)] text-[var(--fsi-text-muted)] transition hover:border-[var(--bs-gold)] hover:text-white" aria-label="Close workspace">
+              <X size={15} />
+            </button>
           </div>
 
           <div className="mt-3 grid grid-cols-3 gap-2">
@@ -124,28 +127,43 @@ export default function ZoneWorkspaceDrawer({ open, zone, step, suggestedModule,
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Add mission context, constraints, goals, and inputs..."
-          className="w-full min-h-[130px] rounded-xl mt-4 bg-black/30 border border-[var(--fsi-border)] p-3 text-sm"
+          className="mt-4 min-h-[130px] w-full rounded-lg border border-[var(--fsi-border)] bg-black/35 p-3 text-sm outline-none transition focus:border-[var(--bs-gold)]"
         />
 
-        <div className="sticky top-0 z-10 py-3 bg-[linear-gradient(180deg,rgba(8,8,11,0.96),rgba(8,8,11,0.7),transparent)]">
+        <div className="sticky top-0 z-10 bg-[linear-gradient(180deg,rgba(8,8,11,0.98),rgba(8,8,11,0.8),transparent)] py-3">
           <div className="flex flex-wrap gap-2">
-            <button disabled={disabled || loading} onClick={run} className="lr-mission-btn rounded-lg px-4 py-2 text-sm disabled:opacity-50">{loading ? 'Generating...' : 'Generate / Regenerate'}</button>
-            <button disabled={disabled} onClick={saveDraft} className="rounded-lg border border-[var(--fsi-border)] px-4 py-2 text-sm hover:border-[var(--bs-gold)] transition">Save Draft</button>
-            <button disabled={disabled} onClick={submit} className="rounded-lg border border-[rgba(201,164,73,0.45)] bg-[rgba(201,164,73,0.12)] px-4 py-2 text-sm">Submit Review</button>
-            <button disabled={!ticketId} onClick={approve} className="rounded-lg border border-[var(--fsi-border)] px-4 py-2 text-sm hover:border-[var(--bs-gold)] transition">Approve</button>
-            <button onClick={() => navigator.clipboard.writeText(output)} className="rounded-lg border border-[var(--fsi-border)] px-4 py-2 text-sm hover:border-[var(--bs-gold)] transition">Copy</button>
+            <button disabled={disabled || loading} onClick={run} className="lr-mission-btn inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm disabled:opacity-50">
+              <WandSparkles size={14} />
+              {loading ? 'Generating...' : 'Generate / Regenerate'}
+            </button>
+            <button disabled={disabled} onClick={saveDraft} className="inline-flex items-center gap-2 rounded-lg border border-[var(--fsi-border)] px-4 py-2 text-sm transition hover:border-[var(--bs-gold)] disabled:opacity-50">
+              <Save size={14} />
+              Save Draft
+            </button>
+            <button disabled={disabled} onClick={submit} className="inline-flex items-center gap-2 rounded-lg border border-[rgba(201,164,73,0.45)] bg-[rgba(201,164,73,0.12)] px-4 py-2 text-sm disabled:opacity-50">
+              <Send size={14} />
+              Submit Review
+            </button>
+            <button disabled={!ticketId} onClick={approve} className="rounded-lg border border-[var(--fsi-border)] px-4 py-2 text-sm transition hover:border-[var(--bs-gold)] disabled:opacity-50">Approve</button>
+            <button onClick={() => navigator.clipboard.writeText(output)} className="inline-flex items-center gap-2 rounded-lg border border-[var(--fsi-border)] px-4 py-2 text-sm transition hover:border-[var(--bs-gold)]">
+              <Copy size={14} />
+              Copy
+            </button>
             <button disabled={disabled || !zone?.stepId} onClick={async () => {
               if (!zone?.stepId) return
               await assetService.exportDocument(`asset-${zone.stepId}`)
-            }} className="rounded-lg border border-[var(--fsi-border)] px-4 py-2 text-sm hover:border-[var(--bs-gold)] transition">Export</button>
+            }} className="inline-flex items-center gap-2 rounded-lg border border-[var(--fsi-border)] px-4 py-2 text-sm transition hover:border-[var(--bs-gold)] disabled:opacity-50">
+              <Download size={14} />
+              Export
+            </button>
           </div>
         </div>
 
-        <pre className="whitespace-pre-wrap rounded-xl mt-1 bg-black/25 border border-[var(--fsi-border)] p-3 text-xs text-[var(--fsi-text-muted)] min-h-[220px] max-h-[52vh] overflow-auto">{output || 'Generated output appears here.'}</pre>
+        <pre className="mt-1 max-h-[52vh] min-h-[220px] overflow-auto whitespace-pre-wrap rounded-lg border border-[var(--fsi-border)] bg-black/30 p-3 text-xs leading-5 text-[var(--fsi-text-muted)]">{output || 'Generated output appears here.'}</pre>
 
         <div className="mt-3 lr-panel-premium p-3">
-          <p className="text-[10px] uppercase tracking-[0.12em] text-[var(--fsi-text-dim)]">Next Action</p>
-          <p className="text-xs text-[var(--bs-gold-soft)] mt-1">{disabled ? 'Select an unlocked zone checkpoint to continue mission flow.' : 'Generate output, save draft, and submit review to advance this zone.'}</p>
+          <p className="text-[10px] uppercase text-[var(--fsi-text-dim)]">Next Action</p>
+          <p className="mt-1 text-xs text-[var(--bs-gold-soft)]">{disabled ? 'Select an unlocked zone checkpoint to continue mission flow.' : 'Generate output, save draft, and submit review to advance this zone.'}</p>
         </div>
       </aside>
     </div>

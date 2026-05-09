@@ -54,6 +54,86 @@ tables.users[DEMO_ID] = {
   updated_at: new Date().toISOString(),
 };
 
+const nowIso = () => new Date().toISOString();
+
+function seedTable(tableName, rows) {
+  for (const row of rows) {
+    tables[tableName][row.id] = { ...row };
+  }
+}
+
+seedTable('business_projects', [
+  {
+    id: 'proj-1',
+    user_id: DEMO_ID,
+    name: 'Black Sheep Founder Project',
+    idea: 'Guided AI-powered business launch operating system',
+    audience: 'First-time and growth-stage founders',
+    location: 'United States',
+    status: 'in_review',
+    current_step: 3,
+    progress: 42,
+    readiness_score: 61,
+    created_at: nowIso(),
+    updated_at: nowIso(),
+  },
+]);
+
+seedTable('step_progress', [
+  { id: 'step-1', project_id: 'proj-1', step_key: 'idea', progress: 100, status: 'approved', review_state: 'approved', updated_at: nowIso() },
+  { id: 'step-2', project_id: 'proj-1', step_key: 'brand', progress: 78, status: 'review', review_state: 'submitted', updated_at: nowIso() },
+  { id: 'step-3', project_id: 'proj-1', step_key: 'case', progress: 46, status: 'in_progress', review_state: 'none', updated_at: nowIso() },
+  { id: 'step-4', project_id: 'proj-1', step_key: 'preview', progress: 12, status: 'in_progress', review_state: 'none', updated_at: nowIso() },
+  { id: 'step-5', project_id: 'proj-1', step_key: 'setup', progress: 0, status: 'not_started', review_state: 'none', updated_at: nowIso() },
+  { id: 'step-6', project_id: 'proj-1', step_key: 'funding', progress: 0, status: 'not_started', review_state: 'none', updated_at: nowIso() },
+  { id: 'step-7', project_id: 'proj-1', step_key: 'launch', progress: 0, status: 'not_started', review_state: 'none', updated_at: nowIso() },
+]);
+
+seedTable('generated_assets', [
+  { id: 'a1', project_id: 'proj-1', title: 'Brand Kit v2', asset_type: 'brand', content: { text: 'Brand voice, palette, logo direction' }, status: 'approved', created_at: nowIso(), updated_at: nowIso() },
+  { id: 'a2', project_id: 'proj-1', title: 'Business Case Draft', asset_type: 'business_case', content: { text: 'Roadmap + pricing strategy' }, status: 'in_review', created_at: nowIso(), updated_at: nowIso() },
+  { id: 'a3', project_id: 'proj-1', title: 'Funding Snapshot', asset_type: 'funding', content: { text: 'Readiness score and assumptions' }, status: 'draft', created_at: nowIso(), updated_at: nowIso() },
+]);
+
+seedTable('ai_module_runs', [
+  { id: 'run-1', module_id: '1', project_id: 'proj-1', input: { text: 'Generate idea strategy' }, output: { summary: 'Idea strategy drafted.' }, created_at: nowIso() },
+  { id: 'run-10', module_id: '10', project_id: 'proj-1', input: { text: 'Generate brand kit' }, output: { summary: 'Brand kit drafted.' }, created_at: nowIso() },
+  { id: 'run-15', module_id: '15', project_id: 'proj-1', input: { text: 'Generate business case' }, output: { summary: 'Business case drafted.' }, created_at: nowIso() },
+]);
+
+seedTable('review_tickets', [
+  { id: 'r1', project_id: 'proj-1', asset_id: 'a2', step_key: 'brand', status: 'pending', admin_note: null, created_at: nowIso(), updated_at: nowIso() },
+]);
+
+seedTable('support_threads', [
+  { id: 's1', project_id: 'proj-1', subject: 'Need help choosing setup state', priority: 'high', status: 'in_progress', created_by: DEMO_ID, created_at: nowIso(), updated_at: nowIso() },
+]);
+
+seedTable('support_messages', [
+  { id: 'm1', thread_id: 's1', sender_id: DEMO_ID, sender_role: 'client', body: 'Which state is better for launch?', created_at: nowIso() },
+  { id: 'm2', thread_id: 's1', sender_id: DEMO_ID, sender_role: 'admin', body: 'We added state comparison inside your setup step.', created_at: nowIso() },
+]);
+
+seedTable('notifications', [
+  { id: 'n1', user_id: DEMO_ID, title: 'Review Submitted', body: 'Brand Builder assets submitted for admin review.', read: false, created_at: nowIso() },
+  { id: 'n2', user_id: DEMO_ID, title: 'Support Reply', body: 'Admin replied to your setup request.', read: false, created_at: nowIso() },
+]);
+
+seedTable('activity_logs', [
+  { id: 'ac1', project_id: 'proj-1', actor_id: DEMO_ID, actor_role: 'client', action_type: 'review', title: 'Review submitted', detail: 'Brand Builder sent for admin review.', metadata: {}, created_at: nowIso() },
+  { id: 'ac2', project_id: 'proj-1', actor_id: DEMO_ID, actor_role: 'client', action_type: 'module_run', title: 'Module run complete', detail: 'Business Case Generator produced output.', metadata: {}, created_at: nowIso() },
+  { id: 'ac3', project_id: 'proj-1', actor_id: DEMO_ID, actor_role: 'admin', action_type: 'support', title: 'Support response received', detail: 'Admin updated setup guidance.', metadata: {}, created_at: nowIso() },
+]);
+
+seedTable('pricing_plans', [
+  { id: 'plan-free', plan_key: 'free', name: 'Free', monthly_price_cents: 0, annual_price_cents: 0, features: ['Preview access'], status: 'active', position: 1, created_at: nowIso(), updated_at: nowIso() },
+  { id: 'plan-premium', plan_key: 'premium', name: 'Premium', monthly_price_cents: 19900, annual_price_cents: 199000, features: ['Launch Road', 'AI modules', 'Support'], status: 'active', position: 2, created_at: nowIso(), updated_at: nowIso() },
+]);
+
+seedTable('subscriptions', [
+  { id: 'sub-1', user_id: DEMO_ID, project_id: 'proj-1', pricing_plan_id: 'plan-premium', provider: 'placeholder', provider_subscription_id: null, status: 'active', started_at: nowIso(), ended_at: null, created_at: nowIso(), updated_at: nowIso() },
+]);
+
 // ── Query Builder ─────────────────────────────────────────────────────────────
 
 class QueryBuilder {
@@ -73,7 +153,11 @@ class QueryBuilder {
   }
 
   // ── Operations ──────────────────────────────────────────────────────────────
-  select(cols) { this._op = 'select'; this._selectCols = cols; return this; }
+  select(cols) {
+    this._selectCols = cols;
+    if (!this._op) this._op = 'select';
+    return this;
+  }
 
   insert(rows, opts) {
     this._op = 'insert';

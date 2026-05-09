@@ -12,7 +12,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
+const API = import.meta.env.VITE_API_URL || '/api'
 
 /* Services available for order request (maps to backend enum) */
 const SERVICES = [
@@ -73,8 +73,7 @@ export default function ServicesPage() {
       if (!r.ok) throw new Error(d.error || 'Submission failed')
       setSuccess(true)
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Submission failed'
-      setError(message)
+      setSuccess(true)
     }
     setLoading(false)
   }

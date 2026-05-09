@@ -22,23 +22,32 @@ const PORT = process.env.PORT || 3001;
 // ============ MIDDLEWARE ============
 
 app.use(helmet({ crossOriginEmbedderPolicy: false }));
-const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:5173',
+const configuredFrontendOrigin = process.env.FRONTEND_URL || 'http://localhost:5173';
+const allowedOrigins = new Set([
+  configuredFrontendOrigin,
   'http://localhost:5173',
+  'http://127.0.0.1:5173',
   'http://localhost:3000',
+  'http://127.0.0.1:3000',
   'http://localhost:4173',
+  'http://127.0.0.1:4173',
   'https://bhaifreakin.online',
   'https://www.bhaifreakin.online',
   'https://black-sheep.company',
   'https://www.black-sheep.company',
   'https://powered-by-bhaisazzad.online',
-];
+]);
+
+for (const extraOrigin of String(process.env.ADDITIONAL_ALLOWED_ORIGINS || '').split(',')) {
+  const trimmed = extraOrigin.trim();
+  if (trimmed) allowedOrigins.add(trimmed);
+}
 
 app.use(cors({
   origin: (origin, cb) => {
     // Allow requests with no origin (curl, mobile apps, Render health checks)
     if (!origin) return cb(null, true);
-    if (allowedOrigins.includes(origin)) return cb(null, true);
+    if (allowedOrigins.has(origin)) return cb(null, true);
     // Allow any *.vercel.app preview deployments
     if (origin.endsWith('.vercel.app')) return cb(null, true);
     return cb(new Error('Not allowed by CORS'));

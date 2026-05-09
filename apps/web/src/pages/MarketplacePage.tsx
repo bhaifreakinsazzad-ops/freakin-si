@@ -15,7 +15,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
+const API = import.meta.env.VITE_API_URL || '/api'
 
 // ─── Tab definitions ──────────────────────────────────────────────────────────
 
@@ -125,6 +125,20 @@ interface Listing {
   status: string
   created_at: string
 }
+
+const FALLBACK_LISTINGS: Listing[] = FEATURED.map((item, idx) => ({
+  id: `fallback-${idx + 1}`,
+  title: item.title,
+  description: item.niche,
+  niche: item.niche,
+  category: item.tags[0] || 'digital',
+  price: item.price,
+  monthly_revenue: item.monthly_revenue,
+  business_age: 'Preview',
+  tags: item.tags,
+  status: 'active',
+  created_at: new Date().toISOString(),
+}))
 
 // ─── Helper: tier badge colours ───────────────────────────────────────────────
 
@@ -386,9 +400,16 @@ function BusinessesTab() {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       })
       const d = await r.json()
+      if (!r.ok) throw new Error(d.error || 'Failed to load listings')
       setListings(d.listings || [])
     } catch {
-      setListings([])
+      const query = search.trim().toLowerCase()
+      setListings(FALLBACK_LISTINGS.filter((listing) => {
+        const matchesCategory = category === 'all' || listing.category === category
+        const haystack = `${listing.title} ${listing.description} ${listing.niche} ${listing.tags.join(' ')}`.toLowerCase()
+        const matchesSearch = !query || haystack.includes(query)
+        return matchesCategory && matchesSearch
+      }))
     }
     setLoading(false)
   }, [category, search, token])

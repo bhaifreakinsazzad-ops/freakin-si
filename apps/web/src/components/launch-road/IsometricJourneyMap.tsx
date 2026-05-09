@@ -24,31 +24,42 @@ export default function IsometricJourneyMap({
   onOpenZone,
   onRunModule,
 }: IsometricJourneyMapProps) {
-  const mobileZones = zones.map((z, i) => ({ ...z, topPct: 8 + (i * 11) }))
+  const mobileZones = zones.map((z, i) => ({ ...z, topPct: 4 + (i * 11.5) }))
 
   return (
     <div className="lr-panel-premium p-3">
-      <div className="hidden md:block relative h-[560px] overflow-hidden rounded-xl lr-metal-border bg-[radial-gradient(85%_130%_at_50%_2%,rgba(181,18,27,0.22),rgba(12,15,21,0.96))]">
-        <div className="absolute inset-0 opacity-45" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)', backgroundSize: '34px 34px' }} />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_15%,rgba(201,164,73,0.13),transparent_35%)]" />
+      <div className="launch-road-map-bg lr-map-stage hidden md:block relative h-[610px] overflow-hidden rounded-lg lr-metal-border">
+        <div className="absolute left-[5%] top-[70%] h-28 w-56 -skew-x-12 rounded-lg border border-[rgba(201,164,73,0.16)] bg-[rgba(201,164,73,0.04)]" />
+        <div className="absolute left-[38%] top-[42%] h-32 w-72 -skew-x-12 rounded-lg border border-[rgba(181,18,27,0.18)] bg-[rgba(181,18,27,0.05)]" />
+        <div className="absolute left-[70%] top-[15%] h-28 w-52 -skew-x-12 rounded-lg border border-[rgba(202,208,218,0.14)] bg-[rgba(202,208,218,0.035)]" />
 
         <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
-          <path d="M7,84 C17,73 24,72 33,62 C42,52 49,51 59,44 C68,37 76,32 93,21" fill="none" stroke="rgba(71,74,84,0.82)" strokeWidth="4.3" strokeLinecap="round" />
-          <path d="M7,84 C17,73 24,72 33,62 C42,52 49,51 59,44 C68,37 76,32 93,21" fill="none" stroke="rgba(201,164,73,0.62)" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="3 1" />
-          <path d="M7,84 C17,73 24,72 33,62 C42,52 49,51 59,44 C68,37 76,32 93,21" fill="none" stroke="rgba(181,18,27,0.52)" strokeWidth="1.3" strokeLinecap="round" />
+          <defs>
+            <filter id="lrRoadGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="1.8" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <path d="M8,82 C16,72 25,69 34,60 C43,51 50,49 60,42 C70,35 78,29 92,15" fill="none" stroke="rgba(4,5,8,0.82)" strokeWidth="8.2" strokeLinecap="round" />
+          <path d="M8,82 C16,72 25,69 34,60 C43,51 50,49 60,42 C70,35 78,29 92,15" fill="none" stroke="rgba(74,79,90,0.72)" strokeWidth="5.8" strokeLinecap="round" />
+          <path d="M8,82 C16,72 25,69 34,60 C43,51 50,49 60,42 C70,35 78,29 92,15" fill="none" stroke="rgba(181,18,27,0.82)" strokeWidth="2.2" strokeLinecap="round" filter="url(#lrRoadGlow)" />
+          <path d="M8,82 C16,72 25,69 34,60 C43,51 50,49 60,42 C70,35 78,29 92,15" fill="none" stroke="rgba(201,164,73,0.7)" strokeWidth="1.2" strokeLinecap="round" strokeDasharray="3 3" />
         </svg>
 
         {zones.map((zone) => <JourneyZoneNode key={zone.id} zone={zone} onOpen={onOpenZone} />)}
         {stations.map((station, idx) => (
-          <ToolStationNode key={`${station.zoneId}-${station.module.id}`} zoneId={station.zoneId} label={station.label} module={station.module} stationIndex={idx % 2} onRun={onRunModule} />
+          <ToolStationNode key={`${station.zoneId}-${station.module.id}`} zoneId={station.zoneId} label={station.label} module={station.module} stationIndex={idx} onRun={onRunModule} />
         ))}
 
         <SheepAvatarProgress leftPct={avatarLeftPct} topPct={avatarTopPct} progressPct={progressPct} />
-        <div className="absolute bottom-3 right-3 rounded-lg border border-[var(--fsi-border)] bg-[rgba(10,10,14,0.8)] px-3 py-2 text-[11px] text-[var(--fsi-text-muted)]">Current Zone: {activeZoneId}</div>
+        <div className="absolute bottom-3 right-3 rounded-lg border border-[var(--fsi-border)] bg-[rgba(10,10,14,0.82)] px-3 py-2 text-[11px] text-[var(--fsi-text-muted)]">Current Zone: {activeZoneId}</div>
       </div>
 
-      <div className="md:hidden relative h-[640px] overflow-y-auto overflow-x-hidden rounded-xl lr-metal-border bg-[radial-gradient(80%_120%_at_50%_0%,rgba(181,18,27,0.2),rgba(15,18,22,0.95))]">
-        <div className="absolute left-1/2 -translate-x-1/2 top-[5%] bottom-[4%] w-[2px] bg-[linear-gradient(180deg,rgba(181,18,27,0.72),rgba(201,164,73,0.58))]" />
+      <div className="launch-road-map-bg lr-mobile-path md:hidden relative h-[1280px] overflow-y-auto overflow-x-hidden rounded-lg lr-metal-border">
+        <div className="absolute left-1/2 top-[5%] bottom-[3%] w-[3px] -translate-x-1/2 rounded-full bg-[linear-gradient(180deg,rgba(181,18,27,0.86),rgba(201,164,73,0.64))] shadow-[0_0_22px_rgba(181,18,27,0.32)]" />
         {mobileZones.map((zone) => <JourneyZoneNode key={`m-${zone.id}`} zone={zone} mobile onOpen={onOpenZone} />)}
         {stations.slice(0, 8).map((station, idx) => (
           <ToolStationNode key={`m-${station.zoneId}-${station.module.id}`} zoneId={station.zoneId} label={station.label} module={station.module} stationIndex={idx} mobile onRun={onRunModule} />

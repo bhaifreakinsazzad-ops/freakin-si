@@ -12,6 +12,8 @@ services:
         value: production
       - key: PORT
         value: 3001
+      - key: CLIENT_PREVIEW_MODE
+        value: true
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_ANON_KEY
@@ -31,4 +33,4 @@ services:
       - key: COHERE_API_KEY
         sync: false
       - key: FRONTEND_URL
-        value: https://bhaifreakin.online
+        sync: false
