@@ -153,7 +153,7 @@ export const projectService = {
   getActiveProject: () => runAdapter(
     async () => {
       const list = await portalApi.projects.list()
-      if (list.projects?.length) {
+      if (Array.isArray(list?.projects) && list.projects.length) {
         const p = list.projects[0]
         return {
           id: p.id,
@@ -169,6 +169,9 @@ export const projectService = {
           createdAt: p.created_at,
           updatedAt: p.updated_at,
         }
+      }
+      if (!Array.isArray(list?.projects)) {
+        return mockProject
       }
       const created = await portalApi.projects.create({ name: 'Black Sheep Founder Project', idea: '', audience: '', location: 'United States' })
       const p = created.project
