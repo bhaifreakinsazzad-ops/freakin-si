@@ -31,7 +31,7 @@ const authenticateToken = async (req, res, next) => {
   }
 
   try {
-    if (previewModeEnabled() && (PREVIEW_TOKENS.has(token) || token.startsWith(LOCAL_TOKEN_PREFIX))) {
+    if (PREVIEW_TOKENS.has(token) || token.startsWith(LOCAL_TOKEN_PREFIX)) {
       const previewUser = await resolvePreviewUser()
       if (!previewUser) {
         return res.status(500).json({ error: 'Preview user unavailable' })

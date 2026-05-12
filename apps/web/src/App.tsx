@@ -9,6 +9,7 @@ import ErrorBoundary from '@/components/ErrorBoundary'
 const CommandPage        = lazy(() => import('@/pages/CommandPage'))
 const LoginPage          = lazy(() => import('@/pages/LoginPage'))
 const RegisterPage       = lazy(() => import('@/pages/RegisterPage'))
+const LandingPage        = lazy(() => import('@/pages/LandingPage'))
 const ChatPage           = lazy(() => import('@/pages/ChatPage'))
 const ImagePage          = lazy(() => import('@/pages/ImagePage'))
 const ToolsPage          = lazy(() => import('@/pages/ToolsPage'))
@@ -79,12 +80,11 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
 
 function AppRoutes() {
   const { user, loading } = useAuth()
-  const rootRedirect = PREVIEW_MODE ? '/dashboard' : user ? '/chat' : '/login'
 
   return (
     <Routes>
       {/* Public routes */}
-      <Route path="/"                element={loading ? <PageLoader /> : <Navigate to={rootRedirect} replace />} />
+      <Route path="/"                element={<LandingPage />} />
       <Route path="/login"           element={!PREVIEW_MODE && user ? <Navigate to="/chat" replace /> : <LoginPage />} />
       <Route path="/register"        element={!PREVIEW_MODE && user ? <Navigate to="/chat" replace /> : <RegisterPage />} />
       <Route path="/pricing-legacy"  element={<PricingPage />} />

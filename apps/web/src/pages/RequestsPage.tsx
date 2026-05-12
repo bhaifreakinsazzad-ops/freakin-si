@@ -14,8 +14,9 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { ordersApi } from '@/lib/api'
+import { API_BASE_URL } from '@/lib/apiBase'
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
+const API = API_BASE_URL
 
 const SERVICES = [
   { id: 'growth-engine',  icon: Rocket,      label: 'Starter Growth Engine',    desc: 'Offer + positioning + 30-day plan',           price: '$199', amount: 199 },

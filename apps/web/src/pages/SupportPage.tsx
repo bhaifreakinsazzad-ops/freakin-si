@@ -11,8 +11,9 @@ import {
   Wrench, Store, TrendingUp, LayoutDashboard, ArrowRight,
   HelpCircle, CreditCard, Bot, ShoppingCart, Server, UserCircle,
 } from 'lucide-react'
+import { API_BASE_URL } from '@/lib/apiBase'
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
+const API = API_BASE_URL
 
 const CATEGORIES = [
   { id: 'business-problem',   label: 'Business Problem',        icon: AlertCircle,     desc: 'Strategy, positioning, revenue issues' },

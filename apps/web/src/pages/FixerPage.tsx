@@ -9,8 +9,9 @@ import {
   AlertTriangle, Target, Zap, ArrowRight, CheckCircle, Lightbulb,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import { API_BASE_URL } from '@/lib/apiBase'
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
+const API = API_BASE_URL
 
 const PROBLEM_TYPES = [
   { id: 'no_sales',      label: 'No Sales / Low Revenue',    color: '#ef4444' },
