@@ -11,8 +11,9 @@ import {
   Zap, RefreshCw, Shield, BarChart3, Smartphone, MessageSquare,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import { API_BASE_URL } from '@/lib/apiBase'
 
-const API = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || '/api'
+const API = API_BASE_URL
 
 /* Services available for order request (maps to backend enum) */
 const SERVICES = [

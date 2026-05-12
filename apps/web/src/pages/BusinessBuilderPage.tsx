@@ -14,8 +14,9 @@ import {
   ExternalLink, BarChart3, Briefcase,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import { API_BASE_URL } from '@/lib/apiBase'
 
-const API = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || '/api'
+const API = API_BASE_URL
 
 /* ── Blueprint type (preserved from original) ─────────────────────────── */
 interface Blueprint {
