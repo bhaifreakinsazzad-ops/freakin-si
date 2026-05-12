@@ -4,6 +4,22 @@
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- Compatibility with earlier core migrations and the current Express auth code.
+ALTER TABLE users ADD COLUMN IF NOT EXISTS password TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS last_reset_at DATE NOT NULL DEFAULT CURRENT_DATE;
+UPDATE users SET password = password_hash WHERE password IS NULL AND password_hash IS NOT NULL;
+
+ALTER TABLE marketplace_listings ADD COLUMN IF NOT EXISTS title TEXT;
+ALTER TABLE marketplace_listings ADD COLUMN IF NOT EXISTS price_label TEXT;
+ALTER TABLE marketplace_listings ADD COLUMN IF NOT EXISTS seller_id UUID REFERENCES users(id) ON DELETE CASCADE;
+ALTER TABLE marketplace_listings ADD COLUMN IF NOT EXISTS name TEXT;
+ALTER TABLE marketplace_listings ADD COLUMN IF NOT EXISTS listing_price NUMERIC(12,2);
+ALTER TABLE marketplace_listings ADD COLUMN IF NOT EXISTS monthly_revenue TEXT DEFAULT '';
+ALTER TABLE marketplace_listings ADD COLUMN IF NOT EXISTS tags TEXT[] DEFAULT '{}';
+ALTER TABLE marketplace_listings ADD COLUMN IF NOT EXISTS verified BOOLEAN DEFAULT false;
+ALTER TABLE marketplace_listings ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0;
+
 CREATE TABLE IF NOT EXISTS business_projects (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -214,12 +230,13 @@ CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id_status ON subscriptions(use
 -- These IDs are valid UUIDs so Supabase/Postgres can use the same demo scenario
 -- while the Vercel preview API keeps its lightweight proj-1 fallback.
 INSERT INTO users (
-  id, email, password, name, phone, subscription, daily_usage, daily_limit,
+  id, email, password, password_hash, name, phone, subscription, daily_usage, daily_limit,
   image_daily_usage, image_daily_limit, is_admin, trial_ends_at, last_reset_at,
   created_at, updated_at
 ) VALUES (
   '11111111-1111-4111-8111-111111111111',
   'demo@blacksheep.ai',
+  '$2a$12$Bv8tUtqcX0nTPOhBFDsvcuaH3THRGOsGxp.bPyX3NFA4rfINnhXYa',
   '$2a$12$Bv8tUtqcX0nTPOhBFDsvcuaH3THRGOsGxp.bPyX3NFA4rfINnhXYa',
   'Demo User',
   '+1',
@@ -234,6 +251,8 @@ INSERT INTO users (
   NOW(),
   NOW()
 ) ON CONFLICT (email) DO UPDATE SET
+  password = COALESCE(users.password, EXCLUDED.password),
+  password_hash = COALESCE(users.password_hash, EXCLUDED.password_hash),
   subscription = EXCLUDED.subscription,
   is_admin = TRUE,
   updated_at = NOW();
@@ -385,17 +404,19 @@ VALUES
   ('77777777-7777-4777-8777-777777777772','66666666-6666-4666-8666-666666666666','11111111-1111-4111-8111-111111111111','admin','We added state comparison inside your setup step.')
 ON CONFLICT (id) DO NOTHING;
 
-INSERT INTO marketplace_listings (id, title, category, description, price_label, status)
+INSERT INTO marketplace_listings (id, seller_id, title, name, category, description, price_label, listing_price, monthly_revenue, tags, verified, status)
 VALUES
-  ('88888888-8888-4888-8888-888888888881','Done-For-You Launch Blueprint','Done-for-You Packages','CGWS team builds and launches complete funnel.','$1,999','active'),
-  ('88888888-8888-4888-8888-888888888882','Funding Prep Intensive','Funding Prep','Readiness audit plus lender pack support.','$599','active'),
-  ('88888888-8888-4888-8888-888888888883','Brand Sprint','Branding','Name, positioning, and visual direction in 72h.','$399','active'),
-  ('88888888-8888-4888-8888-888888888884','Website Launch Pack','Website','Landing page, CTA, and analytics setup.','$799','active')
+  ('88888888-8888-4888-8888-888888888881','11111111-1111-4111-8111-111111111111','Done-For-You Launch Blueprint','Done-For-You Launch Blueprint','Services','CGWS team builds and launches complete funnel.','$1,999',1999,'','{done-for-you,launch}'::text[],TRUE,'active'),
+  ('88888888-8888-4888-8888-888888888882','11111111-1111-4111-8111-111111111111','Funding Prep Intensive','Funding Prep Intensive','Services','Readiness audit plus lender pack support.','$599',599,'','{funding,readiness}'::text[],TRUE,'active'),
+  ('88888888-8888-4888-8888-888888888883','11111111-1111-4111-8111-111111111111','Brand Sprint','Brand Sprint','Services','Name, positioning, and visual direction in 72h.','$399',399,'','{brand,sprint}'::text[],TRUE,'active'),
+  ('88888888-8888-4888-8888-888888888884','11111111-1111-4111-8111-111111111111','Website Launch Pack','Website Launch Pack','Digital','Landing page, CTA, and analytics setup.','$799',799,'','{website,launch}'::text[],TRUE,'active')
 ON CONFLICT (id) DO UPDATE SET
   title = EXCLUDED.title,
+  name = EXCLUDED.name,
   category = EXCLUDED.category,
   description = EXCLUDED.description,
   price_label = EXCLUDED.price_label,
+  listing_price = EXCLUDED.listing_price,
   status = EXCLUDED.status,
   updated_at = NOW();
 

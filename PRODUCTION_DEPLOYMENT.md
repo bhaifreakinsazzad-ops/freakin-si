@@ -41,9 +41,10 @@ Move from client-preview-safe mode to durable production mode without breaking t
 
 ## Durable Database Path
 Use Supabase/Postgres with these migrations in order:
-1. `apps/backend/migrations/001_bhaifreakinsbi_schema.sql`
-2. `apps/backend/migrations/002_idempotent_fix.sql`
-3. `apps/backend/migrations/003_sheep_portal_structures.sql`
+1. `apps/backend/migrations/002_idempotent_fix.sql`
+2. `apps/backend/migrations/003_sheep_portal_structures.sql`
+
+The older `001_bhaifreakinsbi_schema.sql` is historical and should not be run on a blank Supabase project without manual review, because `002_idempotent_fix.sql` is the safe idempotent base used for the current production path.
 
 The third migration creates/finalizes:
 - `business_projects`
@@ -142,7 +143,8 @@ Required env:
 - `FRONTEND_URL=<frontend-domain>`
 - `CLIENT_PREVIEW_MODE=false` for production
 - `ADMIN_EMAILS=<comma-separated-admin-emails>`
-- `SUPABASE_URL=<supabase-url>`
+- `SUPABASE_PROJECT_ID=pcaturcbsepbtaqksqqm`
+- `SUPABASE_URL=https://pcaturcbsepbtaqksqqm.supabase.co`
 - `SUPABASE_SERVICE_ROLE_KEY=<service-role-key>`
 - `SUPABASE_ANON_KEY=<anon-key>`
 
@@ -201,4 +203,4 @@ Fast rollback to safe preview:
 3. Verify `/api/health` and `/dashboard`.
 
 ## Exact Next Action For Full Production Launch
-Create the Supabase project, run migrations `001` to `003`, deploy `apps/backend` to Render with Supabase env vars, then switch Vercel from same-domain preview API to the Render API in `live` mode.
+Use Supabase project `pcaturcbsepbtaqksqqm`, run migrations `002` and `003`, add the Supabase service-role key to Vercel/Render env, then switch Vercel from same-domain preview API to the Render API in `live` mode when real client accounts are ready.

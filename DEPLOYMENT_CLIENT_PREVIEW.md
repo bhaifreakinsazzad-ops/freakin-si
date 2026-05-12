@@ -53,7 +53,8 @@ Required backend env:
 - `ADMIN_EMAILS=demo@blacksheep.ai,<real-admin-email>`
 
 Durable Supabase env:
-- `SUPABASE_URL=<supabase-project-url>`
+- `SUPABASE_PROJECT_ID=pcaturcbsepbtaqksqqm`
+- `SUPABASE_URL=https://pcaturcbsepbtaqksqqm.supabase.co`
 - `SUPABASE_SERVICE_ROLE_KEY=<service-role-key>`
 - `SUPABASE_ANON_KEY=<anon-key>`
 - `SUPABASE_SERVICE_KEY=<optional-alias-for-service-role-key>`
@@ -61,8 +62,8 @@ Durable Supabase env:
 
 ## Deployment Order
 1. Keep Vercel preview live with same-domain API.
-2. Create Supabase project.
-3. Run backend migrations in order: `001`, `002`, then `003_sheep_portal_structures.sql`.
+2. Use Supabase project `pcaturcbsepbtaqksqqm`.
+3. Run backend migrations in order: `002_idempotent_fix.sql`, then `003_sheep_portal_structures.sql`. Do not run the older `001` migration on a blank Supabase project unless it has been manually reviewed for that schema.
 4. Deploy `apps/backend` to Render with Supabase env vars.
 5. Test Render `/api/health`.
 6. Set Vercel frontend env to the Render API for staging or production:

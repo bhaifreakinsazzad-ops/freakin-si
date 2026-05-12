@@ -3,6 +3,14 @@ import { randomUUID } from 'crypto';
 const now = () => new Date().toISOString();
 const demoUserId = 'demo-user-001';
 const projectId = 'proj-1';
+const durableDemoUserId = '11111111-1111-4111-8111-111111111111';
+const durableProjectId = '22222222-2222-4222-8222-222222222222';
+const defaultSupabaseProjectId = 'pcaturcbsepbtaqksqqm';
+const configuredSupabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || '';
+const configuredSupabaseProjectId = process.env.SUPABASE_PROJECT_ID || process.env.VITE_SUPABASE_PROJECT_ID || defaultSupabaseProjectId;
+const supabaseUrl = (configuredSupabaseUrl || (configuredSupabaseProjectId ? `https://${configuredSupabaseProjectId}.supabase.co` : '')).replace(/\/+$/, '');
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseEnabled = Boolean(supabaseUrl && supabaseKey);
 
 const moduleCatalog = [
   'Idea Refiner', 'Niche Finder', 'Audience Builder', 'Problem/Solution Mapper',
@@ -128,6 +136,354 @@ function blueprint(payload) {
   };
 }
 
+function normalizeProjectId(value) {
+  if (!value || String(value) === projectId) return durableProjectId;
+  return String(value);
+}
+
+function normalizeUserId(value) {
+  if (!value || String(value) === demoUserId) return durableDemoUserId;
+  return String(value);
+}
+
+function isUuid(value) {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(value || ''));
+}
+
+function cleanPayload(payload) {
+  return Object.fromEntries(Object.entries(payload).filter(([, value]) => value !== undefined));
+}
+
+function restEq(field, value) {
+  return `${field}=eq.${encodeURIComponent(String(value))}`;
+}
+
+async function supabaseRequest(table, { method = 'GET', query = '', body, upsert = false } = {}) {
+  const separator = query ? (query.startsWith('?') ? '' : '?') : '';
+  const response = await fetch(`${supabaseUrl}/rest/v1/${table}${separator}${query}`, {
+    method,
+    headers: {
+      apikey: supabaseKey,
+      Authorization: `Bearer ${supabaseKey}`,
+      'Content-Type': 'application/json',
+      Prefer: upsert ? 'resolution=merge-duplicates,return=representation' : 'return=representation',
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+
+  if (!response.ok) {
+    const detail = await response.text().catch(() => '');
+    throw new Error(`Supabase ${table} ${method} failed: ${response.status} ${detail}`);
+  }
+
+  if (response.status === 204) return [];
+  return response.json();
+}
+
+async function handleSupabase(req, parts, path, body) {
+  if (!supabaseEnabled) return null;
+
+  try {
+    if (path === '/health') return { status: 200, data: { status: 'ok', mode: 'vercel-supabase', at: now() } };
+
+    if (path === '/auth/login' && req.method === 'POST') {
+      const users = await supabaseRequest('users', { query: `select=*&email=eq.${encodeURIComponent(body.email || 'demo@blacksheep.ai')}&limit=1` });
+      return { status: 200, data: { token: 'preview-token', user: users[0] || state.users[0] } };
+    }
+    if (path === '/auth/register' && req.method === 'POST') {
+      const users = await supabaseRequest('users', {
+        method: 'POST',
+        body: cleanPayload({
+          email: body.email || `user-${Date.now()}@preview.local`,
+          name: body.name || 'Preview User',
+          password: 'preview-only',
+          password_hash: 'preview-only',
+          phone: body.phone || '',
+          subscription: 'free',
+        }),
+      });
+      return { status: 200, data: { token: 'preview-token', user: users[0] || state.users[0] } };
+    }
+    if (path === '/auth/me' && req.method === 'GET') {
+      const users = await supabaseRequest('users', { query: `select=*&id=eq.${durableDemoUserId}&limit=1` });
+      return { status: 200, data: { user: users[0] || state.users[0] } };
+    }
+    if (path === '/auth/profile' && req.method === 'PATCH') {
+      const users = await supabaseRequest('users', { method: 'PATCH', query: restEq('id', durableDemoUserId), body: cleanPayload({ ...body, updated_at: now() }) });
+      return { status: 200, data: { user: users[0] || state.users[0] } };
+    }
+
+    if (path === '/portal/projects' && req.method === 'GET') {
+      const projects = await supabaseRequest('business_projects', { query: 'select=*&order=updated_at.desc' });
+      return { status: 200, data: { projects } };
+    }
+    if (path === '/portal/projects' && req.method === 'POST') {
+      const projects = await supabaseRequest('business_projects', {
+        method: 'POST',
+        body: cleanPayload({
+          user_id: normalizeUserId(body.user_id),
+          name: body.name || 'Black Sheep Founder Project',
+          idea: body.idea || '',
+          audience: body.audience || '',
+          location: body.location || 'United States',
+          status: body.status || 'draft',
+          current_step: body.current_step || 1,
+          progress: body.progress || 0,
+          readiness_score: body.readiness_score || 0,
+        }),
+      });
+      return { status: 200, data: { project: projects[0] } };
+    }
+    if (parts[0] === 'portal' && parts[1] === 'projects' && req.method === 'PATCH') {
+      const projects = await supabaseRequest('business_projects', { method: 'PATCH', query: restEq('id', normalizeProjectId(parts[2])), body: cleanPayload({ ...body, updated_at: now() }) });
+      return { status: 200, data: { project: projects[0] } };
+    }
+
+    if (parts[0] === 'portal' && parts[1] === 'onboarding' && req.method === 'GET') {
+      const answers = await supabaseRequest('onboarding_answers', { query: `select=*&${restEq('project_id', normalizeProjectId(parts[2]))}&order=step.asc` });
+      return { status: 200, data: { answers } };
+    }
+    if (path === '/portal/onboarding' && req.method === 'POST') {
+      const answers = await supabaseRequest('onboarding_answers', {
+        method: 'POST',
+        query: 'on_conflict=project_id,step',
+        upsert: true,
+        body: cleanPayload({ project_id: normalizeProjectId(body.project_id), step: body.step || 1, payload: body.payload || {}, updated_at: now() }),
+      });
+      return { status: 200, data: { answer: answers[0] } };
+    }
+
+    if (parts[0] === 'portal' && parts[1] === 'steps' && req.method === 'GET') {
+      const steps = await supabaseRequest('step_progress', { query: `select=*&${restEq('project_id', normalizeProjectId(parts[2]))}&order=updated_at.asc` });
+      return { status: 200, data: { steps } };
+    }
+    if (path === '/portal/steps' && req.method === 'POST') {
+      const steps = await supabaseRequest('step_progress', {
+        method: 'POST',
+        query: 'on_conflict=project_id,step_key',
+        upsert: true,
+        body: cleanPayload({
+          project_id: normalizeProjectId(body.project_id),
+          step_key: body.step_key || 'idea',
+          progress: body.progress ?? 0,
+          status: body.status || 'not_started',
+          review_state: body.review_state || 'none',
+          updated_at: now(),
+        }),
+      });
+      return { status: 200, data: { step: steps[0] } };
+    }
+
+    if (parts[0] === 'portal' && parts[1] === 'assets' && req.method === 'GET') {
+      const assets = await supabaseRequest('generated_assets', { query: `select=*&${restEq('project_id', normalizeProjectId(parts[2]))}&order=created_at.desc` });
+      return { status: 200, data: { assets } };
+    }
+    if (path === '/portal/assets' && req.method === 'POST') {
+      const assets = await supabaseRequest('generated_assets', {
+        method: 'POST',
+        body: cleanPayload({
+          project_id: normalizeProjectId(body.project_id),
+          title: body.title || 'Generated Asset',
+          asset_type: body.asset_type || 'general',
+          content: body.content || {},
+          status: body.status || 'draft',
+          updated_at: now(),
+        }),
+      });
+      return { status: 200, data: { asset: assets[0] } };
+    }
+    if (parts[0] === 'portal' && parts[1] === 'assets' && req.method === 'PATCH') {
+      const assets = await supabaseRequest('generated_assets', { method: 'PATCH', query: restEq('id', parts[2]), body: cleanPayload({ ...body, updated_at: now() }) });
+      return { status: 200, data: { asset: assets[0] } };
+    }
+
+    if (parts[0] === 'portal' && parts[1] === 'modules' && parts[2] === 'runs' && req.method === 'GET') {
+      const runs = await supabaseRequest('ai_module_runs', { query: `select=*&${restEq('project_id', normalizeProjectId(parts[3]))}&order=created_at.desc` });
+      return { status: 200, data: { runs } };
+    }
+    if (path === '/portal/modules/runs' && req.method === 'POST') {
+      const module = moduleCatalog.find((item) => item.id === String(body.module_id));
+      const runs = await supabaseRequest('ai_module_runs', {
+        method: 'POST',
+        body: cleanPayload({
+          module_id: String(body.module_id || '1'),
+          project_id: normalizeProjectId(body.project_id),
+          input: body.input || {},
+          output: body.output || { summary: `${module?.name || 'Module'} output generated.` },
+          source: 'live',
+        }),
+      });
+      return { status: 200, data: { run: runs[0] } };
+    }
+
+    if (parts[0] === 'portal' && parts[1] === 'reviews' && req.method === 'GET') {
+      const tickets = await supabaseRequest('review_tickets', { query: `select=*&${restEq('project_id', normalizeProjectId(parts[2]))}&order=created_at.desc` });
+      return { status: 200, data: { tickets } };
+    }
+    if (path === '/portal/reviews' && req.method === 'POST') {
+      const tickets = await supabaseRequest('review_tickets', {
+        method: 'POST',
+        body: cleanPayload({
+          project_id: normalizeProjectId(body.project_id),
+          asset_id: isUuid(body.asset_id) ? body.asset_id : null,
+          step_key: body.step_key || null,
+          status: 'pending',
+          admin_note: null,
+        }),
+      });
+      return { status: 200, data: { ticket: tickets[0] } };
+    }
+    if (parts[0] === 'portal' && parts[1] === 'reviews' && req.method === 'PATCH') {
+      const tickets = await supabaseRequest('review_tickets', { method: 'PATCH', query: restEq('id', parts[2]), body: cleanPayload({ ...body, updated_at: now() }) });
+      return { status: 200, data: { ticket: tickets[0] } };
+    }
+
+    if (parts[0] === 'portal' && parts[1] === 'support' && parts[2] === 'threads' && req.method === 'GET') {
+      const threads = await supabaseRequest('support_threads', { query: `select=*&${restEq('project_id', normalizeProjectId(parts[3]))}&order=created_at.desc` });
+      return { status: 200, data: { threads } };
+    }
+    if (path === '/portal/support/threads' && req.method === 'POST') {
+      const threads = await supabaseRequest('support_threads', {
+        method: 'POST',
+        body: cleanPayload({
+          project_id: normalizeProjectId(body.project_id),
+          subject: body.subject || 'Support request',
+          priority: body.priority || 'medium',
+          status: body.status || 'open',
+          created_by: normalizeUserId(body.created_by),
+        }),
+      });
+      return { status: 200, data: { thread: threads[0] } };
+    }
+    if (parts[0] === 'portal' && parts[1] === 'support' && parts[2] === 'threads' && req.method === 'PATCH') {
+      const threads = await supabaseRequest('support_threads', { method: 'PATCH', query: restEq('id', parts[3]), body: cleanPayload({ ...body, updated_at: now() }) });
+      return { status: 200, data: { thread: threads[0] } };
+    }
+    if (parts[0] === 'portal' && parts[1] === 'support' && parts[2] === 'messages' && req.method === 'GET') {
+      const messages = await supabaseRequest('support_messages', { query: `select=*&${restEq('thread_id', parts[3])}&order=created_at.asc` });
+      return { status: 200, data: { messages } };
+    }
+    if (path === '/portal/support/messages' && req.method === 'POST' && isUuid(body.thread_id)) {
+      const messages = await supabaseRequest('support_messages', {
+        method: 'POST',
+        body: cleanPayload({
+          thread_id: body.thread_id,
+          sender_id: normalizeUserId(body.sender_id),
+          sender_role: body.sender_role || 'client',
+          body: body.body || '',
+        }),
+      });
+      return { status: 200, data: { message: messages[0] } };
+    }
+
+    if (parts[0] === 'portal' && parts[1] === 'marketplace' && parts[2] === 'orders' && req.method === 'GET') {
+      const orders = await supabaseRequest('marketplace_orders', { query: `select=*&${restEq('project_id', normalizeProjectId(parts[3]))}&order=created_at.desc` });
+      return { status: 200, data: { orders } };
+    }
+    if (path === '/portal/marketplace/orders' && req.method === 'POST') {
+      const orders = await supabaseRequest('marketplace_orders', {
+        method: 'POST',
+        body: cleanPayload({
+          listing_id: isUuid(body.listing_id) ? body.listing_id : null,
+          project_id: normalizeProjectId(body.project_id),
+          requester_id: normalizeUserId(body.requester_id),
+          status: body.status || 'requested',
+          note: body.note || null,
+        }),
+      });
+      return { status: 200, data: { order: orders[0] } };
+    }
+
+    if (parts[0] === 'portal' && parts[1] === 'documents' && req.method === 'GET') {
+      const documents = await supabaseRequest('documents', { query: `select=*&${restEq('project_id', normalizeProjectId(parts[2]))}&order=created_at.desc` });
+      return { status: 200, data: { documents } };
+    }
+    if (path === '/portal/documents' && req.method === 'POST') {
+      const documents = await supabaseRequest('documents', {
+        method: 'POST',
+        body: cleanPayload({
+          project_id: normalizeProjectId(body.project_id),
+          asset_id: isUuid(body.asset_id) ? body.asset_id : null,
+          name: body.name || 'Generated Document',
+          document_type: body.document_type || 'general',
+          uri: body.uri || null,
+          status: body.status || 'ready',
+        }),
+      });
+      return { status: 200, data: { document: documents[0] } };
+    }
+
+    if (path === '/portal/notifications' && req.method === 'GET') {
+      const notifications = await supabaseRequest('notifications', { query: 'select=*&order=created_at.desc' });
+      return { status: 200, data: { notifications } };
+    }
+    if (path === '/portal/notifications' && req.method === 'POST') {
+      const notifications = await supabaseRequest('notifications', { method: 'POST', body: cleanPayload({ user_id: normalizeUserId(body.user_id), title: body.title || 'Notification', body: body.body || '', read: false }) });
+      return { status: 200, data: { notification: notifications[0] } };
+    }
+    if (parts[0] === 'portal' && parts[1] === 'notifications' && parts[3] === 'read' && req.method === 'PATCH') {
+      const notifications = await supabaseRequest('notifications', { method: 'PATCH', query: restEq('id', parts[2]), body: { read: true, read_at: now() } });
+      return { status: 200, data: { notification: notifications[0] } };
+    }
+
+    if (parts[0] === 'portal' && parts[1] === 'activity' && req.method === 'GET') {
+      const activity = await supabaseRequest('activity_logs', { query: `select=*&${restEq('project_id', normalizeProjectId(parts[2]))}&order=created_at.desc` });
+      return { status: 200, data: { activity } };
+    }
+    if (path === '/portal/activity' && req.method === 'POST') {
+      const activity = await supabaseRequest('activity_logs', {
+        method: 'POST',
+        body: cleanPayload({
+          project_id: normalizeProjectId(body.project_id),
+          actor_id: normalizeUserId(body.actor_id),
+          actor_role: body.actor_role || 'client',
+          action_type: body.action_type || 'event',
+          title: body.title || 'Activity',
+          detail: body.detail || '',
+          metadata: body.metadata || {},
+        }),
+      });
+      return { status: 200, data: { activity: activity[0] } };
+    }
+
+    if (parts[0] === 'portal' && parts[1] === 'admin-notes' && req.method === 'GET') {
+      const notes = await supabaseRequest('admin_notes', { query: `select=*&${restEq('project_id', normalizeProjectId(parts[2]))}&order=created_at.desc` });
+      return { status: 200, data: { notes } };
+    }
+    if (path === '/portal/admin-notes' && req.method === 'POST') {
+      const notes = await supabaseRequest('admin_notes', {
+        method: 'POST',
+        body: cleanPayload({
+          project_id: normalizeProjectId(body.project_id),
+          review_ticket_id: isUuid(body.review_ticket_id) ? body.review_ticket_id : null,
+          admin_id: normalizeUserId(body.admin_id),
+          note: body.note || '',
+          visibility: body.visibility || 'internal',
+        }),
+      });
+      return { status: 200, data: { note: notes[0] } };
+    }
+
+    if (path === '/portal/pricing-plans') {
+      const plans = await supabaseRequest('pricing_plans', { query: 'select=*&order=position.asc' });
+      return { status: 200, data: { plans } };
+    }
+    if (path === '/portal/subscriptions') {
+      const subscriptions = await supabaseRequest('subscriptions', { query: 'select=*&order=created_at.desc' });
+      return { status: 200, data: { subscriptions } };
+    }
+    if (path === '/tools' && req.method === 'GET') {
+      const tools = await supabaseRequest('ai_modules', { query: 'select=*&order=id.asc' });
+      return { status: 200, data: { tools } };
+    }
+  } catch (error) {
+    console.error('[preview-api] Supabase fallback:', error.message || error);
+    return null;
+  }
+
+  return null;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE,OPTIONS');
@@ -142,6 +498,9 @@ export default async function handler(req, res) {
   const body = getBody(req);
 
   try {
+    const live = await handleSupabase(req, parts, path, body);
+    if (live) return send(res, live.status, live.data);
+
     if (path === '/health') return send(res, 200, { status: 'ok', mode: 'vercel-preview', at: now() });
 
     if (path === '/auth/login' && req.method === 'POST') {
