@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
-const memdb = require('../lib/memdb');
+const db = require('../lib/db');
 const { getJwtSecret } = require('../lib/jwtSecret');
 
-// Export memdb as "supabase" so all existing routes keep working unchanged
-const supabase = memdb;
+// Export the active database client so existing routes keep working unchanged.
+const { supabase } = db;
 const PREVIEW_TOKENS = new Set(['preview-token', 'dev-token']);
 const LOCAL_TOKEN_PREFIX = 'local-auth:';
 
@@ -12,7 +12,7 @@ function previewModeEnabled() {
 }
 
 function resolvePreviewUser() {
-  return memdb.getUserByEmail('demo@blacksheep.ai') || memdb.getUserById('demo-user-001') || null;
+  return db.getUserByEmail('demo@blacksheep.ai');
 }
 
 const authenticateToken = async (req, res, next) => {
@@ -25,7 +25,7 @@ const authenticateToken = async (req, res, next) => {
 
   try {
     if (previewModeEnabled() && (PREVIEW_TOKENS.has(token) || token.startsWith(LOCAL_TOKEN_PREFIX))) {
-      const previewUser = resolvePreviewUser();
+      const previewUser = await resolvePreviewUser();
       if (!previewUser) {
         return res.status(500).json({ error: 'Preview user unavailable' });
       }
@@ -34,7 +34,7 @@ const authenticateToken = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, getJwtSecret());
-    const user = memdb.getUserById(decoded.userId);
+    const user = await db.getUserById(decoded.userId);
 
     if (!user) {
       return res.status(401).json({ error: 'Invalid token' });

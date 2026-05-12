@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const router = express.Router();
-const memdb = require('../lib/memdb');
+const db = require('../lib/db');
 const { authenticateToken } = require('../middleware/auth');
 const { getJwtSecret } = require('../lib/jwtSecret');
 
@@ -28,7 +28,7 @@ router.post('/register', async (req, res) => {
     }
 
     const lowerEmail = email.toLowerCase();
-    if (memdb.getUserByEmail(lowerEmail)) {
+    if (await db.getUserByEmail(lowerEmail)) {
       return res.status(400).json({ error: 'An account with this email already exists' });
     }
 
@@ -51,9 +51,9 @@ router.post('/register', async (req, res) => {
       updated_at: new Date().toISOString(),
     };
 
-    memdb.addUser(newUser);
+    const savedUser = await db.addUser(newUser);
 
-    res.status(201).json({ token: makeToken(newUser.id, newUser.email), user: sanitizeUser(newUser) });
+    res.status(201).json({ token: makeToken(savedUser.id, savedUser.email), user: sanitizeUser(savedUser) });
   } catch (err) {
     console.error('Register error:', err);
     res.status(500).json({ error: 'Internal server error' });
@@ -68,7 +68,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Email and password required' });
     }
 
-    const user = memdb.getUserByEmail(email.toLowerCase());
+    const user = await db.getUserByEmail(email.toLowerCase());
     if (!user) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
@@ -85,6 +85,12 @@ router.post('/login', async (req, res) => {
       user.daily_usage = 0;
       user.image_daily_usage = 0;
       user.last_reset_at = today.toISOString();
+      await db.updateUser(user.id, {
+        daily_usage: user.daily_usage,
+        image_daily_usage: user.image_daily_usage,
+        last_reset_at: user.last_reset_at,
+        updated_at: new Date().toISOString(),
+      });
     }
 
     res.json({ token: makeToken(user.id, user.email), user: sanitizeUser(user) });
@@ -103,11 +109,11 @@ router.get('/me', authenticateToken, (req, res) => {
 router.patch('/profile', authenticateToken, async (req, res) => {
   try {
     const { name, phone, avatar_url } = req.body;
-    const user = memdb.getUserById(req.user.id);
-    if (name !== undefined) user.name = name;
-    if (phone !== undefined) user.phone = phone;
-    if (avatar_url !== undefined) user.avatar_url = avatar_url;
-    user.updated_at = new Date().toISOString();
+    const patch = { updated_at: new Date().toISOString() };
+    if (name !== undefined) patch.name = name;
+    if (phone !== undefined) patch.phone = phone;
+    if (avatar_url !== undefined) patch.avatar_url = avatar_url;
+    const user = await db.updateUser(req.user.id, patch);
     res.json({ user: sanitizeUser(user) });
   } catch (err) {
     res.status(500).json({ error: 'Internal server error' });
@@ -118,14 +124,16 @@ router.patch('/profile', authenticateToken, async (req, res) => {
 router.post('/change-password', authenticateToken, async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
-    const user = memdb.getUserById(req.user.id);
+    const user = await db.getUserById(req.user.id);
 
     const valid = await bcrypt.compare(currentPassword, user.password);
     if (!valid) return res.status(401).json({ error: 'Current password is incorrect' });
     if (newPassword.length < 6) return res.status(400).json({ error: 'New password must be at least 6 characters' });
 
-    user.password = await bcrypt.hash(newPassword, 12);
-    user.updated_at = new Date().toISOString();
+    await db.updateUser(req.user.id, {
+      password: await bcrypt.hash(newPassword, 12),
+      updated_at: new Date().toISOString(),
+    });
     res.json({ success: true, message: 'Password changed successfully' });
   } catch (err) {
     res.status(500).json({ error: 'Internal server error' });

@@ -3,8 +3,9 @@ import { mockProject, mockRuns, mockSteps } from '@/data/mockStore'
 import type { JourneyStepState, ModuleDefinition, ModuleRun } from '@/types/domain'
 import { runAdapter } from '@/services/adapter'
 import { businessesApi, portalApi } from '@/services/httpApi'
+import { getActiveProjectId, getPreviewProjectId } from '@/services/projectContext'
 
-const PROJECT_ID = mockProject.id
+const PROJECT_ID = getPreviewProjectId()
 
 const stepMap: Record<number, JourneyStepState['key']> = {
   1: 'idea',
@@ -57,7 +58,8 @@ function fromLiveSteps(rows: any[]): JourneyStepState[] {
 export const journeyService = {
   getSteps: () => runAdapter<JourneyStepState[]>(
     async () => {
-      const r = await portalApi.steps.list(PROJECT_ID)
+      const projectId = await getActiveProjectId()
+      const r = await portalApi.steps.list(projectId)
       return fromLiveSteps(r.steps || [])
     },
     () => mockSteps,
@@ -68,7 +70,8 @@ export const journeyService = {
     const review_state = progress >= 100 ? 'submitted' : 'none'
     return runAdapter(
       async () => {
-        const r = await portalApi.steps.save({ project_id: PROJECT_ID, step_key: key, progress: Math.max(0, Math.min(100, progress)), status, review_state })
+        const projectId = await getActiveProjectId()
+        const r = await portalApi.steps.save({ project_id: projectId, step_key: key, progress: Math.max(0, Math.min(100, progress)), status, review_state })
         return {
           id: stepId,
           key,
@@ -98,7 +101,8 @@ export const aiModuleService = {
   listModules: () => runAdapter<ModuleDefinition[]>(async () => moduleCatalog, () => moduleCatalog),
   getRecentRuns: () => runAdapter<ModuleRun[]>(
     async () => {
-      const r = await portalApi.moduleRuns.list(PROJECT_ID)
+      const projectId = await getActiveProjectId()
+      const r = await portalApi.moduleRuns.list(projectId)
       return (r.runs || []).map((run: any) => ({ id: run.id, moduleId: String(run.module_id), projectId: run.project_id, input: JSON.stringify(run.input), output: JSON.stringify(run.output, null, 2), createdAt: run.created_at }))
     },
     () => mockRuns,
@@ -119,10 +123,11 @@ export const aiModuleService = {
 
     return runAdapter(
       async () => {
-        const created = await portalApi.moduleRuns.create({ module_id: moduleId, project_id: PROJECT_ID, input: { text: input }, output: outputObj })
+        const projectId = await getActiveProjectId()
+        const created = await portalApi.moduleRuns.create({ module_id: moduleId, project_id: projectId, input: { text: input }, output: outputObj })
         const m = moduleCatalog.find((x) => x.id === moduleId)
         if (m) m.usageCount += 1
-        return { id: created.run.id, moduleId, projectId: PROJECT_ID, input, output: JSON.stringify(outputObj, null, 2), createdAt: created.run.created_at }
+        return { id: created.run.id, moduleId, projectId, input, output: JSON.stringify(outputObj, null, 2), createdAt: created.run.created_at }
       },
       async () => {
         const run: ModuleRun = {
