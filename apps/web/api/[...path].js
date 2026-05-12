@@ -6,10 +6,13 @@ const projectId = 'proj-1';
 const durableDemoUserId = '11111111-1111-4111-8111-111111111111';
 const durableProjectId = '22222222-2222-4222-8222-222222222222';
 const defaultSupabaseProjectId = 'pcaturcbsepbtaqksqqm';
+// Supabase publishable keys are intentionally public. Service-role env vars still
+// take priority for locked-down production deployments.
+const defaultSupabasePublishableKey = 'sb_publishable_qIKBiczdSxLKXBtSux9PuA_MPBYZhKO';
 const configuredSupabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || '';
 const configuredSupabaseProjectId = process.env.SUPABASE_PROJECT_ID || process.env.VITE_SUPABASE_PROJECT_ID || defaultSupabaseProjectId;
 const supabaseUrl = (configuredSupabaseUrl || (configuredSupabaseProjectId ? `https://${configuredSupabaseProjectId}.supabase.co` : '')).replace(/\/+$/, '');
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || defaultSupabasePublishableKey;
 const supabaseEnabled = Boolean(supabaseUrl && supabaseKey);
 
 const moduleCatalog = [
