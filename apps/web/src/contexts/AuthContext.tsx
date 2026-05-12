@@ -107,7 +107,7 @@ function hasValidAuthPayload(data: any): data is { token: string; user: User } {
 const DEV_USER: User = {
   id: 'dev-preview-user',
   email: 'demo@enginenotreal.com',
-  name: 'Engine NotREAL Demo',
+  name: 'Not Real Engine Demo',
   subscription: 'premium',
   daily_usage: 3,
   daily_limit: 999,

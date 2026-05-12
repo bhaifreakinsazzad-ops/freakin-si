@@ -1,5 +1,5 @@
 /**
- * Engine NotREAL — Run / CRM
+ * Not Real Engine — Run / CRM
  * Lightweight business operations dashboard: leads, projects, requests
  */
 import { useState } from 'react'

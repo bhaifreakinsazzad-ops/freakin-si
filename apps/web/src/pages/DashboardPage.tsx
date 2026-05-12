@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLang } from '@/contexts/LanguageContext'
+import { brand } from '@/config/brand'
 import { authApi, subscriptionApi, adminApi } from '@/lib/api'
 import { MessageSquare, Image, Wrench, CreditCard, Crown, TrendingUp, Calendar, Zap, Briefcase, Store, Sparkles, ArrowRight, Shield, Target, FileText, ChevronRight } from 'lucide-react'
 import { cn, getSubscriptionBadge, formatDate } from '@/lib/utils'
@@ -64,11 +65,11 @@ export default function DashboardPage() {
             <div className="flex items-center gap-2 mb-1">
               <Shield size={14} style={{ color: '#c9a449' }} />
               <span style={{ fontSize:11, fontFamily:"'Montserrat',sans-serif", fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', color:'#c9a449' }}>
-                Divorcing The Game™
+                {brand.brandName}
               </span>
             </div>
-            <h1 className="font-display font-bold" style={{ fontSize:'1.75rem', color:'#f5f0e8' }}>Legacy Dashboard</h1>
-            <p className="text-sm mt-0.5" style={{ color:'var(--bs-steel)' }}>Welcome home, {user.name}. Your vision becomes structure here.</p>
+            <h1 className="font-display font-bold" style={{ fontSize:'1.75rem', color:'#f5f0e8' }}>Dashboard</h1>
+            <p className="text-sm mt-0.5" style={{ color:'var(--bs-steel)' }}>Welcome home, {user.name}. Your work becomes structure here.</p>
           </div>
           <span className={cn('px-3 py-1.5 rounded-full text-sm font-bold', getSubscriptionBadge(user.subscription))}>
             {subLabel}
@@ -178,12 +179,12 @@ export default function DashboardPage() {
           ))}
         </div>
 
-        {/* Black Sheep Platform Overview */}
+        {/* Platform Overview */}
         <div className="rounded-2xl p-5 space-y-4"
           style={{ background:'linear-gradient(135deg,rgba(181,18,27,0.08),rgba(201,164,73,0.04))', border:'1px solid rgba(201,164,73,0.22)' }}>
           <div className="flex items-center justify-between">
             <h2 className="font-bold flex items-center gap-2 text-sm" style={{ color:'#c9a449', fontFamily:"'Montserrat',sans-serif", letterSpacing:'0.05em', textTransform:'uppercase' }}>
-              <Shield size={14} style={{ color:'#c9a449' }} /> Black Sheep Platform
+              <Shield size={14} style={{ color:'#c9a449' }} /> {brand.brandName}
             </h2>
             <Link to="/builder" className="text-xs flex items-center gap-1" style={{ color:'var(--bs-steel)' }}>
               Uncover My Gold <ArrowRight size={12} />

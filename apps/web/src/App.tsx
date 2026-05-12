@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from '@/contexts/AuthContext'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import { ChatModeProvider } from '@/contexts/ChatModeContext'
 import ErrorBoundary from '@/components/ErrorBoundary'
+import { brand } from '@/config/brand'
 
 // Lazy-loaded pages (code-split; each page is its own chunk)
 const CommandPage        = lazy(() => import('@/pages/CommandPage'))
@@ -52,12 +53,12 @@ function PageLoader() {
       <div className="text-center space-y-4">
         <div className="w-14 h-14 rounded-2xl overflow-hidden mx-auto animate-pulse flex items-center justify-center"
           style={{ background: 'rgba(99,102,241,0.15)', boxShadow: '0 0 28px rgba(99,102,241,0.35)' }}>
-          <span style={{ fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, fontSize:18, color:'#818cf8' }}>EN</span>
+          <span style={{ fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, fontSize:18, color:'#818cf8' }}>{brand.shortName}</span>
         </div>
         <p className="font-display font-semibold text-sm tracking-widest"
-          style={{ color: '#818cf8', fontFamily:"'Space Grotesk',sans-serif" }}>ENGINE NOTREAL</p>
+          style={{ color: '#818cf8', fontFamily:"'Space Grotesk',sans-serif" }}>{brand.brandName}</p>
         <p style={{ color:'rgba(255,255,255,0.35)', fontSize:10, letterSpacing:'0.15em', textTransform:'uppercase' }}>
-          AI Business Engine
+          {brand.category}
         </p>
       </div>
     </div>

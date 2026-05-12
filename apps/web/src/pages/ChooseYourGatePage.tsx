@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { gates } from '@/config/gates'
 import { disclaimers } from '@/config/disclaimers'
 import { CheckCircle, ArrowRight, Shield } from 'lucide-react'
+import { brand } from '@/config/brand'
 
 const T = {
   red: '#b5121b', redBright: '#ef233c', gold: '#c9a449', goldSoft: '#e0c878',
@@ -18,11 +19,11 @@ export default function ChooseYourGatePage() {
       <nav style={{ borderBottom:`1px solid ${T.border}`, padding:'16px 32px', display:'flex', alignItems:'center', justifyContent:'space-between', backdropFilter:'blur(20px)', position:'sticky', top:0, zIndex:50, background:'rgba(5,5,5,0.92)' }}>
         <Link to="/" style={{ display:'flex', alignItems:'center', gap:10, textDecoration:'none' }}>
           <div style={{ width:36, height:36, borderRadius:10, background:'rgba(181,18,27,0.15)', border:'1px solid rgba(181,18,27,0.30)', display:'flex', alignItems:'center', justifyContent:'center' }}>
-            <span style={{ fontFamily:T.M, fontWeight:900, fontSize:13, color:T.red }}>BS</span>
+            <span style={{ fontFamily:T.M, fontWeight:900, fontSize:13, color:T.red }}>{brand.shortName}</span>
           </div>
           <div>
-            <div style={{ fontFamily:T.M, fontWeight:800, fontSize:13, color:T.red, letterSpacing:'0.08em', textTransform:'uppercase' }}>Black Sheep</div>
-            <div style={{ fontSize:10, color:T.steel, letterSpacing:'0.10em', textTransform:'uppercase' }}>Divorcing The Game™</div>
+            <div style={{ fontFamily:T.M, fontWeight:800, fontSize:13, color:T.red, letterSpacing:'0.08em', textTransform:'uppercase' }}>{brand.brandName}</div>
+            <div style={{ fontSize:10, color:T.steel, letterSpacing:'0.10em', textTransform:'uppercase' }}>{brand.tagline}</div>
           </div>
         </Link>
         <Link to="/apply" className="btn-primary" style={{ fontSize:12, padding:'10px 24px' }}>
@@ -39,7 +40,7 @@ export default function ChooseYourGatePage() {
           Choose Your Gate
         </h1>
         <p style={{ fontSize:'1.125rem', color:T.steel, maxWidth:560, margin:'0 auto 16px', lineHeight:1.7 }}>
-          Every Black Sheep does not need the same door. Choose the level of structure, guidance, and support that fits your next move.
+          Every founder does not need the same door. Choose the level of structure, guidance, and support that fits your next move.
         </p>
         <p style={{ fontSize:13, color:T.gold, fontFamily:T.M, letterSpacing:'0.08em', textTransform:'uppercase' }}>
           Clarity before capital. Structure before scale.
@@ -121,7 +122,7 @@ export default function ChooseYourGatePage() {
           Uncover My Gold first.
         </h2>
         <div style={{ display:'flex', gap:16, justifyContent:'center', flexWrap:'wrap' }}>
-          <Link to="/apply" className="btn-primary">Apply as a Black Sheep Founder</Link>
+          <Link to="/apply" className="btn-primary">Apply as a Founder</Link>
           <Link to="/" className="btn-secondary">← Back to Home</Link>
         </div>
       </section>

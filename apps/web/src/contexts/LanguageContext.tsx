@@ -90,7 +90,7 @@ const translations = {
     ctaBtn: 'এখনই রেজিস্টার করুন',
 
     // Footer
-    footerMade: 'Made with 💚 in Bangladesh · © 2026 - DhandaBuzz Powered by BhaiSazzaD',
+    footerMade: 'Built for business owners · © 2026 - Not Real Engine',
 
     // Login page
     loginSubtitle: 'আপনার অ্যাকাউন্টে প্রবেশ করুন',
@@ -247,8 +247,8 @@ const translations = {
 
   en: {
     // Brand
-    brand: 'Black Sheep AI',
-    tagline: "Divorcing The Game™ — Exit Survival Mode",
+    brand: 'Not Real Engine',
+    tagline: 'Build. Fix. Run. Grow. One Engine.',
 
     // Nav
     navFeatures: 'Features',
@@ -273,8 +273,8 @@ const translations = {
     stat4Label: 'Bangla Support',
 
     // Features section
-    featuresTitle: 'Why Black Sheep AI?',
-    featuresSub: 'Built for Bangladesh, speaks Bangla',
+    featuresTitle: 'Why Not Real Engine?',
+    featuresSub: 'Built for business owners who need one operating layer',
     feat1Title: 'AI Chat',
     feat1Desc: 'Chat with 40+ AI models. LLaMA, Gemini, Mistral — all in one place.',
     feat2Title: 'Image Generation',
@@ -332,7 +332,7 @@ const translations = {
     ctaBtn: 'Register Now',
 
     // Footer
-    footerMade: 'Made with 💚 in Bangladesh · © 2026 - DhandaBuzz Powered by BhaiSazzaD',
+    footerMade: 'Built for business owners · © 2026 - Not Real Engine',
 
     // Login page
     loginSubtitle: 'Sign in to your account',
@@ -382,7 +382,7 @@ const translations = {
     // Chat page
     chatNewChat: 'New Chat',
     chatNoConvs: 'No conversations',
-    chatWelcome: 'Welcome to Black Sheep AI!',
+    chatWelcome: 'Welcome to Not Real Engine!',
     chatWelcomeSub: 'Start a new chat or use an example below',
     chatPrompt1: 'Write a story in Bangla',
     chatPrompt2: 'Write Python code for me',
@@ -468,18 +468,18 @@ const translations = {
     dashNoPayments: 'No payments yet',
 
     // Pricing page
-    pricingPageTitle: 'The Right Plan For You',
-    pricingPageSub: 'Pay instantly with bKash, Nagad, Rocket. No credit card needed.',
-    pricingPageBadge: 'Simple pricing, Bangladeshi payments',
+    pricingPageTitle: 'The Right Plan For Your Engine',
+    pricingPageSub: 'Manual review is active during beta. Stripe comes later.',
+    pricingPageBadge: 'Simple pricing, manual beta review',
     pricingCurrentPlan: 'Current plan:',
     pricingMostPopular: 'Most Popular',
     pricingFreeLabel: 'Free',
     pricingCurrentPlanBtn: 'Current Plan',
     pricingStartFree: 'Start Free',
-    pricingPayNow: 'Pay Now',
-    pricingPaymentTitle: 'Accepted Payment Methods',
-    pricingPaymentNote: 'After payment, submit your transaction ID and your account will be upgraded within',
-    pricingPaymentNoteHighlight: '2–24 hours',
+    pricingPayNow: 'Submit Payment Reference',
+    pricingPaymentTitle: 'Beta Payment Review',
+    pricingPaymentNote: 'After you submit payment details, your account will be reviewed within',
+    pricingPaymentNoteHighlight: '2-24 hours',
     pricingPaymentNoteEnd: '',
     pricingFaqTitle: 'FAQ',
     pricingGotoDash: 'Go to Dashboard',

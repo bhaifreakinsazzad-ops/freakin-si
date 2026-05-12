@@ -1,5 +1,5 @@
 /**
- * Black Sheep — The Gate (Marketplace)
+ * Not Real Engine — Marketplace
  * 4-tab marketplace: Ready-Made Businesses, Websites & Apps, Tools & Assets, Custom AI Agents
  */
 

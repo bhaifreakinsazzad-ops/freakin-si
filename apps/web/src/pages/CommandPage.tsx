@@ -353,8 +353,8 @@ export default function CommandPage() {
               <Command className="h-6 w-6 text-cyan-300" />
             </div>
             <div>
-              <div className="text-xl font-black tracking-[0.12em] text-white">ENGINE NOTREAL</div>
-              <div className="text-[10px] font-bold tracking-[0.36em] text-cyan-300">AI BUSINESS ENGINE</div>
+              <div className="text-xl font-black tracking-[0.12em] text-white">Not Real Engine</div>
+              <div className="text-[10px] font-bold tracking-[0.36em] text-cyan-300">AI BUSINESS OPERATING ENGINE</div>
             </div>
           </div>
           <div className="hidden items-center gap-2 md:flex">
@@ -381,7 +381,7 @@ export default function CommandPage() {
             <motion.main key="command" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -18 }} className="grid gap-6 lg:grid-cols-[1.08fr_.92fr]">
               <section className="relative overflow-hidden rounded-[2.3rem] border border-cyan-300/20 bg-slate-950/65 p-6 shadow-[0_0_80px_rgba(34,211,238,.10)] backdrop-blur-xl md:p-10">
                 <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-300/25 bg-emerald-400/10 px-4 py-2 text-xs font-bold text-emerald-100">
-                  <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" /> DhandaBuzz execution backbone connected
+                  <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" /> Live execution backbone connected
                 </div>
                 <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-semibold text-slate-300">
                   <BadgeCheck className="h-4 w-4 text-cyan-300" /> Demo mode works with no backend or AI keys
@@ -390,7 +390,7 @@ export default function CommandPage() {
                   Create. Fix. Run. Sell. <span className="text-cyan-300">One AI Engine.</span>
                 </h1>
                 <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-                  Engine NotREAL turns messy business problems into structured blueprints, service requests, CRM actions, marketplace offers, and AI-powered execution plans.
+                  Not Real Engine turns messy business problems into structured blueprints, service requests, CRM actions, marketplace offers, and AI-powered execution plans.
                 </p>
                 <div className="mt-8 grid gap-3 md:grid-cols-3">
                   <Link to="/builder" className="rounded-3xl bg-cyan-400 px-6 py-5 text-left font-black text-slate-950 shadow-[0_0_38px_rgba(34,211,238,.45)] transition hover:scale-[1.02]">
@@ -654,7 +654,7 @@ export default function CommandPage() {
             <motion.section key="market" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -18 }}>
               <div className={`${shell('p-6 md:p-8')}`}>
                 <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-                  <SectionTitle kicker="Marketplace" title="Service Packs" sub="Productized DhandaBuzz and Engine NotREAL delivery packs with honest MVP CTAs." />
+                  <SectionTitle kicker="Marketplace" title="Service Packs" sub="Productized service packs with honest MVP CTAs." />
                   <div className="relative w-full md:w-96">
                     <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" />
                     <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search launch, sales, AI, funnel..." className="w-full rounded-2xl border border-white/10 bg-white/[.05] py-4 pl-12 pr-4 text-white outline-none focus:border-cyan-300" />
@@ -766,7 +766,7 @@ export default function CommandPage() {
                 <X className="h-5 w-5 text-white" />
               </button>
               <h3 className="text-4xl font-black tracking-[-0.05em] text-white">Live Engine Blueprint</h3>
-              <p className="mt-2 text-slate-400">A generated preview of how Engine NotREAL thinks across Create, Fix, Run, and Sell.</p>
+              <p className="mt-2 text-slate-400">A generated preview of how Not Real Engine thinks across Create, Fix, Run, and Sell.</p>
               <div className="mt-6 grid gap-4 md:grid-cols-2">
                 <div className="rounded-3xl border border-white/10 bg-white/[.04] p-4">
                   <div className="text-xs uppercase tracking-[0.25em] text-slate-500">Business</div>

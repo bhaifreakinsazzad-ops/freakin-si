@@ -1,5 +1,5 @@
 /**
- * Engine NotREAL — Support Page
+ * Not Real Engine — Support Page
  * Submit a support ticket. Works in demo/memdb mode — no Supabase required.
  */
 
@@ -173,7 +173,7 @@ export default function SupportPage() {
           <div className="flex items-center gap-2 mb-3">
             <HeadphonesIcon className="w-5 h-5" style={{ color: '#818cf8' }} />
             <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#818cf8' }}>
-              Engine NotREAL Support
+              Not Real Engine Support
             </span>
           </div>
           <h1 className="text-3xl font-bold mb-3" style={{ color: '#f1f5f9', fontFamily: "'Space Grotesk', sans-serif" }}>

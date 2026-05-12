@@ -18,62 +18,90 @@ import {
   Wrench,
   ShieldCheck,
 } from 'lucide-react'
+import { brand } from '@/config/brand'
 
 const trustStrip = [
   'Supabase-backed customer portal',
-  'Live AI fixer',
-  'Manual payment review active',
-  'DhandaBuzz execution support',
+  'Live AI diagnosis engine',
+  'Manual order review active',
+  'Support and requests live',
   'Private beta ready',
+]
+
+const audienceStrip = [
+  'Local service businesses',
+  'Agencies',
+  'Coaches and consultants',
+  'Online businesses',
+  'Startup founders',
+  'Growing teams',
+]
+
+const problems = [
+  'No clear offer',
+  'Not enough leads',
+  'Sales process is messy',
+  'Operations are scattered',
+  'No CRM or follow-up system',
+  'Need a launch plan',
+]
+
+const solutions = [
+  'AI diagnosis for the real bottleneck',
+  'Business blueprint for the next move',
+  'Service request intake and tracking',
+  'CRM and progress visibility',
+  'Support tickets for operator follow-up',
+  'Marketplace services with honest review',
 ]
 
 const capabilities = [
   {
     icon: Sparkles,
-    title: 'Create a business blueprint',
-    text: 'Generate a clearer offer, position it, and turn the idea into a launch-ready direction.',
+    title: 'Business Blueprint Generator',
+    text: 'Generate a clear offer, positioning, and next-step plan from the Create flow.',
     to: '/create',
   },
   {
     icon: Bot,
-    title: 'Diagnose business problems',
-    text: 'Run a live fixer diagnosis to uncover what is blocking growth, sales, or execution.',
+    title: 'Fixer Diagnosis Engine',
+    text: 'Run a live diagnosis to identify the bottleneck and recommended action.',
     to: '/fixer',
   },
   {
-    icon: MessageSquare,
-    title: 'Request support',
-    text: 'Submit a support ticket when a customer or operator needs a fast follow-up.',
-    to: '/support',
-  },
-  {
     icon: Wrench,
-    title: 'Submit service requests',
-    text: 'Request a done-for-you pack or custom service through the live request flow.',
+    title: 'Service Request Portal',
+    text: 'Submit a request for a done-for-you service pack or custom execution help.',
     to: '/requests',
   },
   {
     icon: LayoutDashboard,
-    title: 'Track projects and CRM',
-    text: 'Monitor progress, leads, and execution from the dashboard and run pages.',
-    to: '/dashboard',
+    title: 'Run / CRM Dashboard',
+    text: 'Track leads, progress, and active requests from the dashboard and run pages.',
+    to: '/run',
   },
   {
     icon: Store,
-    title: 'Browse marketplace services',
-    text: 'Explore the current service offers and choose the right execution pack.',
+    title: 'Marketplace Services',
+    text: 'Browse the live service offers and choose the right execution pack.',
     to: '/marketplace',
   },
   {
+    icon: MessageSquare,
+    title: 'Support Tickets',
+    text: 'Send a support request when the operator needs to review or follow up.',
+    to: '/support',
+  },
+  {
     icon: CreditCard,
-    title: 'Create manual payment or order requests',
-    text: 'Submit payment reference details while manual review stays active in beta.',
+    title: 'Manual Payment / Order Review',
+    text: 'Submit payment reference details while beta payments stay manual and honest.',
     to: '/payment',
   },
   {
     icon: Building2,
-    title: 'Manage from dashboard and admin',
-    text: 'Operator and admin views stay available for oversight, counts, and workflow handling.',
+    title: 'Operator Overview',
+    text: 'Admin and counts stay available for oversight, routing, and workflow handling.',
     to: '/admin',
   },
 ]
@@ -81,42 +109,42 @@ const capabilities = [
 const servicePacks = [
   {
     name: 'Starter Growth Engine',
-    outcome: 'A simple growth plan with offer, positioning, and next steps.',
+    outcome: 'A simple launch plan with offer clarity, positioning, and next steps.',
     bestFor: 'New founders who need structure fast.',
-    price: '$199',
+    price: '$199+',
     to: '/requests',
   },
   {
-    name: 'Messenger Sales Machine',
-    outcome: 'Sales scripts and a follow-up path for WhatsApp or Messenger leads.',
-    bestFor: 'Teams selling through chat and DMs.',
-    price: '$299',
+    name: 'Lead Flow Setup',
+    outcome: 'A lead capture and follow-up system for turning interest into conversations.',
+    bestFor: 'Teams that need more qualified leads.',
+    price: '$299+',
     to: '/marketplace',
   },
   {
-    name: 'Booked Calls Funnel',
-    outcome: 'Lead capture, qualification, and call-booking flow.',
+    name: 'Booked Calls System',
+    outcome: 'A booking path with qualification and handoff steps for sales calls.',
     bestFor: 'Service businesses that close on calls.',
-    price: '$399',
+    price: '$399+',
     to: '/requests',
   },
   {
-    name: 'Creative Sprint Pack',
-    outcome: 'A fast copy + creative bundle for launch or campaign support.',
+    name: 'Content Sprint Pack',
+    outcome: 'A fast copy and creative bundle for launch, ads, or campaign support.',
     bestFor: 'Founders who need assets without delay.',
-    price: '$149',
+    price: '$149+',
     to: '/marketplace',
   },
   {
     name: 'AI Sales Assistant',
-    outcome: 'Automated follow-up support and lead qualification workflow.',
-    bestFor: 'Businesses that want AI-assisted selling.',
+    outcome: 'AI-assisted follow-up and lead qualification workflow for sales support.',
+    bestFor: 'Businesses that want a cleaner sales process.',
     price: 'Request quote',
     to: '/requests',
   },
 ]
 
-const modules = [
+const featureModules = [
   { icon: LayoutDashboard, label: 'Dashboard' },
   { icon: Sparkles, label: 'Create' },
   { icon: Bot, label: 'Fixer' },
@@ -128,17 +156,25 @@ const modules = [
 ]
 
 const steps = [
-  'Create account',
-  'Run diagnosis or choose a service',
-  'Submit request or payment reference',
-  'DhandaBuzz reviews and activates work',
-  'Track progress from the dashboard or run page',
+  'Create your account',
+  'Run a diagnosis or choose a service',
+  'Submit your request or payment reference',
+  'Track progress from your dashboard',
+  'Get support and keep improving',
 ]
 
-const regionalPoints = [
-  'Bangladesh-ready manual payment and support flow',
-  'US and global service workflow for remote execution',
-  'Built for founders, operators, and small teams',
+const systemStatus = [
+  'Live AI diagnosis',
+  'Secure customer records',
+  'Support portal active',
+  'Manual order review',
+  'Private beta access',
+]
+
+const regions = [
+  'American business owners first',
+  'Global remote delivery is supported',
+  'Built for local and service-led operators',
 ]
 
 function ButtonLink({
@@ -176,7 +212,7 @@ function SectionTitle({
 }) {
   return (
     <div className="max-w-3xl">
-      <p className="text-xs font-semibold uppercase tracking-[0.28em] text-rose-300/90">{eyebrow}</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-200/90">{eyebrow}</p>
       <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">{title}</h2>
       <p className="mt-4 text-sm leading-7 text-slate-300 sm:text-base">{text}</p>
     </div>
@@ -187,46 +223,46 @@ export default function LandingPage() {
   return (
     <main className="relative overflow-hidden bg-[#05070d] text-white">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-[-10%] top-[-12%] h-80 w-80 rounded-full bg-rose-500/15 blur-3xl" />
-        <div className="absolute right-[-8%] top-[10%] h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl" />
+        <div className="absolute left-[-10%] top-[-12%] h-80 w-80 rounded-full bg-cyan-500/14 blur-3xl" />
+        <div className="absolute right-[-8%] top-[10%] h-96 w-96 rounded-full bg-indigo-500/10 blur-3xl" />
         <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black via-black/70 to-transparent" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 pb-20 pt-6 sm:px-6 lg:px-8">
         <header className="flex items-center justify-between gap-4 border-b border-white/10 pb-6">
           <div>
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-rose-300/90">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/90">
               <ShieldCheck size={14} />
-              DhandaBuzz
+              {brand.brandName}
             </div>
-            <p className="mt-1 text-sm text-slate-400">Engine NotREAL business execution system</p>
+            <p className="mt-1 text-sm text-slate-400">{brand.tagline}</p>
           </div>
 
           <div className="hidden items-center gap-3 sm:flex">
             <ButtonLink to="/login" variant="secondary">
               Login
             </ButtonLink>
-            <ButtonLink to="/register">Start Free</ButtonLink>
+            <ButtonLink to="/register">Create Account</ButtonLink>
           </div>
         </header>
 
         <section className="grid gap-10 py-16 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-rose-400/20 bg-rose-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-rose-200">
+            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100">
               Private beta ready
             </div>
             <h1 className="mt-6 max-w-4xl text-4xl font-semibold tracking-tight text-white sm:text-6xl">
-              Create. Fix. Run. Sell. One Business Machine.
+              Build. Fix. Run. Grow. One Engine.
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
-              DhandaBuzz powers an AI business operating system where founders and businesses can create offers,
-              fix bottlenecks, request services, manage projects, and move from idea to execution.
+              Not Real Engine helps business owners turn scattered ideas, broken processes, and growth problems into
+              clear plans, service requests, CRM workflows, and AI-powered execution.
             </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <ButtonLink to="/register">Start Free / Create Account</ButtonLink>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <ButtonLink to="/register">Create Your Account</ButtonLink>
               <ButtonLink to="/fixer" variant="secondary">
-                Run Fixer Diagnosis
+                Run a Business Diagnosis
               </ButtonLink>
               <ButtonLink to="/marketplace" variant="secondary">
                 View Services
@@ -250,7 +286,7 @@ export default function LandingPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs uppercase tracking-[0.28em] text-slate-400">System status</p>
-                  <h2 className="mt-2 text-2xl font-semibold text-white">Live beta control room</h2>
+                  <h2 className="mt-2 text-2xl font-semibold text-white">Live business engine</h2>
                 </div>
                 <div className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200">
                   Live
@@ -258,12 +294,7 @@ export default function LandingPage() {
               </div>
 
               <div className="mt-6 space-y-3">
-                {[
-                  'Supabase-backed customer portal',
-                  'Groq fixer and workflow engine',
-                  'Manual payment review active',
-                  'Support, requests, and marketplace live',
-                ].map((item) => (
+                {systemStatus.map((item) => (
                   <div key={item} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
                     <CheckCircle2 size={18} className="shrink-0 text-emerald-300" />
                     <span className="text-sm text-slate-200">{item}</span>
@@ -291,9 +322,58 @@ export default function LandingPage() {
 
         <section className="border-t border-white/10 py-14">
           <SectionTitle
-            eyebrow="What you can do"
-            title="The public beta is built around real customer actions."
-            text="Each path below goes to a live part of the platform. Nothing here is decorative only."
+            eyebrow="Who it is for"
+            title="Built for business owners who want a simple operating engine."
+            text="This beta is aimed at American small business owners, service businesses, agencies, coaches, consultants, online businesses, startup founders, and growing teams."
+          />
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            {audienceStrip.map((item) => (
+              <div key={item} className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200">
+                {item}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="border-t border-white/10 py-14">
+          <SectionTitle
+            eyebrow="The problem"
+            title="Most businesses do not have one clean system for growth."
+            text="The platform is built to help with the real operational pain points that slow down owners and operators."
+          />
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {problems.map((item) => (
+              <div key={item} className="rounded-3xl border border-white/10 bg-white/5 p-5">
+                <p className="text-sm font-semibold text-white">{item}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="border-t border-white/10 py-14">
+          <SectionTitle
+            eyebrow="The solution"
+            title="One operating layer for diagnosis, requests, CRM, support, and services."
+            text="Not Real Engine gives business owners one place to move from idea to execution without adding another complicated tool."
+          />
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {solutions.map((item) => (
+              <div key={item} className="rounded-3xl border border-white/10 bg-white/5 p-5">
+                <CheckCircle2 size={18} className="text-emerald-300" />
+                <p className="mt-4 text-sm leading-6 text-slate-300">{item}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="border-t border-white/10 py-14">
+          <SectionTitle
+            eyebrow="Feature modules"
+            title="The public beta is organized around the work founders actually need."
+            text="Each module is live, usable, and connected to a real customer action."
           />
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -305,7 +385,7 @@ export default function LandingPage() {
                   to={item.to}
                   className="rounded-3xl border border-white/10 bg-white/5 p-5 transition hover:border-white/20 hover:bg-white/8"
                 >
-                  <Icon className="text-rose-200" size={22} />
+                  <Icon className="text-cyan-200" size={22} />
                   <h3 className="mt-4 text-lg font-semibold text-white">{item.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-slate-300">{item.text}</p>
                 </Link>
@@ -316,9 +396,9 @@ export default function LandingPage() {
 
         <section className="border-t border-white/10 py-14">
           <SectionTitle
-            eyebrow="Service packs"
-            title="Offer packages are simple, clear, and request-friendly."
-            text="The beta keeps pricing honest. Some packs have a starting price, and some are request-quote only."
+            eyebrow="Service offers"
+            title="Service packs are clear, conversion-friendly, and request ready."
+            text="Some packs have a starting price. Others are request-quote only. Nothing here pretends to be instant checkout."
           />
 
           <div className="mt-8 grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
@@ -349,29 +429,9 @@ export default function LandingPage() {
 
         <section className="border-t border-white/10 py-14">
           <SectionTitle
-            eyebrow="Feature modules"
-            title="The current product surface is organized around the work founders actually need."
-            text="These modules are live, usable, and aligned with the platform's customer journey."
-          />
-
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {modules.map((item) => {
-              const Icon = item.icon
-              return (
-                <div key={item.label} className="rounded-3xl border border-white/10 bg-white/5 p-5">
-                  <Icon size={20} className="text-cyan-200" />
-                  <p className="mt-4 text-base font-semibold text-white">{item.label}</p>
-                </div>
-              )
-            })}
-          </div>
-        </section>
-
-        <section className="border-t border-white/10 py-14">
-          <SectionTitle
             eyebrow="How it works"
             title="The beta flow is short and operational."
-            text="The goal is not complex onboarding. The goal is to get users from interest to execution with the fewest steps."
+            text="The goal is to move users from interest to execution with the fewest steps."
           />
 
           <div className="mt-8 grid gap-4 lg:grid-cols-5">
@@ -389,13 +449,13 @@ export default function LandingPage() {
         <section className="border-t border-white/10 py-14">
           <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
             <div className="rounded-[2rem] border border-white/10 bg-white/5 p-7">
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.28em] text-rose-300/90">
+              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.28em] text-cyan-200/90">
                 <BadgeDollarSign size={14} />
-                Pricing honesty
+                Payment honesty
               </div>
-              <h3 className="mt-4 text-2xl font-semibold text-white">Stripe comes later. Manual payment is active now.</h3>
+              <h3 className="mt-4 text-2xl font-semibold text-white">Stripe comes later. Manual order review is active now.</h3>
               <p className="mt-4 text-sm leading-7 text-slate-300">
-                Clients can submit a payment reference or order request. The operator reviews it, confirms activation,
+                Customers can submit a payment reference or order request. The operator reviews it, confirms activation,
                 and keeps the beta honest while payment automation is added later.
               </p>
               <div className="mt-6 space-y-3 text-sm text-slate-300">
@@ -415,17 +475,17 @@ export default function LandingPage() {
             </div>
 
             <div className="rounded-[2rem] border border-white/10 bg-white/5 p-7">
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.28em] text-rose-300/90">
+              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.28em] text-cyan-200/90">
                 <Globe size={14} />
-                Bangladesh + global
+                Market positioning
               </div>
-              <h3 className="mt-4 text-2xl font-semibold text-white">Built for local support and remote delivery.</h3>
+              <h3 className="mt-4 text-2xl font-semibold text-white">US-first positioning with global delivery support.</h3>
               <p className="mt-4 text-sm leading-7 text-slate-300">
-                DhandaBuzz can support Bangladesh-ready manual payment flows while staying useful for US and global
-                founders who want a remote digital business execution team.
+                Not Real Engine is positioned for American business owners while still supporting remote digital delivery
+                for founders and operators in other markets.
               </p>
               <div className="mt-6 space-y-3">
-                {regionalPoints.map((point) => (
+                {regions.map((point) => (
                   <div key={point} className="flex items-center gap-3 text-sm text-slate-300">
                     <CheckCircle2 size={18} className="text-emerald-300" />
                     {point}
@@ -437,25 +497,25 @@ export default function LandingPage() {
         </section>
 
         <section className="border-t border-white/10 py-14">
-          <div className="rounded-[2rem] border border-white/10 bg-gradient-to-r from-rose-500/15 via-white/5 to-cyan-500/10 p-8">
+          <div className="rounded-[2rem] border border-white/10 bg-gradient-to-r from-cyan-500/15 via-white/5 to-indigo-500/10 p-8">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <div className="max-w-3xl">
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-rose-300/90">Client beta ready</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-200/90">Private beta ready</p>
                 <h3 className="mt-3 text-3xl font-semibold tracking-tight text-white">
-                  Start with the landing page, then move straight into a live customer action.
+                  Start with the landing page, then move into a live customer action.
                 </h3>
                 <p className="mt-4 text-sm leading-7 text-slate-300">
-                  The beta is set up so a visitor can register, log in, run a fixer diagnosis, request a service, send
-                  a support ticket, and continue into the dashboard without dead ends.
+                  A visitor can register, log in, run a fixer diagnosis, request a service, send a support ticket, and
+                  continue into the dashboard without dead ends.
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
                 <ButtonLink to="/register">Create Account</ButtonLink>
+                <ButtonLink to="/fixer" variant="secondary">
+                  Run Fixer Diagnosis
+                </ButtonLink>
                 <ButtonLink to="/requests" variant="secondary">
                   Submit Service Request
-                </ButtonLink>
-                <ButtonLink to="/support" variant="secondary">
-                  Contact Support
                 </ButtonLink>
               </div>
             </div>

@@ -1,29 +1,22 @@
-// DESIGN.md §21 — Centralized Brand Config
+// Centralized public brand config for the Not Real Engine rebrand.
 export const brand = {
-  parentName:   'Divorcing The Game™',
-  platformName: 'Black Sheep',
-  fullName:     'Black Sheep by Divorcing The Game™',
-  tagline:      'Strategy | Freedom | Legacy',
-  positioning:  'Turn buried vision into business structure, capital pathways, and legacy.',
-  movementLine: 'Built for the overlooked. Made for the Black Sheep.',
-  primaryCTA:   'Uncover My Gold',
-  secondaryCTA: 'Choose My Gate',
-  footerLine:   'Built for the overlooked. Made for the Black Sheep.',
-  initials:     'BS',
+  brandName: 'Not Real Engine',
+  shortName: 'NRE',
+  tagline: 'Build. Fix. Run. Grow. One Engine.',
+  audience: 'American business owners',
+  category: 'AI Business Operating Engine',
+  positioning: 'Turn scattered ideas, broken processes, and growth problems into execution.',
+  paymentMode: 'Manual review during beta',
+  supportName: 'Not Real Engine Support',
+  footerLine: 'Built for business owners who need a simple execution engine.',
+  initials: 'NRE',
 }
 
-// DESIGN.md §4 — Approved Phrases
 export const phrases = {
-  welcomeHome:      'Welcome Home',
-  notBroken1:       'You are not broken. You are unstructured.',
-  notBroken2:       'You are not broken. You are buried gold.',
-  goldIsStillThere: 'The gold is still there.',
-  uncoverMyGold:    'Uncover My Gold',
-  survivalOver:     'Survival mode is over.',
-  toStructure:      'From survival to structure.',
-  clarityFirst:     'Clarity before capital.',
-  structureFirst:   'Structure before scale.',
-  buildDifferent:   'Build Different.',
-  gateOpen:         'The Gate is open.',
-  tagline:          'Strategy | Freedom | Legacy',
+  welcomeHome: 'Welcome home',
+  clarityFirst: 'Clarity before scale.',
+  structureFirst: 'Structure before growth.',
+  buildDifferent: 'Build different.',
+  engineOpen: 'The engine is open.',
+  tagline: 'Build. Fix. Run. Grow. One Engine.',
 }

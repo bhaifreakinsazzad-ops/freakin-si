@@ -3,26 +3,27 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Bell, Command, LayoutDashboard, Menu, Search, Shield, Sparkles, UserCog, X } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { notificationService } from '@/services'
+import { brand } from '@/config/brand'
 import type { NotificationItem, UserRole } from '@/types/domain'
 
 const baseNav = [
   { to: '/command', label: 'Command', icon: Command },
-  { to: '/dashboard', label: 'AI CEO Dashboard', icon: LayoutDashboard },
-  { to: '/journey', label: 'My 7-Step Journey', icon: Sparkles },
-  { to: '/builder', label: 'Uncover My Gold', icon: Sparkles },
+  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/journey', label: 'Journey', icon: Sparkles },
+  { to: '/builder', label: 'Create', icon: Sparkles },
   { to: '/fixer', label: 'Fixer', icon: Sparkles },
   { to: '/run', label: 'Run / CRM', icon: LayoutDashboard },
-  { to: '/modules', label: 'AI Module Library', icon: Command },
+  { to: '/modules', label: 'Modules', icon: Command },
   { to: '/marketplace', label: 'Marketplace', icon: Search },
-  { to: '/services', label: 'Build Request', icon: Search },
+  { to: '/services', label: 'Service Request', icon: Search },
   { to: '/requests', label: 'Requests', icon: Search },
-  { to: '/pricing', label: 'Pricing / Upgrade', icon: Search },
-  { to: '/assets', label: 'Assets & Documents', icon: Search },
-  { to: '/support', label: 'Support Requests', icon: Bell },
+  { to: '/pricing', label: 'Pricing', icon: Search },
+  { to: '/assets', label: 'Assets', icon: Search },
+  { to: '/support', label: 'Support', icon: Bell },
 ]
 
 const adminNav = [
-  { to: '/admin', label: 'Admin Command Center', icon: Shield },
+  { to: '/admin', label: 'Admin Overview', icon: Shield },
   { to: '/super-admin', label: 'Platform Overview', icon: UserCog },
 ]
 
@@ -59,7 +60,7 @@ export default function Layout() {
       <div className="flex min-h-screen">
         <aside className={`fixed z-40 md:static md:z-auto top-0 left-0 h-full w-72 bg-[rgba(12,12,16,0.98)] border-r border-[var(--fsi-border)] transition-transform ${mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
           <div className="p-4 border-b border-[var(--fsi-border)] flex items-center justify-between">
-            <Link to="/dashboard" className="font-bold tracking-wider text-sm uppercase text-[var(--bs-gold)]">THE SHEEP</Link>
+            <Link to="/dashboard" className="font-bold tracking-wider text-sm uppercase text-[var(--bs-gold)]">{brand.shortName}</Link>
             <button className="md:hidden" onClick={() => setMobileOpen(false)}><X size={18} /></button>
           </div>
           <nav className="p-3 space-y-1">
@@ -78,8 +79,8 @@ export default function Layout() {
           <div className="mt-auto p-3 border-t border-[var(--fsi-border)]">
             <label className="text-[10px] uppercase tracking-widest text-[var(--fsi-text-dim)] block mb-1">Role Switcher</label>
             <select value={role} onChange={(e) => setRole(e.target.value as UserRole)} className="w-full rounded-lg bg-[var(--fsi-surface)] border border-[var(--fsi-border)] px-2 py-2 text-sm">
-              <option value="client">Client / Entrepreneur</option>
-              <option value="admin">Admin / Consultant</option>
+              <option value="client">Client / Owner</option>
+              <option value="admin">Admin / Operator</option>
               <option value="super_admin">Super Admin / Owner</option>
             </select>
             <button onClick={onLogout} className="mt-3 w-full rounded-lg border border-[var(--fsi-border)] px-3 py-2 text-xs uppercase tracking-wider text-[var(--fsi-text-muted)] hover:text-white">Logout</button>

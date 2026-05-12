@@ -6,6 +6,7 @@ import {
   ArrowRight, ExternalLink, Briefcase, DollarSign,
   Zap, Globe, Star, ChevronRight,
 } from 'lucide-react'
+import { brand } from '@/config/brand'
 
 // ---------------------------------------------------------------------------
 // Counter
@@ -75,7 +76,7 @@ export default function HubPage() {
             className="font-display"
             style={{ fontSize: 18, fontWeight: 700, color: '#c8102e' }}
           >
-            Black Sheep
+            {brand.shortName}
           </span>
           <ChevronRight size={14} style={{ color: 'var(--fsi-text-muted, #A7ACB8)', opacity: 0.6 }} />
           <span style={{ fontSize: 13, color: 'var(--fsi-text-muted, #A7ACB8)', letterSpacing: '0.04em' }}>

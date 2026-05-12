@@ -74,7 +74,7 @@ export const gates = [
   },
   {
     id:       'scholarship',
-    name:     'Black Sheep Blueprint Scholarship',
+    name:     'Not Real Engine Blueprint Scholarship',
     label:    'Application required',
     bestFor:  'Ready applicants with financial barriers.',
     color:    '--bs-red',

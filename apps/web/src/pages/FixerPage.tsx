@@ -1,5 +1,5 @@
 /**
- * Engine NotREAL — Fixer Mode
+ * Not Real Engine — Fixer Mode
  * Submit a business problem → get AI diagnosis + fix strategy
  */
 import { useState } from 'react'

@@ -28,7 +28,7 @@ export default function BuilderOSPage() {
       <div className="rounded-2xl border border-[var(--fsi-border)] bg-[var(--fsi-surface)] p-5">
         <p className="text-xs uppercase tracking-[0.18em] text-[var(--bs-gold)]">Uncover My Gold</p>
         <h1 className="text-2xl font-semibold mt-1">Business Builder Workspace</h1>
-        <p className="text-sm text-[var(--fsi-text-muted)] mt-1">Legacy builder upgraded into THE SHEEP service contract. For full 7-step experience, continue in Journey.</p>
+        <p className="text-sm text-[var(--fsi-text-muted)] mt-1">Legacy builder upgraded into the Not Real Engine service contract. For the full 7-step experience, continue in Journey.</p>
       </div>
       <div className="grid lg:grid-cols-2 gap-4">
         <section className="rounded-2xl border border-[var(--fsi-border)] bg-[var(--fsi-surface)] p-4 space-y-3">

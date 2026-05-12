@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { brand } from '@/config/brand'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLang } from '@/contexts/LanguageContext'
-import { Eye, EyeOff, LogIn, TrendingUp } from 'lucide-react'
+import { Eye, EyeOff, LogIn } from 'lucide-react'
 
 export default function LoginPage() {
   const { login } = useAuth()
@@ -28,33 +29,39 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
-      style={{ background: 'var(--fsi-void)' }}>
-
-      {/* Aurora background orbs */}
+    <div
+      className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
+      style={{ background: 'var(--fsi-void)' }}
+    >
       <div className="aurora-orb-1" />
       <div className="aurora-orb-2" />
 
       <div className="w-full max-w-md relative z-10">
-        {/* Logo */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex flex-col items-center gap-3 group">
-            <div className="w-16 h-16 rounded-2xl flex items-center justify-center"
-              style={{ background: 'rgba(200,16,46,0.12)', boxShadow: '0 0 30px rgba(200,16,46,0.30)', border: '1px solid rgba(200,16,46,0.25)' }}>
-              <span style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:20, color:'#c8102e' }}>BS</span>
+            <div
+              className="w-16 h-16 rounded-2xl flex items-center justify-center"
+              style={{
+                background: 'rgba(200,16,46,0.12)',
+                boxShadow: '0 0 30px rgba(200,16,46,0.30)',
+                border: '1px solid rgba(200,16,46,0.25)',
+              }}
+            >
+              <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 900, fontSize: 20, color: '#c8102e' }}>
+                {brand.shortName}
+              </span>
             </div>
             <div>
               <div className="font-display text-2xl font-bold" style={{ color: 'var(--fsi-text)' }}>
-                <span style={{ color: '#c8102e' }}>Black Sheep</span>
+                <span style={{ color: '#c8102e' }}>{brand.brandName}</span>
               </div>
               <p className="text-xs mt-1" style={{ color: 'var(--fsi-text-muted)' }}>
-                Divorcing The Game™ Platform
+                {brand.tagline}
               </p>
             </div>
           </Link>
         </div>
 
-        {/* Card */}
         <div className="glass rounded-2xl p-8" style={{ border: '1px solid var(--fsi-border-hover)' }}>
           <h2 className="font-display text-lg font-semibold mb-6" style={{ color: 'var(--fsi-text)' }}>
             {t.loginBtn}
@@ -68,40 +75,44 @@ export default function LoginPage() {
             )}
 
             <div>
-              <label className="block text-sm mb-2" style={{ color: 'var(--fsi-text-muted)' }}>{t.emailLabel}</label>
+              <label className="block text-sm mb-2" style={{ color: 'var(--fsi-text-muted)' }}>
+                {t.emailLabel}
+              </label>
               <input
                 type="email"
                 required
                 value={form.email}
-                onChange={e => setForm({ ...form, email: e.target.value })}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
                 className="w-full rounded-xl px-4 py-3 text-sm focus:outline-none transition-colors"
                 style={{
                   background: 'var(--fsi-surface)',
                   border: '1px solid var(--fsi-border)',
                   color: 'var(--fsi-text)',
                 }}
-                onFocus={e => e.currentTarget.style.borderColor = 'var(--fsi-border-hover)'}
-                onBlur={e => e.currentTarget.style.borderColor = 'var(--fsi-border)'}
+                onFocus={(e) => e.currentTarget.style.borderColor = 'var(--fsi-border-hover)'}
+                onBlur={(e) => e.currentTarget.style.borderColor = 'var(--fsi-border)'}
                 placeholder={t.emailPlaceholder}
               />
             </div>
 
             <div>
-              <label className="block text-sm mb-2" style={{ color: 'var(--fsi-text-muted)' }}>{t.passwordLabel}</label>
+              <label className="block text-sm mb-2" style={{ color: 'var(--fsi-text-muted)' }}>
+                {t.passwordLabel}
+              </label>
               <div className="relative">
                 <input
                   type={showPw ? 'text' : 'password'}
                   required
                   value={form.password}
-                  onChange={e => setForm({ ...form, password: e.target.value })}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
                   className="w-full rounded-xl px-4 py-3 pr-12 text-sm focus:outline-none transition-colors"
                   style={{
                     background: 'var(--fsi-surface)',
                     border: '1px solid var(--fsi-border)',
                     color: 'var(--fsi-text)',
                   }}
-                  onFocus={e => e.currentTarget.style.borderColor = 'var(--fsi-border-hover)'}
-                  onBlur={e => e.currentTarget.style.borderColor = 'var(--fsi-border)'}
+                  onFocus={(e) => e.currentTarget.style.borderColor = 'var(--fsi-border-hover)'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = 'var(--fsi-border)'}
                   placeholder={t.passwordPlaceholder}
                 />
                 <button
@@ -121,9 +132,13 @@ export default function LoginPage() {
               className="btn-gold w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed mt-2"
             >
               {loading ? (
-                <><div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> {t.loggingIn}</>
+                <>
+                  <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> {t.loggingIn}
+                </>
               ) : (
-                <><LogIn size={16} /> {t.loginBtn}</>
+                <>
+                  <LogIn size={16} /> {t.loginBtn}
+                </>
               )}
             </button>
           </form>
@@ -138,9 +153,8 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Bottom tagline */}
         <p className="text-center text-xs mt-6" style={{ color: 'var(--fsi-text-dim)' }}>
-          Powered by 40+ AI Models · Free to Start
+          {brand.category} · Free to Start
         </p>
       </div>
     </div>

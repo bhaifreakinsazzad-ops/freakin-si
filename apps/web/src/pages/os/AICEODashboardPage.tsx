@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { aiModuleService, adminService, analyticsService, assetService, journeyService, projectService, reviewService, supportService } from '@/services'
+import { brand } from '@/config/brand'
 import type { ActivityEntry, AssetRecord, JourneyStepState } from '@/types/domain'
 
 export default function AICEODashboardPage() {
@@ -45,7 +46,7 @@ export default function AICEODashboardPage() {
     <div className="space-y-6">
       <section className="rounded-2xl border border-[var(--fsi-border)] bg-gradient-to-br from-[rgba(181,18,27,0.15)] to-[rgba(201,164,73,0.08)] p-6">
         <p className="text-xs uppercase tracking-[0.18em] text-[var(--bs-gold)]">AI CEO Command Center</p>
-        <h1 className="text-2xl md:text-3xl font-bold mt-2">{projectName || 'THE SHEEP Business Project'}</h1>
+        <h1 className="text-2xl md:text-3xl font-bold mt-2">{projectName || `${brand.brandName} Business Project`}</h1>
         <p className="text-sm text-[var(--fsi-text-muted)] mt-2">Answer guided questions. Let AI build your business assets. Review, approve, and launch with expert support.</p>
         <div className="mt-4 flex flex-wrap gap-3">
           <Link to="/journey" className="rounded-full bg-[var(--bs-red)] px-5 py-2.5 text-sm font-semibold">Continue Building</Link>

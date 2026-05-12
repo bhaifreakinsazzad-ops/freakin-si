@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { brand } from '@/config/brand'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLang } from '@/contexts/LanguageContext'
-import { Eye, EyeOff, UserPlus, TrendingUp, CheckCircle } from 'lucide-react'
+import { Eye, EyeOff, UserPlus, CheckCircle } from 'lucide-react'
 
 export default function RegisterPage() {
   const { register } = useAuth()
-  const { t, lang, toggle } = useLang()
+  const { t } = useLang()
   const navigate = useNavigate()
   const [form, setForm] = useState({ name: '', email: '', phone: '', password: '', confirm: '' })
   const [loading, setLoading] = useState(false)
@@ -16,8 +17,14 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
-    if (form.password !== form.confirm) { setError(t.pwMismatch); return }
-    if (form.password.length < 6) { setError(t.pwTooShort); return }
+    if (form.password !== form.confirm) {
+      setError(t.pwMismatch)
+      return
+    }
+    if (form.password.length < 6) {
+      setError(t.pwTooShort)
+      return
+    }
     setLoading(true)
     try {
       await register({ name: form.name, email: form.email, password: form.password, phone: form.phone })
@@ -38,49 +45,58 @@ export default function RegisterPage() {
 
   const field = (key: keyof typeof form, label: string, type = 'text', placeholder = '') => (
     <div>
-      <label className="block text-sm mb-1.5" style={{ color: 'var(--fsi-text-muted)' }}>{label}</label>
+      <label className="block text-sm mb-1.5" style={{ color: 'var(--fsi-text-muted)' }}>
+        {label}
+      </label>
       <input
         type={type}
         required={key !== 'phone'}
         value={form[key]}
-        onChange={e => setForm({ ...form, [key]: e.target.value })}
+        onChange={(e) => setForm({ ...form, [key]: e.target.value })}
         className={inputClass}
         style={inputStyle}
-        onFocus={e => e.currentTarget.style.borderColor = 'var(--fsi-border-hover)'}
-        onBlur={e => e.currentTarget.style.borderColor = 'var(--fsi-border)'}
+        onFocus={(e) => e.currentTarget.style.borderColor = 'var(--fsi-border-hover)'}
+        onBlur={(e) => e.currentTarget.style.borderColor = 'var(--fsi-border)'}
         placeholder={placeholder}
       />
     </div>
   )
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
-      style={{ background: 'var(--fsi-void)' }}>
-
-      {/* Aurora orbs */}
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden" style={{ background: 'var(--fsi-void)' }}>
       <div className="aurora-orb-1" />
       <div className="aurora-orb-3" />
 
       <div className="w-full max-w-md relative z-10">
-        {/* Logo */}
         <div className="text-center mb-6">
           <Link to="/" className="inline-flex flex-col items-center gap-3 group">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
-              style={{ background: 'rgba(200,16,46,0.12)', boxShadow: '0 0 24px rgba(200,16,46,0.28)', border: '1px solid rgba(200,16,46,0.25)' }}>
-              <span style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:18, color:'#c8102e' }}>BS</span>
+            <div
+              className="w-14 h-14 rounded-2xl flex items-center justify-center"
+              style={{
+                background: 'rgba(200,16,46,0.12)',
+                boxShadow: '0 0 24px rgba(200,16,46,0.28)',
+                border: '1px solid rgba(200,16,46,0.25)',
+              }}
+            >
+              <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 900, fontSize: 18, color: '#c8102e' }}>
+                {brand.shortName}
+              </span>
             </div>
             <div className="font-display text-xl font-bold" style={{ color: 'var(--fsi-text)' }}>
-              <span style={{ color: '#c8102e' }}>Black Sheep</span>
+              <span style={{ color: '#c8102e' }}>{brand.brandName}</span>
             </div>
           </Link>
-          <p className="text-xs mt-1" style={{ color: 'var(--fsi-text-muted)' }}>{t.registerSubtitle}</p>
+          <p className="text-xs mt-1" style={{ color: 'var(--fsi-text-muted)' }}>
+            {t.registerSubtitle}
+          </p>
           <div className="flex items-center justify-center gap-1.5 mt-2">
             <CheckCircle size={13} style={{ color: 'var(--fsi-gold)' }} />
-            <span className="text-xs font-medium" style={{ color: 'var(--fsi-gold)' }}>{t.registerFreeTag}</span>
+            <span className="text-xs font-medium" style={{ color: 'var(--fsi-gold)' }}>
+              {t.registerFreeTag}
+            </span>
           </div>
         </div>
 
-        {/* Card */}
         <div className="glass rounded-2xl p-7" style={{ border: '1px solid var(--fsi-border-hover)' }}>
           <h2 className="font-display text-lg font-semibold mb-5" style={{ color: 'var(--fsi-text)' }}>
             {t.registerBtn}
@@ -98,37 +114,45 @@ export default function RegisterPage() {
             {field('phone', t.phoneLabel, 'tel', t.phonePlaceholder)}
 
             <div>
-              <label className="block text-sm mb-1.5" style={{ color: 'var(--fsi-text-muted)' }}>{t.passwordReq}</label>
+              <label className="block text-sm mb-1.5" style={{ color: 'var(--fsi-text-muted)' }}>
+                {t.passwordReq}
+              </label>
               <div className="relative">
                 <input
                   type={showPw ? 'text' : 'password'}
                   required
                   value={form.password}
-                  onChange={e => setForm({ ...form, password: e.target.value })}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
                   className={inputClass + ' pr-12'}
                   style={inputStyle}
-                  onFocus={e => e.currentTarget.style.borderColor = 'var(--fsi-border-hover)'}
-                  onBlur={e => e.currentTarget.style.borderColor = 'var(--fsi-border)'}
+                  onFocus={(e) => e.currentTarget.style.borderColor = 'var(--fsi-border-hover)'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = 'var(--fsi-border)'}
                   placeholder={t.passwordMin}
                 />
-                <button type="button" onClick={() => setShowPw(!showPw)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--fsi-text-muted)' }}>
+                <button
+                  type="button"
+                  onClick={() => setShowPw(!showPw)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2"
+                  style={{ color: 'var(--fsi-text-muted)' }}
+                >
                   {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm mb-1.5" style={{ color: 'var(--fsi-text-muted)' }}>{t.confirmPassword}</label>
+              <label className="block text-sm mb-1.5" style={{ color: 'var(--fsi-text-muted)' }}>
+                {t.confirmPassword}
+              </label>
               <input
                 type="password"
                 required
                 value={form.confirm}
-                onChange={e => setForm({ ...form, confirm: e.target.value })}
+                onChange={(e) => setForm({ ...form, confirm: e.target.value })}
                 className={inputClass}
                 style={inputStyle}
-                onFocus={e => e.currentTarget.style.borderColor = 'var(--fsi-border-hover)'}
-                onBlur={e => e.currentTarget.style.borderColor = 'var(--fsi-border)'}
+                onFocus={(e) => e.currentTarget.style.borderColor = 'var(--fsi-border-hover)'}
+                onBlur={(e) => e.currentTarget.style.borderColor = 'var(--fsi-border)'}
                 placeholder={t.confirmPlaceholder}
               />
             </div>
@@ -139,9 +163,13 @@ export default function RegisterPage() {
               className="btn-gold w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm font-semibold disabled:opacity-50 mt-1"
             >
               {loading ? (
-                <><div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> {t.registering}</>
+                <>
+                  <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> {t.registering}
+                </>
               ) : (
-                <><UserPlus size={16} /> {t.registerBtn}</>
+                <>
+                  <UserPlus size={16} /> {t.registerBtn}
+                </>
               )}
             </button>
           </form>
@@ -155,7 +183,7 @@ export default function RegisterPage() {
         </div>
 
         <p className="text-center text-xs mt-5" style={{ color: 'var(--fsi-text-dim)' }}>
-          Powered by 40+ AI Models · Free to Start
+          {brand.category} · Free to Start
         </p>
       </div>
     </div>

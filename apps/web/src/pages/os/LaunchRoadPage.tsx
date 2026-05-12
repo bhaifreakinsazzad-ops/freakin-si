@@ -9,6 +9,7 @@ import ZoneWorkspaceDrawer from '@/components/launch-road/ZoneWorkspaceDrawer'
 import type { ZoneNodeData } from '@/components/launch-road/JourneyZoneNode'
 import { aiModuleService, analyticsService, assetService, journeyService, marketplaceService, projectService, reviewService, supportService } from '@/services'
 import type { ActivityEntry, AssetRecord, JourneyStepState, MarketplaceListing, ModuleDefinition, ModuleRun, ReviewTicket, SupportThread } from '@/types/domain'
+import { brand } from '@/config/brand'
 
 const zoneBlueprint: Array<{ id: number; label: string; subtitle: string; mission: string; stepId?: number; leftPct: number; topPct: number }> = [
   { id: 1, label: 'Idea Valley', subtitle: 'Raw Idea', mission: 'Turn your raw concept into a clear business direction.', stepId: 1, leftPct: 9, topPct: 78 },
@@ -51,7 +52,7 @@ function stepStatus(step?: JourneyStepState): ZoneNodeData['status'] {
 }
 
 export default function LaunchRoadPage() {
-  const [projectName, setProjectName] = useState('THE SHEEP Founder Project')
+  const [projectName, setProjectName] = useState(`${brand.brandName} Founder Project`)
   const [steps, setSteps] = useState<JourneyStepState[]>([])
   const [assets, setAssets] = useState<AssetRecord[]>([])
   const [reviews, setReviews] = useState<ReviewTicket[]>([])
@@ -156,7 +157,7 @@ export default function LaunchRoadPage() {
         <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_80%_20%,rgba(181,18,27,0.22),transparent_42%)]" />
         <div className="relative grid gap-4 lg:grid-cols-[1fr,auto] lg:items-end">
           <div>
-            <p className="text-[11px] uppercase text-[var(--bs-gold)]">THE SHEEP Launch Road</p>
+            <p className="text-[11px] uppercase text-[var(--bs-gold)]">{brand.brandName} Launch Road</p>
             <h1 className="mt-1 text-2xl font-bold md:text-3xl">{projectName}</h1>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-[var(--fsi-text-muted)]">
               Navigate the premium launch world from Raw Idea to Growth Command Center with AI guidance, checkpoints, and unlocks.
