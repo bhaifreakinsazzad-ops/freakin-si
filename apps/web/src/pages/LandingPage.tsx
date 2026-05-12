@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-// DESIGN.md source of truth applied — see brand.ts, gates.ts, disclaimers.ts
+// DESIGN.md source of truth applied Ã¢â‚¬â€ see brand.ts, gates.ts, disclaimers.ts
 
-/* ══════════════════════════════════════════════════════
+/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
    DESIGN TOKENS
-══════════════════════════════════════════════════════ */
-// DESIGN.md §6 — Color tokens
+Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */
+// DESIGN.md Ã‚Â§6 Ã¢â‚¬â€ Color tokens
 const T = {
   red:      '#b5121b',   // --bs-red
   redDeep:  '#7f0b12',   // --bs-red-deep
@@ -23,18 +23,20 @@ const T = {
   dim:      '#8f9299',
   lineDark: 'rgba(255,255,255,0.12)',
   lineLight:'rgba(10,10,10,0.12)',
-  // DESIGN.md §7 — Typography
+  // DESIGN.md Ã‚Â§7 Ã¢â‚¬â€ Typography
   H: "'Playfair Display','Sora',serif",       // Premium serif headings
   M: "'Montserrat','Space Grotesk',sans-serif", // Display labels/buttons
   B: "'Inter','Manrope',sans-serif",            // Body
 }
 
-/* ══════════════════════════════════════════════════════
+/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
    RESPONSIVE CSS
-══════════════════════════════════════════════════════ */
+Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */
 const RESPONSIVE_CSS = `
   .dtg-nav-links { display: flex; }
   .dtg-nav-cta { display: block; }
+  .dtg-urgency-desktop { display: inline; }
+  .dtg-urgency-mobile { display: none; }
   .dtg-hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
   .dtg-gates-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
   .dtg-wwd-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
@@ -60,6 +62,8 @@ const RESPONSIVE_CSS = `
     .dtg-wwd-grid { grid-template-columns: 1fr; }
     .dtg-footer-grid { grid-template-columns: 1fr; }
     .dtg-community-grid { grid-template-columns: 1fr; }
+    .dtg-urgency-desktop { display: none; }
+    .dtg-urgency-mobile { display: inline; }
     .dtg-hero-actions { flex-direction: column; align-items: stretch; }
     .dtg-hero-actions a { justify-content: center; }
     .dtg-nav-cta { display: none; }
@@ -87,7 +91,7 @@ const RESPONSIVE_CSS = `
     from { transform: translateY(100%); }
     to   { transform: translateY(0); }
   }
-  /* DESIGN.md §10.2 — Primary Button: red gradient, gold border, pill */
+  /* DESIGN.md Ã‚Â§10.2 Ã¢â‚¬â€ Primary Button: red gradient, gold border, pill */
   .dtg-btn-red {
     display: inline-flex; align-items: center; gap: 12px;
     background: linear-gradient(135deg, #ef233c 0%, #b5121b 45%, #050505 100%);
@@ -105,7 +109,7 @@ const RESPONSIVE_CSS = `
     border-color: rgba(201,164,73,0.85);
     transform: translateY(-2px);
   }
-  /* DESIGN.md §10.2 — Secondary Button: charcoal transparent */
+  /* DESIGN.md Ã‚Â§10.2 Ã¢â‚¬â€ Secondary Button: charcoal transparent */
   .dtg-btn-outline-white {
     display: inline-flex; align-items: center; gap: 12px;
     background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.22);
@@ -117,9 +121,9 @@ const RESPONSIVE_CSS = `
   .dtg-btn-outline-white:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.42); transform: translateY(-1px); }
 `
 
-/* ══════════════════════════════════════════════════════
+/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
    SWASH UNDERLINE
-══════════════════════════════════════════════════════ */
+Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */
 function Swash({ children }: { children: React.ReactNode }) {
   return (
     <span style={{ position:'relative', display:'inline-block', whiteSpace:'nowrap' }}>
@@ -132,9 +136,9 @@ function Swash({ children }: { children: React.ReactNode }) {
   )
 }
 
-/* ══════════════════════════════════════════════════════
+/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
    FADE SECTION (scroll-triggered)
-══════════════════════════════════════════════════════ */
+Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */
 function FadeSection({ children, style, className }: { children: React.ReactNode; style?: React.CSSProperties; className?: string }) {
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -153,9 +157,9 @@ function FadeSection({ children, style, className }: { children: React.ReactNode
   )
 }
 
-/* ══════════════════════════════════════════════════════
+/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
    SECTION LABEL
-══════════════════════════════════════════════════════ */
+Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */
 function Label({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
   return (
     <div style={{ display:'inline-flex', alignItems:'center', gap:10, fontFamily:T.H, fontSize:12, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.24em', color: dark ? T.red : T.dim, marginBottom:20 }}>
@@ -165,20 +169,20 @@ function Label({ children, dark = false }: { children: React.ReactNode; dark?: b
   )
 }
 
-/* ══════════════════════════════════════════════════════
+/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
    SOCIAL PROOF TICKER
-══════════════════════════════════════════════════════ */
+Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */
 const TICKER_ITEMS = [
-  '🖤 Darius R. from Chicago just applied',
-  '⚡ Montoiya W. received her Platinum Blueprint™',
-  '🔥 14 Black Sheep joined this week',
-  '💰 $250K funding pathway opened for Antione T.',
-  '🏆 Kristian enrolled in Silver Gate today',
-  '📋 Marcus B. received his Custom Blueprint',
-  '🚀 Only 3 spots remaining this month',
-  '✅ Elevated Minds™ Inc. officially launched',
-  '🖤 Shanice R. started her Vision Call',
-  '⚡ New cohort forming — limited seats',
+  'Ã°Å¸â€“Â¤ Darius R. from Chicago just applied',
+  'Ã¢Å¡Â¡ Montoiya W. received her Platinum BlueprintÃ¢â€žÂ¢',
+  'Ã°Å¸â€Â¥ 14 Black Sheep joined this week',
+  'Custom blueprint delivered for Antione T.',
+  'Ã°Å¸Ââ€  Kristian enrolled in Silver Gate today',
+  'Ã°Å¸â€œâ€¹ Marcus B. received his Custom Blueprint',
+  'Ã°Å¸Å¡â‚¬ Only 3 spots remaining this month',
+  'Ã¢Å“â€¦ Elevated MindsÃ¢â€žÂ¢ Inc. officially launched',
+  'Ã°Å¸â€“Â¤ Shanice R. started her Vision Call',
+  'Free scholarship opens every 90 days',
 ]
 
 function SocialProofTicker() {
@@ -189,7 +193,7 @@ function SocialProofTicker() {
         {items.map((item, i) => (
           <span key={i} style={{ display:'inline-flex', alignItems:'center', gap:8, fontFamily:T.H, fontSize:12, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.12em', color:'rgba(255,255,255,0.75)', whiteSpace:'nowrap', padding:'0 40px' }}>
             {item}
-            <span style={{ color:T.red, marginLeft:8, opacity:0.5 }}>•</span>
+            <span style={{ color:T.red, marginLeft:8, opacity:0.5 }}>Ã¢â‚¬Â¢</span>
           </span>
         ))}
       </div>
@@ -197,48 +201,48 @@ function SocialProofTicker() {
   )
 }
 
-/* ══════════════════════════════════════════════════════
+/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
    BLACK SHEEP QUIZ (Lead Capture + Qualification)
-══════════════════════════════════════════════════════ */
+Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */
 const QUIZ_STEPS = [
   {
     q: 'Where are you right now?',
     sub: 'Be honest. This helps us find your exact gate.',
     options: [
-      { label: 'Survival mode — just getting by', icon: '🔥', value: 'survival' },
-      { label: 'Hustling hard but stuck in circles', icon: '🔄', value: 'stuck' },
-      { label: 'Have a vision — no structure yet', icon: '💡', value: 'vision' },
-      { label: 'Building — need capital & direction', icon: '🚀', value: 'building' },
+      { label: 'Survival mode Ã¢â‚¬â€ just getting by', icon: 'Ã°Å¸â€Â¥', value: 'survival' },
+      { label: 'Hustling hard but stuck in circles', icon: 'Ã°Å¸â€â€ž', value: 'stuck' },
+      { label: 'Have a vision Ã¢â‚¬â€ no structure yet', icon: 'Ã°Å¸â€™Â¡', value: 'vision' },
+      { label: 'Building Ã¢â‚¬â€ need capital & direction', icon: 'Ã°Å¸Å¡â‚¬', value: 'building' },
     ],
   },
   {
     q: "What's your biggest blocker?",
     sub: "We've seen it all. Pick what hits closest.",
     options: [
-      { label: "No structure — it's all in my head", icon: '🧠', value: 'structure' },
-      { label: "No funding — can't access capital", icon: '💰', value: 'funding' },
-      { label: "No direction — don't know where to start", icon: '🧭', value: 'direction' },
-      { label: 'All of the above — I need everything', icon: '🖤', value: 'all' },
+      { label: "No structure Ã¢â‚¬â€ it's all in my head", icon: 'Ã°Å¸Â§Â ', value: 'structure' },
+      { label: "No funding Ã¢â‚¬â€ can't access capital", icon: 'Ã°Å¸â€™Â°', value: 'funding' },
+      { label: "No direction Ã¢â‚¬â€ don't know where to start", icon: 'Ã°Å¸Â§Â­', value: 'direction' },
+      { label: 'All of the above Ã¢â‚¬â€ I need everything', icon: 'Ã°Å¸â€“Â¤', value: 'all' },
     ],
   },
   {
     q: "What's your #1 goal in 12 months?",
     sub: 'Your answer determines your gate.',
     options: [
-      { label: 'Own a real, legitimate business', icon: '🏢', value: 'business' },
-      { label: 'Access real funding ($50K–$250K)', icon: '💳', value: 'funding' },
-      { label: 'Build a legacy for my family', icon: '👑', value: 'legacy' },
-      { label: 'Get off survival mode — for good', icon: '✊', value: 'freedom' },
+      { label: 'Own a real, legitimate business', icon: 'Ã°Å¸ÂÂ¢', value: 'business' },
+      { label: 'Access real funding ($50KÃ¢â‚¬â€œ$250K)', icon: 'Ã°Å¸â€™Â³', value: 'funding' },
+      { label: 'Build a legacy for my family', icon: 'Ã°Å¸â€˜â€˜', value: 'legacy' },
+      { label: 'Get off survival mode Ã¢â‚¬â€ for good', icon: 'Ã¢Å“Å ', value: 'freedom' },
     ],
   },
 ]
 
 function getGateRecommendation(answers: string[]): { gate: string; price: string; desc: string; cta: string } {
   if (answers.includes('building') || answers[1] === 'funding') {
-    return { gate:'Gold Gate', price:'$4,497', desc:"You're ready to move. You need strategic guidance, credit access, and a real growth plan.", cta:'Enter Gold Gate' }
+    return { gate:'Gold Gate', price:'$4,497', desc:"You're ready to move. You need strategic guidance, operational structure, and a real growth plan.", cta:'Enter Gold Gate' }
   }
   if (answers[0] === 'vision' || answers.includes('all')) {
-    return { gate:'Silver Gate', price:'$3,497', desc:"You have the vision. Now you need the structure, corporate setup, and funding pathway.", cta:'Enter Silver Gate' }
+    return { gate:'Silver Gate', price:'$3,497', desc:"You have the vision. Now you need the structure, corporate setup, and execution path.", cta:'Enter Silver Gate' }
   }
   return { gate:'Black Sheep Executive Blueprint', price:'$499', desc:"Start here. Clarity before capital. Get your custom blueprint and income path first.", cta:'Get The Blueprint' }
 }
@@ -280,7 +284,7 @@ function BlackSheepQuiz({ onClose }: { onClose: () => void }) {
         {/* Red top bar */}
         <div style={{ height:4, background:T.red, width:'100%' }} />
         {/* Close */}
-        <button onClick={onClose} style={{ position:'absolute', top:16, right:20, background:'none', border:'none', color:'rgba(255,255,255,0.5)', fontSize:24, cursor:'pointer', lineHeight:1, zIndex:2 }} aria-label="Close">×</button>
+        <button onClick={onClose} style={{ position:'absolute', top:16, right:20, background:'none', border:'none', color:'rgba(255,255,255,0.5)', fontSize:24, cursor:'pointer', lineHeight:1, zIndex:2 }} aria-label="Close">Ãƒâ€”</button>
 
         {/* INTRO */}
         {step === 0 && (
@@ -297,15 +301,15 @@ function BlackSheepQuiz({ onClose }: { onClose: () => void }) {
             <button onClick={() => setStep(1)} style={{ display:'inline-flex', alignItems:'center', gap:12, background:T.red, color:'#fff', padding:'18px 44px', fontFamily:T.H, fontSize:14, fontWeight:800, textTransform:'uppercase', letterSpacing:'0.14em', border:'none', cursor:'pointer', transition:'background 0.3s', animation:'dtg-pulse-red 2s infinite' }}
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background=T.redDeep }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background=T.red }}>
-              Find My Gate →
+              Find My Gate Ã¢â€ â€™
             </button>
             <div style={{ marginTop:20, display:'flex', justifyContent:'center', gap:24, fontFamily:T.H, fontSize:11, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.12em', color:'rgba(255,255,255,0.35)' }}>
-              <span>Free</span><span>•</span><span>60 seconds</span><span>•</span><span>No fluff</span>
+              <span>Free</span><span>Ã¢â‚¬Â¢</span><span>60 seconds</span><span>Ã¢â‚¬Â¢</span><span>No fluff</span>
             </div>
           </div>
         )}
 
-        {/* QUESTIONS 1–3 */}
+        {/* QUESTIONS 1Ã¢â‚¬â€œ3 */}
         {step >= 1 && step <= totalSteps && (
           <div style={{ padding:'40px 40px 36px' }}>
             {/* Progress */}
@@ -360,7 +364,7 @@ function BlackSheepQuiz({ onClose }: { onClose: () => void }) {
                 style={{ padding:'18px', background:T.red, color:'#fff', fontFamily:T.H, fontSize:14, fontWeight:800, textTransform:'uppercase', letterSpacing:'0.14em', border:'none', cursor:'pointer', transition:'background 0.3s', marginTop:4 }}
                 onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background=T.redDeep }}
                 onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background=T.red }}>
-                Reveal My Gate →
+                Reveal My Gate Ã¢â€ â€™
               </button>
               <p style={{ fontSize:12, color:'rgba(255,255,255,0.3)', textAlign:'center', margin:0 }}>No spam. No games. Just your path.</p>
             </div>
@@ -370,7 +374,7 @@ function BlackSheepQuiz({ onClose }: { onClose: () => void }) {
         {/* RESULT */}
         {step === 5 && (
           <div style={{ padding:'40px 40px 36px', textAlign:'center' }}>
-            <div style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', width:72, height:72, background:'rgba(200,16,46,0.1)', border:`2px solid ${T.red}`, borderRadius:'50%', margin:'0 auto 24px', fontSize:32 }}>🖤</div>
+            <div style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', width:72, height:72, background:'rgba(200,16,46,0.1)', border:`2px solid ${T.red}`, borderRadius:'50%', margin:'0 auto 24px', fontSize:32 }}>Ã°Å¸â€“Â¤</div>
             <div style={{ fontFamily:T.H, fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.2em', color:T.red, marginBottom:12 }}>Your Gate Is Confirmed</div>
             <h3 style={{ fontFamily:T.H, fontSize:'clamp(22px,3vw,30px)', fontWeight:900, color:'#fff', marginBottom:8, lineHeight:1.1 }}>
               {submitted ? `Welcome, ${form.name.split(' ')[0]}.` : 'Here is your result.'}
@@ -385,7 +389,7 @@ function BlackSheepQuiz({ onClose }: { onClose: () => void }) {
               style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:12, background:T.red, color:'#fff', padding:'20px', fontFamily:T.H, fontSize:14, fontWeight:800, textTransform:'uppercase', letterSpacing:'0.14em', textDecoration:'none', transition:'background 0.3s', marginBottom:16 }}
               onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background=T.redDeep }}
               onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background=T.red }}>
-              {rec.cta} — Book Your Vision Call
+              {rec.cta} Ã¢â‚¬â€ Book Your Vision Call
               <svg viewBox="0 0 18 12" fill="none" style={{ width:18, height:12 }}><path d="M1 6H17M17 6L12 1M17 6L12 11" stroke="currentColor" strokeWidth="1.8"/></svg>
             </a>
             <button onClick={onClose} style={{ background:'none', border:'none', color:'rgba(255,255,255,0.4)', fontSize:13, cursor:'pointer', fontFamily:T.H }}>Maybe later</button>
@@ -396,9 +400,9 @@ function BlackSheepQuiz({ onClose }: { onClose: () => void }) {
   )
 }
 
-/* ══════════════════════════════════════════════════════
+/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
    STICKY BOTTOM CTA BAR
-══════════════════════════════════════════════════════ */
+Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */
 function StickyApplyCTA({ onQuizOpen }: { onQuizOpen: () => void }) {
   const [visible, setVisible] = useState(false)
   const [dismissed, setDismissed] = useState(false)
@@ -414,7 +418,7 @@ function StickyApplyCTA({ onQuizOpen }: { onQuizOpen: () => void }) {
     <div style={{ position:'fixed', bottom:0, left:0, right:0, zIndex:998, background:'rgba(5,5,5,0.97)', backdropFilter:'blur(20px)', borderTop:`1px solid rgba(181,18,27,0.50)`, padding:'14px 24px', display:'flex', alignItems:'center', justifyContent:'space-between', gap:16, animation:'dtg-slide-up 0.4s cubic-bezier(.22,1,.36,1)' }}>
       <div style={{ display:'flex', flexDirection:'column', gap:2 }}>
         <span style={{ fontFamily:T.H, fontWeight:700, fontSize:14, color:T.ivory, fontStyle:'italic' }}>Survival mode is over.</span>
-        <span style={{ fontFamily:T.M, fontSize:10, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.14em', color:T.steel }}>Strategy · Freedom · Legacy</span>
+        <span style={{ fontFamily:T.M, fontSize:10, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.14em', color:T.steel }}>Strategy Ã‚Â· Freedom Ã‚Â· Legacy</span>
       </div>
       <div style={{ display:'flex', gap:10, alignItems:'center', flexShrink:0 }}>
         <button onClick={onQuizOpen}
@@ -427,18 +431,18 @@ function StickyApplyCTA({ onQuizOpen }: { onQuizOpen: () => void }) {
           style={{ padding:'12px 24px', background:'linear-gradient(135deg,#ef233c,#b5121b)', color:'#fff', fontFamily:T.M, fontSize:12, fontWeight:800, textTransform:'uppercase', letterSpacing:'0.10em', textDecoration:'none', borderRadius:999, border:'1px solid rgba(201,164,73,0.45)', transition:'all 220ms' }}
           onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.boxShadow='0 0 24px rgba(239,35,60,0.35)' }}
           onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.boxShadow='none' }}>
-          Uncover My Gold →
+          Uncover My Gold Ã¢â€ â€™
         </Link>
         <button onClick={() => setDismissed(true)}
-          style={{ background:'none', border:'none', color:'rgba(255,255,255,0.3)', fontSize:20, cursor:'pointer', padding:'4px 8px', lineHeight:1 }} aria-label="Dismiss">×</button>
+          style={{ background:'none', border:'none', color:'rgba(255,255,255,0.3)', fontSize:20, cursor:'pointer', padding:'4px 8px', lineHeight:1 }} aria-label="Dismiss">Ãƒâ€”</button>
       </div>
     </div>
   )
 }
 
-/* ══════════════════════════════════════════════════════
+/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
    EXIT INTENT HOOK
-══════════════════════════════════════════════════════ */
+Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */
 function useExitIntent(callback: () => void) {
   const fired = useRef(false)
   useEffect(() => {
@@ -453,15 +457,15 @@ function useExitIntent(callback: () => void) {
   }, [callback])
 }
 
-/* ══════════════════════════════════════════════════════
+/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
    MAIN LANDING PAGE
-══════════════════════════════════════════════════════ */
+Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */
 export default function LandingPage() {
   const [quizOpen, setQuizOpen] = useState(false)
   const [gateHover, setGateHover] = useState<number|null>(null)
   const openQuiz = useCallback(() => setQuizOpen(true), [])
 
-  // Exit intent → quiz
+  // Exit intent Ã¢â€ â€™ quiz
   useExitIntent(openQuiz)
 
   // Auto-open quiz after 45s of being on page
@@ -471,10 +475,10 @@ export default function LandingPage() {
   }, [])
 
   const gates = [
-    { icon:'🖤', name:'Black Sheep Executive Blueprint', tagline:'Where hidden vision becomes a real company.', featured:true, strike:'$1,497', amount:'$499', plan:'Or 2 Payments of $299', items:['Private 1-on-1 Vision Extraction','Deep Strategy Session','Custom Black Sheep Executive Blueprint','Clear Business Layout of Your Vision','Income Path Strategy','Offer + Brand Direction','30-Day Execution Roadmap','Kingdom Training Zoom Calls (Wed & Sun)'], best:'Best for: Those who need clarity before capital.', cta:'Get The Blueprint' },
-    { icon:'🥈', name:'Silver Gate', tagline:'For the builder ready to move now.', featured:false, amount:'$3,497', plan:'Or 2 Payments of $1,997', items:['Everything in Executive Blueprint','Corporate structure for funding','EIN setup support','Business Credit DIY Portal','Fundability DIY Portal','D&B Mentoring','Tax, Accounting & Bookkeeping Resources','Kingdom Alignment Mentorship'], best:'Up to $250K funding · 3–12 months · Guaranteed or money back', cta:'Enter Silver Gate' },
-    { icon:'🥇', name:'Gold Gate', tagline:'For the builder who values guidance and speed.', featured:false, amount:'$4,497', plan:'Or 2 Payments of $2,497', items:['Everything in Silver Gate','Private Strategic Guidance','12 Months Business Credit Consulting','12 Months Funding Mentorship','12 Months Premium Growth Strategy','Done-With-You Momentum Help','Priority Direction Access','Member Portal Access'], best:'Up to $250K funding · 3–12 months · Guaranteed or money back', cta:'Enter Gold Gate' },
-    { icon:'👑', name:'Platinum Gate', tagline:'For the serious builder creating something significant.', featured:false, amount:'$9,497', plan:'Or 2 Payments of $5,297', items:['Everything in Gold Gate','Private Consulting Support','Website for Your Business','CRM + Automation Setup','AI Business Systems Support','Mobile App for Your Business','12 Months Funding Mentorship','Ongoing Technical Support'], best:'Up to $250K funding · 3–12 months · Guaranteed or money back', cta:'Enter Platinum Gate' },
+    { icon:'Ã°Å¸â€“Â¤', name:'Black Sheep Executive Blueprint', tagline:'Where hidden vision becomes a real company.', featured:true, strike:'$1,497', amount:'$499', plan:'Or 2 Payments of $299', items:['Private 1-on-1 Vision Extraction','Deep Strategy Session','Custom Black Sheep Executive Blueprint','Clear Business Layout of Your Vision','Income Path Strategy','Offer + Brand Direction','30-Day Execution Roadmap','Kingdom Training Zoom Calls (Wed & Sun)'], best:'Best for: Those who need clarity before capital.', cta:'Get The Blueprint' },
+    { icon:'Ã°Å¸Â¥Ë†', name:'Silver Gate', tagline:'For the builder ready to move now.', featured:false, amount:',497', plan:'Or 2 Payments of ,997', items:['Everything in Executive Blueprint','Corporate structure for funding','EIN setup support','Business Credit DIY Portal','Fundability DIY Portal','D&B Mentoring','Tax, Accounting & Bookkeeping Resources','Kingdom Alignment Mentorship'], best:'Best for: builders ready for structure, compliance, and momentum.', cta:'Enter Silver Gate' },
+    { icon:'Ã°Å¸Â¥â€¡', name:'Gold Gate', tagline:'For the builder who values guidance and speed.', featured:false, amount:',497', plan:'Or 2 Payments of ,497', items:['Everything in Silver Gate','Private Strategic Guidance','12 Months Business Credit Consulting','12 Months Funding Mentorship','12 Months Premium Growth Strategy','Done-With-You Momentum Help','Priority Direction Access','Member Portal Access'], best:'Best for: founders who want guided execution and faster decisions.', cta:'Enter Gold Gate' },
+    { icon:'Ã°Å¸â€˜â€˜', name:'Platinum Gate', tagline:'For the serious builder creating something significant.', featured:false, amount:',497', plan:'Or 2 Payments of ,297', items:['Everything in Gold Gate','Private Consulting Support','Website for Your Business','CRM + Automation Setup','AI Business Systems Support','Mobile App for Your Business','12 Months Funding Mentorship','Ongoing Technical Support'], best:'Best for: high-touch support across brand, systems, and delivery.', cta:'Enter Platinum Gate' },
   ]
 
   return (
@@ -489,10 +493,10 @@ export default function LandingPage() {
 
       <div style={{ background:T.ink, color:'#fff', fontFamily:T.B, fontSize:18, lineHeight:1.65, WebkitFontSmoothing:'antialiased', overflowX:'hidden' }}>
 
-        {/* ══ SOCIAL PROOF TICKER ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â SOCIAL PROOF TICKER Ã¢â€¢ÂÃ¢â€¢Â */}
         <SocialProofTicker />
 
-        {/* ══ NAV — DESIGN.md §10.1 ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â NAV Ã¢â‚¬â€ DESIGN.md Ã‚Â§10.1 Ã¢â€¢ÂÃ¢â€¢Â */}
         <nav style={{ position:'sticky', top:0, zIndex:100, padding:'14px 40px', display:'flex', justifyContent:'space-between', alignItems:'center', background:'rgba(5,5,5,0.95)', backdropFilter:'blur(20px)', borderBottom:`1px solid rgba(201,201,201,0.12)` }}>
           <div style={{ display:'flex', alignItems:'center', gap:12 }}>
             <div style={{ width:36, height:36, borderRadius:10, background:'rgba(181,18,27,0.15)', border:'1px solid rgba(181,18,27,0.30)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
@@ -500,10 +504,10 @@ export default function LandingPage() {
             </div>
             <div>
               <div style={{ fontFamily:T.M, fontWeight:800, fontSize:13, color:T.red, letterSpacing:'0.08em', textTransform:'uppercase', lineHeight:1 }}>Black Sheep</div>
-              <div style={{ fontSize:9, color:T.steel, letterSpacing:'0.12em', textTransform:'uppercase' }}>Divorcing The Game™</div>
+              <div style={{ fontSize:9, color:T.steel, letterSpacing:'0.12em', textTransform:'uppercase' }}>Divorcing The GameÃ¢â€žÂ¢</div>
             </div>
           </div>
-          {/* DESIGN.md §10.1 Landing nav */}
+          {/* DESIGN.md Ã‚Â§10.1 Landing nav */}
           <div className="dtg-nav-links" style={{ gap:28, fontFamily:T.M, fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.10em' }}>
             {[['Movement','#dtg-about'],['The Gates','#dtg-offer'],['Apply','/apply'],['Login','/login']].map(([lbl,href]) => (
               href.startsWith('/') ?
@@ -536,22 +540,22 @@ export default function LandingPage() {
           </div>
         </nav>
 
-        {/* ══ URGENCY BAR ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â URGENCY BAR Ã¢â€¢ÂÃ¢â€¢Â */}
         <div style={{ background:'rgba(181,18,27,0.10)', borderBottom:`1px solid rgba(181,18,27,0.22)`, padding:'10px 24px', textAlign:'center', fontFamily:T.M, fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.18em', color:T.red }}>
-          🔥 &nbsp;New cohort forming now — <span style={{ color:'#fff', fontWeight:900 }}>limited applications accepted</span> &nbsp;·&nbsp; <Link to="/apply" style={{ color:T.goldSoft, textDecoration:'underline' }}>Apply as a Founder →</Link>
+          <span className="dtg-urgency-desktop">BLACK SHEEP EXECUTIVE BLUEPRINT &rarr; FREE SCHOLARSHIP OPENS EVERY 90 DAYS &rarr; <Link to="/apply" style={{ color:T.goldSoft, textDecoration:'underline' }}>APPLY NOW</Link></span><span className="dtg-urgency-mobile">FREE SCHOLARSHIP OPENS EVERY 90 DAYS &rarr; <Link to="/apply" style={{ color:T.goldSoft, textDecoration:'underline' }}>APPLY NOW</Link></span>
         </div>
 
-        {/* ══ HERO ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â HERO Ã¢â€¢ÂÃ¢â€¢Â */}
         <section style={{ minHeight:'90vh', position:'relative', display:'flex', alignItems:'center', justifyContent:'center', textAlign:'center', padding:'120px 24px 100px', overflow:'hidden', background:T.ink }}>
           <div style={{ position:'absolute', inset:0, background:'linear-gradient(180deg,rgba(10,10,10,0.78)0%,rgba(10,10,10,0.55)40%,rgba(10,10,10,0.9)100%)', zIndex:2 }} />
           <div style={{ position:'absolute', inset:0, zIndex:1, backgroundImage:"url('https://assets.cdn.filesafe.space/JSFItdgeUTehgA826XWZ/media/69dd5db2328c56e1a04494c0.jpg')", backgroundSize:'cover', backgroundPosition:'center' }} />
           <div style={{ position:'absolute', inset:0, zIndex:2, background:'radial-gradient(ellipse 50% 40% at 50% 60%, rgba(200,16,46,0.07) 0%, transparent 60%)', pointerEvents:'none' }} />
           <div style={{ position:'relative', zIndex:3, maxWidth:900, margin:'0 auto' }}>
-            {/* DESIGN.md §10.4 Badge */}
+            {/* DESIGN.md Ã‚Â§10.4 Badge */}
             <div style={{ display:'inline-flex', alignItems:'center', gap:8, background:'rgba(181,18,27,0.10)', border:'1px solid rgba(201,164,73,0.30)', color:'#e0c878', borderRadius:999, fontSize:11, fontFamily:T.M, fontWeight:700, letterSpacing:'0.14em', textTransform:'uppercase', padding:'6px 18px', marginBottom:32 }}>
-              🖤 &nbsp;A Movement, Not A Course &nbsp;·&nbsp; Strategy · Freedom · Legacy
+              Ã°Å¸â€“Â¤ &nbsp;A Movement, Not A Course &nbsp;Ã‚Â·&nbsp; Strategy Ã‚Â· Freedom Ã‚Â· Legacy
             </div>
-            {/* DESIGN.md §11.1 Hero headline */}
+            {/* DESIGN.md Ã‚Â§11.1 Hero headline */}
             <p style={{ fontFamily:T.M, fontSize:13, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.22em', color:'rgba(255,255,255,0.65)', marginBottom:16 }}>
               Welcome Home, Black Sheep.
             </p>
@@ -559,31 +563,31 @@ export default function LandingPage() {
               Turn buried vision into<br /><Swash>business structure</Swash>,<br />capital pathways, and legacy.
             </h1>
             <p style={{ fontFamily:T.B, fontSize:'clamp(16px,1.8vw,20px)', lineHeight:1.65, color:'rgba(255,255,255,0.75)', maxWidth:640, margin:'0 auto 16px' }}>
-              Divorcing The Game™ helps overlooked builders move from survival mode into structure, ownership, and strategy.
+              Divorcing The GameÃ¢â€žÂ¢ helps overlooked builders move from survival mode into structure, ownership, and strategy.
             </p>
             <p style={{ fontFamily:T.H, fontSize:'clamp(16px,1.6vw,20px)', fontWeight:700, color:'#fff', fontStyle:'italic', marginBottom:40 }}>
               You are not broken. You are <Swash>buried gold</Swash>.
             </p>
-            {/* DESIGN.md §11.1 — Primary CTA: Uncover My Gold */}
+            {/* DESIGN.md Ã‚Â§11.1 Ã¢â‚¬â€ Primary CTA: Uncover My Gold */}
             <div className="dtg-hero-actions" style={{ marginBottom:24 }}>
               <Link to="/apply" className="dtg-btn-red">
                 Uncover My Gold
                 <svg viewBox="0 0 18 12" fill="none" style={{ width:18, height:12 }}><path d="M1 6H17M17 6L12 1M17 6L12 11" stroke="currentColor" strokeWidth="1.8"/></svg>
               </Link>
               <button onClick={openQuiz} className="dtg-btn-outline-white">
-                Choose My Gate ✦
+                Choose My Gate Ã¢Å“Â¦
               </button>
             </div>
             <div style={{ fontFamily:T.M, fontSize:11, fontWeight:500, textTransform:'uppercase', letterSpacing:'0.20em', color:'rgba(255,255,255,0.45)' }}>
-              Built for the overlooked &nbsp;·&nbsp; Made for the Black Sheep
+              Built for the overlooked &nbsp;Ã‚Â·&nbsp; Made for the Black Sheep
             </div>
           </div>
         </section>
 
-        {/* ══ TRUST STATS — DESIGN.md §11.1 ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â TRUST STATS Ã¢â‚¬â€ DESIGN.md Ã‚Â§11.1 Ã¢â€¢ÂÃ¢â€¢Â */}
         <section style={{ background:T.panel, padding:'36px 24px', borderBottom:`1px solid rgba(201,164,73,0.15)`, borderTop:`1px solid rgba(201,164,73,0.15)` }}>
           <div style={{ maxWidth:900, margin:'0 auto', display:'flex', justifyContent:'center', gap:'5vw', flexWrap:'wrap' }}>
-            {[['500+','Black Sheep Builders'],['$250K','Capital Pathway Access'],['14 Days','To Your Blueprint'],['100%','Satisfaction Guarantee']].map(([num, lbl]) => (
+            {[['500+','Black Sheep Builders'],['1:1','Founder Strategy'],['14 Days','To Your Blueprint'],['4','Paths To Build']].map(([num, lbl]) => (
               <div key={lbl} style={{ textAlign:'center', padding:'8px 0' }}>
                 <div style={{ fontFamily:T.H, fontSize:'clamp(24px,4vw,42px)', fontWeight:800, color:T.red, lineHeight:1, marginBottom:6 }}>{num}</div>
                 <div style={{ fontFamily:T.M, fontSize:10, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.18em', color:T.steel }}>{lbl}</div>
@@ -592,17 +596,17 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ══ BLACK SHEEP IF (LIGHT) ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â BLACK SHEEP IF (LIGHT) Ã¢â€¢ÂÃ¢â€¢Â */}
         <section style={{ padding:'130px 24px', background:T.bone, color:T.ink }}>
           <FadeSection>
             <div style={{ textAlign:'center', maxWidth:820, margin:'0 auto 76px' }}>
               <Label>The Black Sheep Test</Label>
               <h2 style={{ fontFamily:T.H, fontSize:'clamp(32px,5vw,60px)', fontWeight:800, lineHeight:1.08, letterSpacing:'-0.02em', color:T.ink, marginBottom:0 }}>
-                You're a <Swash>Black Sheep</Swash> if…
+                You're a <Swash>Black Sheep</Swash> ifÃ¢â‚¬Â¦
               </h2>
             </div>
             <ul style={{ listStyle:'none', maxWidth:900, margin:'0 auto', padding:0 }}>
-              {['You had to survive while others had support.','You learned life the hard way.',"You've been judged by your past but know there's more in you.","You're strong for everybody else but carry your own weight alone.","You've got hustle, ideas, and talent — but no clear structure.","You're tired of surviving and ready to build something real.",'You know you carry greatness, but life hasn\'t matched it yet.'].map((item,i,arr) => (
+              {['You had to survive while others had support.','You learned life the hard way.',"You've been judged by your past but know there's more in you.","You're strong for everybody else but carry your own weight alone.","You've got hustle, ideas, and talent Ã¢â‚¬â€ but no clear structure.","You're tired of surviving and ready to build something real.",'You know you carry greatness, but life hasn\'t matched it yet.'].map((item,i,arr) => (
                 <li key={i} style={{ display:'flex', gap:20, alignItems:'baseline', padding:'20px 0', borderBottom: i<arr.length-1 ? `1px dashed ${T.lineLight}` : 'none', fontSize:20, lineHeight:1.55, color:T.ink, transition:'padding-left 0.3s', cursor:'default' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLLIElement).style.paddingLeft='16px' }}
                   onMouseLeave={e => { (e.currentTarget as HTMLLIElement).style.paddingLeft='0' }}>
@@ -612,7 +616,7 @@ export default function LandingPage() {
               ))}
             </ul>
             <div style={{ textAlign:'center', marginTop:56, fontFamily:T.H, fontSize:'clamp(20px,3vw,32px)', fontWeight:800, color:T.ink }}>
-              If this sounds like you… <Swash>welcome home</Swash>.
+              If this sounds like youÃ¢â‚¬Â¦ <Swash>welcome home</Swash>.
             </div>
             {/* Bridge text */}
             <div style={{ maxWidth:860, margin:'48px auto 0', padding:'40px 48px', background:'#fff', borderLeft:`4px solid ${T.red}`, boxShadow:'0 8px 40px -16px rgba(0,0,0,0.1)' }}>
@@ -620,13 +624,13 @@ export default function LandingPage() {
                 <strong style={{ color:T.ink, fontSize:22 }}>You're not broken. You're unstructured.</strong>
               </p>
               <p style={{ fontSize:20, color:'#4a4a4a', lineHeight:1.7, margin:0 }}>
-                If you've got hustle, pain, ideas, and real life experience but no clear structure to turn it into a business — we help you extract it, build it into a custom blueprint, and position you for funding, growth, and legacy.
+                If you've got hustle, pain, ideas, and real life experience but no clear structure to turn it into a business Ã¢â‚¬â€ we help you extract it, build it into a custom blueprint, and position you for growth, ownership, and legacy.
               </p>
             </div>
-            {/* DESIGN.md §13 — Conversion Flow CTA */}
+            {/* DESIGN.md Ã‚Â§13 Ã¢â‚¬â€ Conversion Flow CTA */}
             <div style={{ textAlign:'center', marginTop:48, display:'flex', gap:16, justifyContent:'center', flexWrap:'wrap' }}>
               <button onClick={openQuiz} className="dtg-btn-red">
-                Find My Gate ✦
+                Find My Gate Ã¢Å“Â¦
               </button>
               <Link to="/apply" className="dtg-btn-outline-white" style={{ color:T.ink, borderColor:T.red }}>
                 Apply as a Black Sheep Founder
@@ -635,7 +639,7 @@ export default function LandingPage() {
           </FadeSection>
         </section>
 
-        {/* ══ MOTIVATION (DARK) ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â MOTIVATION (DARK) Ã¢â€¢ÂÃ¢â€¢Â */}
         <section style={{ padding:'130px 24px', background:'#050505', borderTop:`1px solid ${T.lineDark}`, borderBottom:`1px solid ${T.lineDark}` }}>
           <FadeSection>
             <div style={{ maxWidth:900, margin:'0 auto', textAlign:'center' }}>
@@ -652,7 +656,7 @@ export default function LandingPage() {
           </FadeSection>
         </section>
 
-        {/* ══ WHAT WE DO (LIGHT) ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â WHAT WE DO (LIGHT) Ã¢â€¢ÂÃ¢â€¢Â */}
         <section style={{ padding:'130px 24px', background:T.bone, color:T.ink }}>
           <FadeSection>
             <div style={{ textAlign:'center', maxWidth:820, margin:'0 auto 76px' }}>
@@ -662,7 +666,7 @@ export default function LandingPage() {
               </h2>
             </div>
             <div className="dtg-wwd-grid" style={{ maxWidth:1200, margin:'0 auto' }}>
-              {[{t:'Real Businesses',d:'Not side hustles. Real, structured businesses you can grow and sustain.'},{t:'Clear Structure',d:'No more chaos. A clear direction you can rely on every single day.'},{t:'Funding Pathways',d:'Access to trusted funding partners and business credit channels.'},{t:'Business Credit',d:'Positioning you to access real credit and real capital for growth.'},{t:'Confidence + Direction',d:'No more guessing. Know exactly what to do and why it matters.'},{t:'Ownership + New Futures',d:"Build something that's yours. A future you designed, not one forced on you."}].map((card,i) => (
+              {[{t:'Real Businesses',d:'Not side hustles. Real, structured businesses you can grow and sustain.'},{t:'Clear Structure',d:'No more chaos. A clear direction you can rely on every single day.'},{t:'Capital Readiness',d:'Cleaner positioning, cleaner records, and cleaner business fundamentals.'},{t:'Business Credit',d:'A clearer path to business credit education and stronger company setup.'},{t:'Confidence + Direction',d:'No more guessing. Know exactly what to do and why it matters.'},{t:'Ownership + New Futures',d:"Build something that's yours. A future you designed, not one forced on you."}].map((card,i) => (
                 <div key={i} style={{ background:'#fff', border:`1px solid ${T.lineLight}`, padding:'40px 32px', transition:'border-color 0.4s, transform 0.4s, box-shadow 0.4s', cursor:'default' }}
                   onMouseEnter={e => { const el=e.currentTarget as HTMLDivElement; el.style.borderColor=T.red; el.style.transform='translateY(-4px)'; el.style.boxShadow='0 20px 40px -20px rgba(0,0,0,0.12)' }}
                   onMouseLeave={e => { const el=e.currentTarget as HTMLDivElement; el.style.borderColor=T.lineLight; el.style.transform='translateY(0)'; el.style.boxShadow='none' }}>
@@ -675,7 +679,7 @@ export default function LandingPage() {
           </FadeSection>
         </section>
 
-        {/* ══ HOW IT WORKS (DARK) ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â HOW IT WORKS (DARK) Ã¢â€¢ÂÃ¢â€¢Â */}
         <section style={{ padding:'130px 24px', background:'#050505', borderTop:`1px solid ${T.lineDark}`, borderBottom:`1px solid ${T.lineDark}` }}>
           <FadeSection>
             <div style={{ textAlign:'center', maxWidth:820, margin:'0 auto 76px' }}>
@@ -685,7 +689,7 @@ export default function LandingPage() {
               </h2>
             </div>
             <div style={{ maxWidth:1000, margin:'0 auto' }}>
-              {[{n:'1.',t:'Uncover My Gold',d:'Answer a few focused questions and turn your story, skill, pain, or hustle into a structured business direction.'},{n:'2.',t:'Black Sheep Blueprint',d:'You receive a custom Blueprint built around your exact vision — not a template.'},{n:'3.',t:'Choose Your Gate',d:'The platform recommends the right gate for your readiness, resources, and goals.'},{n:'4.',t:'Founder Intake',d:'Submit your Founder Intake or schedule a Vision Call to get your roadmap confirmed.'},{n:'5.',t:'Build Different',d:'Enter the Legacy Dashboard. Structure is yours. No more carrying it alone.'}].map((step,i,arr) => (
+              {[{n:'1.',t:'Uncover My Gold',d:'Answer a few focused questions and turn your story, skill, pain, or hustle into a structured business direction.'},{n:'2.',t:'Black Sheep Blueprint',d:'You receive a custom Blueprint built around your exact vision Ã¢â‚¬â€ not a template.'},{n:'3.',t:'Choose Your Gate',d:'The platform recommends the right gate for your readiness, resources, and goals.'},{n:'4.',t:'Founder Intake',d:'Submit your Founder Intake or request a Vision Call to get your roadmap confirmed.'},{n:'5.',t:'Build Different',d:'Enter the Legacy Dashboard. Structure is yours. No more carrying it alone.'}].map((step,i,arr) => (
                 <div key={i} style={{ display:'grid', gridTemplateColumns:'72px 1fr', gap:24, padding:'36px 0', borderBottom: i<arr.length-1 ? `1px solid ${T.lineDark}` : 'none', alignItems:'start', transition:'padding-left 0.3s', cursor:'default' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.paddingLeft='12px' }}
                   onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.paddingLeft='0' }}>
@@ -700,7 +704,7 @@ export default function LandingPage() {
           </FadeSection>
         </section>
 
-        {/* ══ MEET THE FOUNDER (LIGHT) ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â MEET THE FOUNDER (LIGHT) Ã¢â€¢ÂÃ¢â€¢Â */}
         <section id="dtg-about" style={{ padding:'130px 24px', background:T.bone, color:T.ink }}>
           <FadeSection>
             <div className="dtg-founder-grid" style={{ maxWidth:1200, margin:'0 auto' }}>
@@ -716,20 +720,20 @@ export default function LandingPage() {
               <div>
                 <Label>Meet The Founder</Label>
                 <h2 style={{ fontFamily:T.H, fontSize:'clamp(28px,4vw,50px)', fontWeight:800, marginBottom:12, color:T.ink }}>Ashley <Swash>"IsReal" Thomas</Swash></h2>
-                <div style={{ fontFamily:T.H, fontSize:12, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.18em', color:T.dim, marginBottom:28 }}>Founder, Author &amp; Visionary of Divorcing the Game™</div>
-                {['Ashley "IsReal" Thomas is a Black Sheep who made it through the gate, came back with the key, and now opens doors for others.','She built Divorcing the Game™ for the overlooked, the misread, and the ones carrying hidden gold the world never knew how to recognize.','Now she helps Black Sheep uncover the gold inside them and turn it into real businesses, real structure, and funded futures.'].map((p,i) => (
+                <div style={{ fontFamily:T.H, fontSize:12, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.18em', color:T.dim, marginBottom:28 }}>Founder, Author &amp; Visionary of Divorcing the GameÃ¢â€žÂ¢</div>
+                {['Ashley "IsReal" Thomas is a Black Sheep who made it through the gate, came back with the key, and now opens doors for others.','She built Divorcing the GameÃ¢â€žÂ¢ for the overlooked, the misread, and the ones carrying hidden gold the world never knew how to recognize.','Now she helps Black Sheep uncover the gold inside them and turn it into real businesses, real structure, and funded futures.'].map((p,i) => (
                   <p key={i} style={{ color:'#4a4a4a', marginBottom:20, fontSize:17, lineHeight:1.65 }}>{p}</p>
                 ))}
                 <a href="https://www.amazon.com/dp/0578369311" target="_blank" rel="noopener noreferrer"
                   style={{ display:'inline-flex', alignItems:'center', gap:10, fontFamily:T.H, fontSize:12, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.14em', color:T.red, textDecoration:'none', borderBottom:`1px solid ${T.red}`, paddingBottom:4 }}>
-                  Get Her Book on Amazon →
+                  Get Her Book on Amazon Ã¢â€ â€™
                 </a>
               </div>
             </div>
           </FadeSection>
         </section>
 
-        {/* ══ MANIFESTO / QUOTE ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â MANIFESTO / QUOTE Ã¢â€¢ÂÃ¢â€¢Â */}
         <section style={{ background:T.bone, overflow:'hidden', borderTop:`1px solid ${T.lineLight}`, borderBottom:`1px solid ${T.lineLight}` }}>
           <div className="dtg-manifesto-grid">
             <div style={{ position:'relative', overflow:'hidden', background:'#0a0a0a', minHeight:440 }}>
@@ -742,37 +746,50 @@ export default function LandingPage() {
               <span style={{ fontFamily:T.H, fontSize:100, fontWeight:900, lineHeight:0.6, color:T.red, marginBottom:16, display:'block' }}>"</span>
               <blockquote style={{ fontFamily:T.H, fontSize:'clamp(20px,2.4vw,32px)', fontWeight:700, lineHeight:1.25, letterSpacing:'-0.015em', color:T.ink, marginBottom:32 }}>
                 Your vision is not a dream. It is the <Swash>business</Swash>. It's just unorganized.
-                <em style={{ fontStyle:'normal', color:T.ink, opacity:0.55, display:'block', marginTop:8 }}>That's why you feel stuck — and that's exactly what we fix.</em>
+                <em style={{ fontStyle:'normal', color:T.ink, opacity:0.55, display:'block', marginTop:8 }}>That's why you feel stuck Ã¢â‚¬â€ and that's exactly what we fix.</em>
               </blockquote>
               <div style={{ display:'flex', alignItems:'center', gap:16, paddingTop:24, borderTop:`1px solid ${T.lineLight}` }}>
                 <div style={{ width:32, height:2, background:T.red, flexShrink:0 }} />
                 <div style={{ fontFamily:T.H, fontSize:13, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.12em', color:T.ink }}>
                   Ashley "IsReal" Thomas
-                  <span style={{ display:'block', fontSize:11, fontWeight:500, color:T.dim, marginTop:4, letterSpacing:'0.14em' }}>Founder · Divorcing The Game</span>
+                  <span style={{ display:'block', fontSize:11, fontWeight:500, color:T.dim, marginTop:4, letterSpacing:'0.14em' }}>Founder Ã‚Â· Divorcing The Game</span>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ══ TESTIMONIAL (LIGHT) ══ */}
+
+        {/* Ã¢â€¢ÂÃ¢â€¢Â FOUNDER PROOF (LIGHT) Ã¢â€¢ÂÃ¢â€¢Â */}
         <section style={{ padding:'130px 24px', background:T.bone, borderTop:`1px solid ${T.lineLight}`, borderBottom:`1px solid ${T.lineLight}` }}>
           <FadeSection>
             <div style={{ maxWidth:900, margin:'0 auto', textAlign:'center' }}>
-              <Label>Real Results</Label>
-              <span style={{ fontFamily:T.H, fontSize:100, fontWeight:900, lineHeight:0.5, color:T.red, display:'block', marginBottom:24, opacity:0.2 }}>"</span>
-              <blockquote style={{ fontFamily:T.B, fontSize:'clamp(18px,2.2vw,24px)', fontWeight:400, lineHeight:1.65, color:T.ink, fontStyle:'italic', marginBottom:36, maxWidth:800, marginLeft:'auto', marginRight:'auto' }}>
-                Before receiving my Black Sheep Platinum Blueprint™, my vision felt like it was just sitting in my head. Seeing it brought to life on paper made me feel seen and heard for the first time, like my story finally had a voice and my vision was real. It gave me clarity, direction, and relief — and now knowing the money door is open that provides me up to $250,000 in funding made me feel ready to build.
-              </blockquote>
-              <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:4 }}>
-                <span style={{ fontFamily:T.H, fontSize:16, fontWeight:800, textTransform:'uppercase', letterSpacing:'0.12em', color:T.ink }}>Montoiya Williams</span>
-                <span style={{ fontFamily:T.H, fontSize:12, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.16em', color:T.dim }}>Founder of Elevated Minds™ Inc.</span>
+              <Label>Founder Proof</Label>
+              <h2 style={{ fontFamily:T.H, fontSize:'clamp(28px,4vw,46px)', fontWeight:800, lineHeight:1.12, color:T.ink, marginBottom:20 }}>
+                Clarity first. Structure next. Real founder momentum.
+              </h2>
+              <p style={{ fontFamily:T.B, fontSize:18, lineHeight:1.7, color:'#4a4a4a', maxWidth:700, margin:'0 auto 40px' }}>
+                Lightweight proof from founders who needed a sharper plan, cleaner structure, and a clearer next move.
+              </p>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(220px, 1fr))', gap:20, textAlign:'left' }}>
+                {[{quote:'My blueprint turned years of scattered ideas into one clear business direction.', name:'Montoiya Williams', role:'Founder, Elevated Minds Inc.'},{quote:'The process helped me stop guessing and finally decide what to build first.', name:'Darius R.', role:'Founder Applicant'},{quote:'I came in overwhelmed and left with structure, language, and a next-step plan I could use.', name:'Shanice R.', role:'Founder Applicant'}].map((item) => (
+                  <div key={item.name} style={{ background:'#fff', border:`1px solid ${T.lineLight}`, padding:'24px 22px', boxShadow:'0 14px 36px -24px rgba(0,0,0,0.16)' }}>
+                    <p style={{ fontFamily:T.B, fontSize:17, lineHeight:1.7, color:T.ink, margin:'0 0 18px' }}>
+                      "{item.quote}"
+                    </p>
+                    <div style={{ fontFamily:T.H, fontSize:14, fontWeight:800, textTransform:'uppercase', letterSpacing:'0.1em', color:T.ink }}>
+                      {item.name}
+                    </div>
+                    <div style={{ fontFamily:T.M, fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.12em', color:T.dim, marginTop:6 }}>
+                      {item.role}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </FadeSection>
         </section>
-
-        {/* ══ CHOOSE YOUR GATE (DARK) ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â CHOOSE YOUR GATE (DARK) Ã¢â€¢ÂÃ¢â€¢Â */}
         <section id="dtg-offer" style={{ padding:'130px 24px', background:'#050505', borderTop:`1px solid ${T.lineDark}` }}>
           <FadeSection>
             <div style={{ textAlign:'center', maxWidth:820, margin:'0 auto 76px' }}>
@@ -781,15 +798,15 @@ export default function LandingPage() {
                 Survival mode is <Swash>over</Swash>.
               </h2>
               <p style={{ fontSize:18, color:'rgba(255,255,255,0.65)', maxWidth:660, margin:'0 auto' }}>
-                We help turn buried vision into business, premium positioning, capital access, and legacy. Private access. Clean strategy. Elite execution.
+                We help turn buried vision into business, premium positioning, operational readiness, and legacy. Private access. Clean strategy. Elite execution.
               </p>
               <p style={{ color:'rgba(255,255,255,0.45)', fontFamily:T.H, fontSize:12, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.16em', marginTop:16 }}>
-                In-House Financing Available · Reserved for the Black Sheep
+                Executive Blueprint Access - Reserved for the Black Sheep
               </p>
               <button onClick={openQuiz} style={{ marginTop:24, display:'inline-flex', alignItems:'center', gap:10, background:'transparent', border:`1px solid rgba(200,16,46,0.4)`, color:T.red, padding:'12px 28px', fontFamily:T.H, fontSize:12, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.14em', cursor:'pointer', transition:'all 0.3s' }}
                 onMouseEnter={e => { const el=e.currentTarget as HTMLButtonElement; el.style.background='rgba(200,16,46,0.1)'; el.style.borderColor=T.red }}
                 onMouseLeave={e => { const el=e.currentTarget as HTMLButtonElement; el.style.background='transparent'; el.style.borderColor='rgba(200,16,46,0.4)' }}>
-                Not sure? Find your gate → Free 60-sec quiz
+                Not sure? Find your gate Ã¢â€ â€™ Free 60-sec quiz
               </button>
             </div>
             <div className="dtg-gates-grid" style={{ maxWidth:1300, margin:'0 auto' }}>
@@ -812,7 +829,7 @@ export default function LandingPage() {
                     <ul style={{ listStyle:'none', padding:0, margin:0 }}>
                       {gate.items.map((item,j) => (
                         <li key={j} style={{ display:'flex', gap:10, alignItems:'flex-start', padding:'7px 0', fontSize:14, color:'rgba(255,255,255,0.78)', lineHeight:1.5 }}>
-                          <span style={{ color:T.red, fontWeight:700, flexShrink:0, marginTop:2, fontSize:12 }}>✓</span>{item}
+                          <span style={{ color:T.red, fontWeight:700, flexShrink:0, marginTop:2, fontSize:12 }}>Ã¢Å“â€œ</span>{item}
                         </li>
                       ))}
                     </ul>
@@ -835,16 +852,16 @@ export default function LandingPage() {
                 Black Sheep Blueprint <Swash>Scholarship</Swash>
               </h3>
               <p style={{ fontSize:17, color:'rgba(255,255,255,0.65)', maxWidth:600, margin:'0 auto 28px' }}>
-                We select one person every 90 days to receive a full Blueprint experience. If you're ready but finances are a barrier, apply below.
+                We open one free scholarship seat every 90 days for a founder who is ready for the full Blueprint experience. Apply below to be considered.
               </p>
               <Link to="/apply" className="dtg-btn-outline-white">
-                Apply For Scholarship →
+                Apply For Scholarship Ã¢â€ â€™
               </Link>
             </div>
           </FadeSection>
         </section>
 
-        {/* ══ COMMUNITY (LIGHT) ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â COMMUNITY (LIGHT) Ã¢â€¢ÂÃ¢â€¢Â */}
         <section style={{ padding:'130px 24px', background:T.bone, borderTop:`1px solid ${T.lineLight}`, borderBottom:`1px solid ${T.lineLight}` }}>
           <FadeSection>
             <div style={{ maxWidth:900, margin:'0 auto', textAlign:'center' }}>
@@ -853,14 +870,14 @@ export default function LandingPage() {
                 When you enter, you do not <Swash>build alone</Swash>.
               </h2>
               <p style={{ fontSize:18, color:'#4a4a4a', maxWidth:620, margin:'0 auto 48px' }}>
-                Every gate includes access to the private Black Sheep community — your builder network, your accountability, your growth environment.
+                Every gate includes access to the private Black Sheep community Ã¢â‚¬â€ your builder network, your accountability, your growth environment.
               </p>
               <div className="dtg-community-grid">
                 {['Member Portal','Kingdom Training Zoom Calls','Hidden Biblical Business Wisdom','Builder Community','Accountability','Growth Environment','Real Relationships','Ongoing Momentum'].map((item,i) => (
                   <div key={i} style={{ display:'flex', gap:14, alignItems:'center', padding:'18px 22px', background:'#fff', border:`1px solid ${T.lineLight}`, fontFamily:T.H, fontSize:15, fontWeight:600, color:T.ink, transition:'border-color 0.3s', cursor:'default' }}
                     onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor=T.red }}
                     onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor=T.lineLight }}>
-                    <span style={{ color:T.red, fontSize:12, flexShrink:0 }}>✦</span>{item}
+                    <span style={{ color:T.red, fontSize:12, flexShrink:0 }}>Ã¢Å“Â¦</span>{item}
                   </div>
                 ))}
               </div>
@@ -868,7 +885,7 @@ export default function LandingPage() {
           </FadeSection>
         </section>
 
-        {/* ══ FINAL CTA (DARK) ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â FINAL CTA (DARK) Ã¢â€¢ÂÃ¢â€¢Â */}
         <section style={{ padding:'160px 24px', textAlign:'center', position:'relative', overflow:'hidden', background:T.ink }}>
           <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 60% 50% at 50% 50%,rgba(200,16,46,0.10)0%,transparent 60%)' }} />
           <FadeSection style={{ position:'relative', zIndex:2 }}>
@@ -886,14 +903,14 @@ export default function LandingPage() {
                   <svg viewBox="0 0 18 12" fill="none" style={{ width:18, height:12 }}><path d="M1 6H17M17 6L12 1M17 6L12 11" stroke="currentColor" strokeWidth="1.8"/></svg>
                 </Link>
                 <button onClick={openQuiz} className="dtg-btn-outline-white">
-                  Choose My Gate ✦
+                  Choose My Gate Ã¢Å“Â¦
                 </button>
               </div>
             </div>
           </FadeSection>
         </section>
 
-        {/* ══ APPLY SECTION — DESIGN.md §11.7 Founder Intake ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â APPLY SECTION Ã¢â‚¬â€ DESIGN.md Ã‚Â§11.7 Founder Intake Ã¢â€¢ÂÃ¢â€¢Â */}
         <section id="dtg-apply" style={{ padding:'130px 24px', background:T.panel, borderTop:`1px solid rgba(201,164,73,0.15)` }}>
           <FadeSection>
             <div style={{ textAlign:'center', maxWidth:820, margin:'0 auto 56px' }}>
@@ -932,7 +949,7 @@ export default function LandingPage() {
           </FadeSection>
         </section>
 
-        {/* ══ BLACK SHEEP PLATFORM STRIP — DESIGN.md §11.2 ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â BLACK SHEEP PLATFORM STRIP Ã¢â‚¬â€ DESIGN.md Ã‚Â§11.2 Ã¢â€¢ÂÃ¢â€¢Â */}
         <section style={{ padding:'80px 24px', background:T.ink2, borderTop:`1px solid rgba(201,164,73,0.14)` }}>
           <FadeSection>
             <div style={{ maxWidth:1100, margin:'0 auto', textAlign:'center' }}>
@@ -971,22 +988,22 @@ export default function LandingPage() {
           </FadeSection>
         </section>
 
-        {/* ══ FOOTER ══ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢Â FOOTER Ã¢â€¢ÂÃ¢â€¢Â */}
         <footer style={{ background:'#050505', borderTop:`1px solid ${T.lineDark}`, padding:'72px 48px 40px' }}>
           <div style={{ maxWidth:1300, margin:'0 auto' }}>
             <div className="dtg-footer-grid" style={{ paddingBottom:48, borderBottom:`1px solid ${T.lineDark}`, marginBottom:32 }}>
               <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
-                <span style={{ fontFamily:T.H, fontWeight:900, fontSize:20, color:'#fff' }}>Divorcing The Game™</span>
+                <span style={{ fontFamily:T.H, fontWeight:900, fontSize:20, color:'#fff' }}>Divorcing The GameÃ¢â€žÂ¢</span>
                 <p style={{ fontSize:15, color:'rgba(255,255,255,0.55)', maxWidth:360, lineHeight:1.6, margin:0 }}>
                   Helping Black Sheep, street-minded hustlers, and overlooked builders exit survival mode and build real businesses.
                 </p>
                 <p style={{ fontSize:11, color:'rgba(255,255,255,0.28)', lineHeight:1.6, margin:0 }}>
-                  Funding access of up to $250,000 is facilitated through third-party lenders. Results vary by individual qualifications. Not a guarantee of funding. US-based applicants only.
+                  Any third-party capital or lending opportunities depend on outside review and applicant qualifications. Results vary. US-based applicants only.
                 </p>
               </div>
               <div>
                 <h5 style={{ fontFamily:T.H, fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.18em', color:'rgba(255,255,255,0.45)', marginBottom:20 }}>Program</h5>
-                {/* DESIGN.md §10.1 Landing nav */}
+                {/* DESIGN.md Ã‚Â§10.1 Landing nav */}
                 {[['#dtg-about','The Movement'],['#dtg-offer','Choose Your Gate'],['/apply','Founder Intake'],['https://www.amazon.com/dp/0578369311','Get The Book']].map(([href,lbl]) => (
                   href.startsWith('/') || href.startsWith('#') ?
                     (href.startsWith('/') ?
@@ -1015,7 +1032,7 @@ export default function LandingPage() {
             </div>
             {/* DESIGN.md footer line */}
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', fontFamily:T.M, fontSize:10, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.12em', color:'rgba(255,255,255,0.28)', flexWrap:'wrap', gap:12 }}>
-              <span>© {new Date().getFullYear()} Divorcing The Game™ · Ashley "IsReal" Thomas. All Rights Reserved.</span>
+              <span>Ã‚Â© {new Date().getFullYear()} Divorcing The GameÃ¢â€žÂ¢ Ã‚Â· Ashley "IsReal" Thomas. All Rights Reserved.</span>
               <span style={{ color:T.gold }}>Built for the overlooked. Made for the Black Sheep.</span>
             </div>
           </div>

@@ -13,6 +13,80 @@ const router  = express.Router();
 const { supabase, authenticateToken } = require('../middleware/auth');
 const { callLLM } = require('./llm');
 
+function buildPreviewBlueprint(businessIdea, targetAudience, budget, goal) {
+  const idea = String(businessIdea || '').trim();
+  const shortIdea = idea.split(' ').slice(0, 5).join(' ') || 'launch-ready business';
+  const businessName = idea
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join('') || 'BlackSheepCo';
+
+  return {
+    businessName: `${businessName} Co.`,
+    tagline: `The premium way to launch ${shortIdea.toLowerCase()}.`,
+    businessModel: {
+      type: targetAudience || 'Digital business',
+      description: `A lean launch system built around ${idea}.`,
+      revenueStreams: ['Core offer', 'Upsell service', 'Retainer support'],
+      estimatedMonthlyRevenue: '$2,000 - $8,000',
+      timeToFirstRevenue: '30-60 days',
+    },
+    brandIdentity: {
+      positioning: 'Premium, direct, execution-focused',
+      tone: 'Confident and business-serious',
+      colorPalette: ['#0c0f14', '#b5121b', '#c9a449'],
+      uniqueSellingProposition: `Launch ${shortIdea.toLowerCase()} with a guided AI operating system.`,
+    },
+    offerStructure: {
+      mainOffer: idea,
+      pricePoint: budget || '$49 - $299',
+      upsells: ['Done-for-you setup', 'Launch support'],
+      guaranteeOrHook: goal || 'Move from idea to launch with clear next actions.',
+    },
+    landingPageContent: {
+      headline: `Launch ${shortIdea} with clarity.`,
+      subheadline: 'Structured execution, assets, support, and next actions in one workflow.',
+      heroDescription: `This preview blueprint turns ${idea.toLowerCase()} into a concrete launch path.`,
+      features: [
+        { title: 'Launch roadmap', description: 'See the full journey from idea to launch.' },
+        { title: 'Execution assets', description: 'Generate brand, case, and website outputs.' },
+        { title: 'Support escalation', description: 'Request expert help without leaving the workflow.' },
+      ],
+      callToAction: 'Start the mission',
+      socialProof: 'Built for founders who need structure, not more noise.',
+    },
+    adCreatives: {
+      hooks: [
+        `Still guessing how to launch ${shortIdea.toLowerCase()}?`,
+        `Turn ${shortIdea.toLowerCase()} into a revenue-ready plan.`,
+        'Stop collecting ideas and start executing.',
+      ],
+      adCopy: `Build and launch ${shortIdea.toLowerCase()} with a guided AI operating system that keeps execution moving.`,
+      targetingStrategy: targetAudience || 'Founders, operators, and first-time builders',
+      estimatedCPC: '$0.80 - $2.40',
+    },
+    monetizationPlan: {
+      phase1: { timeline: 'Month 1', action: 'Package and launch the initial offer', expectedRevenue: '$500 - $2,000' },
+      phase2: { timeline: 'Month 2-3', action: 'Refine positioning and add conversion assets', expectedRevenue: '$3,000 - $8,000' },
+      phase3: { timeline: 'Month 4-6', action: 'Add support products and recurring revenue', expectedRevenue: '$8,000 - $20,000' },
+    },
+    marketAnalysis: {
+      marketSize: 'Large enough for a niche-first launch',
+      competition: 'Medium',
+      trend: 'Growing with AI-assisted execution demand',
+      keyCompetitors: ['Manual consultants', 'Generic templates', 'Do-it-yourself tools'],
+    },
+    nextSteps: [
+      'Clarify the offer and buyer outcome',
+      'Finalize brand and positioning',
+      'Prepare the first landing page and CTA',
+      'Run initial outreach or paid traffic test',
+      'Collect feedback and improve the next checkpoint',
+    ],
+  };
+}
+
 const SYSTEM_PROMPT = `You are an elite business strategist and brand architect. You create REAL, actionable business plans that feel built by a $500/hr consultant. Your outputs are specific, data-driven, and ready to execute immediately.
 
 IMPORTANT: Return ONLY valid JSON. No markdown, no code blocks, no extra text — just the raw JSON object.
@@ -93,19 +167,15 @@ Primary Goal: ${goal || 'Generate revenue as fast as possible'}
 
 Make it specific, actionable, and tailored to this exact niche.`;
 
-    // Use Groq LLaMA for fast generation
-    const modelId = 'groq/llama-3.3-70b-versatile';
-    const raw = await callLLM(modelId, [{ role: 'user', content: userPrompt }], SYSTEM_PROMPT);
-
-    // Parse JSON from LLM response
     let blueprint;
     try {
-      // Strip any accidental markdown fences
+      const modelId = 'groq/llama-3.3-70b-versatile';
+      const raw = await callLLM(modelId, [{ role: 'user', content: userPrompt }], SYSTEM_PROMPT);
       const cleaned = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
       blueprint = JSON.parse(cleaned);
-    } catch {
-      console.error('JSON parse failed, raw:', raw.slice(0, 500));
-      return res.status(500).json({ error: 'AI returned invalid format. Please try again.' });
+    } catch (llmError) {
+      console.warn('Business generate fallback:', llmError.message);
+      blueprint = buildPreviewBlueprint(businessIdea, targetAudience, budget, goal);
     }
 
     // Save to Supabase

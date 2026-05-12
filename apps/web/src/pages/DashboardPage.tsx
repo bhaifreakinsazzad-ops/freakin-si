@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLang } from '@/contexts/LanguageContext'
-import { authApi, subscriptionApi } from '@/lib/api'
+import { authApi, subscriptionApi, adminApi } from '@/lib/api'
 import { MessageSquare, Image, Wrench, CreditCard, Crown, TrendingUp, Calendar, Zap, Briefcase, Store, Sparkles, ArrowRight, Shield, Target, FileText, ChevronRight } from 'lucide-react'
 import { cn, getSubscriptionBadge, formatDate } from '@/lib/utils'
 
@@ -10,6 +10,8 @@ export default function DashboardPage() {
   const { user, refreshUser, updateUser } = useAuth()
   const { t } = useLang()
   const [payments, setPayments] = useState<any[]>([])
+  const [overview, setOverview] = useState<any>(null)
+  const [systemStatus, setSystemStatus] = useState<any>(null)
   const [editName, setEditName] = useState(false)
   const [newName, setNewName] = useState(user?.name || '')
   const [savingName, setSavingName] = useState(false)
@@ -17,6 +19,8 @@ export default function DashboardPage() {
   useEffect(() => {
     refreshUser()
     subscriptionApi.getMyPayments().then(r => setPayments(r.data.payments.slice(0, 3))).catch(() => {})
+    fetch('/api/health').then(r => r.json()).then(setSystemStatus).catch(() => {})
+    adminApi.getOverview().then(r => setOverview(r.data)).catch(() => {})
   }, [])
 
   const saveName = async () => {
@@ -69,6 +73,37 @@ export default function DashboardPage() {
           <span className={cn('px-3 py-1.5 rounded-full text-sm font-bold', getSubscriptionBadge(user.subscription))}>
             {subLabel}
           </span>
+        </div>
+
+        {/* System status + quick actions */}
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {[
+            { label: 'AI mode', value: systemStatus?.ai?.mode === 'live' ? `live · ${systemStatus?.ai?.provider || 'provider'}` : 'demo', color: '#22d3ee' },
+            { label: 'DB mode', value: systemStatus?.database?.mode || 'memdb', color: '#c9a449' },
+            { label: 'Production', value: systemStatus?.productionReady ? 'ready' : 'not ready', color: systemStatus?.productionReady ? '#22c55e' : '#f59e0b' },
+            { label: 'Missing', value: systemStatus?.missingRequired?.length ? systemStatus.missingRequired.join(', ') : 'none', color: '#94a3b8' },
+          ].map((item) => (
+            <div key={item.label} className="rounded-xl border border-[rgba(201,201,201,0.14)] p-4" style={{ background: 'linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))' }}>
+              <p style={{ fontSize:10, fontFamily:"'Montserrat',sans-serif", fontWeight:700, letterSpacing:'0.10em', textTransform:'uppercase', color:'var(--bs-steel)', marginBottom:6 }}>{item.label}</p>
+              <p style={{ fontSize:13, fontWeight:700, color:item.color }}>{item.value}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {[
+            { label: 'Create Business', to: '/create', icon: Sparkles },
+            { label: 'Run Fixer', to: '/fixer', icon: Wrench },
+            { label: 'Service Request', to: '/requests', icon: Briefcase },
+            { label: 'Support', to: '/support', icon: MessageSquare },
+            { label: 'Marketplace', to: '/marketplace', icon: Store },
+            { label: 'Manual Payment', to: '/payment', icon: CreditCard },
+          ].map(({ label, to, icon: Icon }) => (
+            <Link key={label} to={to} className="rounded-xl border border-[rgba(201,201,201,0.14)] p-4" style={{ background: 'linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))' }}>
+              <Icon size={18} style={{ color: '#c9a449', marginBottom: 10 }} />
+              <p style={{ fontSize:13, fontWeight:700, color:'#f5f0e8' }}>{label}</p>
+            </Link>
+          ))}
         </div>
 
         {/* Founder Status Cards */}
@@ -302,7 +337,31 @@ export default function DashboardPage() {
             )}
           </div>
         </div>
+
+        {overview && (
+          <div className="rounded-xl border border-[rgba(201,201,201,0.14)] p-6" style={{ background: 'linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))' }}>
+            <div className="flex items-center justify-between gap-4 mb-4">
+              <h2 style={{ fontSize:13, fontWeight:700, letterSpacing:'0.10em', textTransform:'uppercase', color:'#c9a449' }}>Live overview</h2>
+              <span style={{ color:'var(--bs-steel)', fontSize:12 }}>{overview.mode}</span>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+              <Stat label="Support tickets" value={overview.support_tickets?.total ?? 0} />
+              <Stat label="Orders" value={overview.orders?.total ?? 0} />
+              <Stat label="Service requests" value={overview.service_requests?.total ?? 0} />
+              <Stat label="Businesses" value={overview.businesses?.total ?? 0} />
+            </div>
+          </div>
+        )}
       </div>
+    </div>
+  )
+}
+
+function Stat({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-xl border border-[rgba(201,201,201,0.12)] p-4">
+      <p style={{ fontSize:10, fontFamily:"'Montserrat',sans-serif", fontWeight:700, letterSpacing:'0.10em', textTransform:'uppercase', color:'var(--bs-steel)', marginBottom:6 }}>{label}</p>
+      <p style={{ fontSize:20, fontWeight:700, color:'#f5f0e8' }}>{value}</p>
     </div>
   )
 }

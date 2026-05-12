@@ -8,7 +8,10 @@ const express = require('express');
 const router  = express.Router();
 const { supabase, authenticateToken } = require('../middleware/auth');
 
-const SERVICE_TYPES = ['ads', 'dev', 'design', 'copy', 'seo', 'social'];
+const SERVICE_TYPES = [
+  'ads', 'dev', 'design', 'copy', 'seo', 'social',
+  'growth-engine', 'messenger-sales', 'booked-calls', 'creative-sprint', 'ai-sales', 'custom',
+];
 const CREDIT_COST   = 5;
 
 // ── Submit Service Request ─────────────────────────────────────────────────
