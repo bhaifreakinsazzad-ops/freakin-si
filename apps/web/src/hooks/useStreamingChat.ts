@@ -1,6 +1,8 @@
 import { useState, useCallback, useRef } from 'react';
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+import { API_BASE_URL } from '@/lib/apiBase';
+
+const API_BASE = API_BASE_URL;
 
 interface StreamOptions {
   conversationId: string;

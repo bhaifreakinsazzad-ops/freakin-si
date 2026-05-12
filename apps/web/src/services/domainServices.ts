@@ -1,9 +1,10 @@
 import { mockAssets, mockReviews, mockSupport, mockNotifications, mockListings, mockActivity, mockProject, mockRuns, mockSteps } from '@/data/mockStore'
 import { runAdapter } from '@/services/adapter'
 import { portalApi } from '@/services/httpApi'
+import { getActiveProjectId, getPreviewProjectId } from '@/services/projectContext'
 import type { ActivityEntry, AssetRecord, NotificationItem, ReviewTicket, SupportThread, MarketplaceListing, AuditEntry } from '@/types/domain'
 
-const PROJECT_ID = mockProject.id
+const PROJECT_ID = getPreviewProjectId()
 
 function logActivity(type: ActivityEntry['type'], title: string, detail: string) {
   mockActivity.unshift({ id: `ac-${Date.now()}-${Math.random()}`, type, title, detail, at: new Date().toISOString() })
@@ -12,7 +13,8 @@ function logActivity(type: ActivityEntry['type'], title: string, detail: string)
 export const assetService = {
   listAssets: () => runAdapter<AssetRecord[]>(
     async () => {
-      const r = await portalApi.assets.list(PROJECT_ID)
+      const projectId = await getActiveProjectId()
+      const r = await portalApi.assets.list(projectId)
       return (r.assets || []).map((a: any) => ({ id: a.id, projectId: a.project_id, title: a.title, type: a.asset_type, content: typeof a.content === 'string' ? a.content : JSON.stringify(a.content), status: a.status, updatedAt: a.updated_at }))
     },
     () => mockAssets,
@@ -37,7 +39,8 @@ export const assetService = {
   exportDocument: async (assetId: string) => {
     return runAdapter(
       async () => {
-        const document = await portalApi.documents.create({ project_id: PROJECT_ID, asset_id: assetId, name: `Export ${assetId}`, document_type: 'generated', status: 'ready' })
+        const projectId = await getActiveProjectId()
+        const document = await portalApi.documents.create({ project_id: projectId, asset_id: assetId, name: `Export ${assetId}`, document_type: 'generated', status: 'ready' })
         return JSON.stringify(document.document || {})
       },
       async () => {
@@ -52,7 +55,8 @@ export const assetService = {
 export const reviewService = {
   listTickets: () => runAdapter<ReviewTicket[]>(
     async () => {
-      const r = await portalApi.reviews.list(PROJECT_ID)
+      const projectId = await getActiveProjectId()
+      const r = await portalApi.reviews.list(projectId)
       const stepKeyMap: Record<string, number> = {
         idea: 1,
         brand: 2,
@@ -80,9 +84,10 @@ export const reviewService = {
   submitForReview: async (assetId: string, stepId?: number) => {
     return runAdapter<ReviewTicket>(
       async () => {
-        const r = await portalApi.reviews.create({ project_id: PROJECT_ID, asset_id: assetId, step_key: stepId ? String(stepId) : null })
-        await portalApi.activity.create({ project_id: PROJECT_ID, actor_role: 'client', action_type: 'review', title: 'Review submitted', detail: `Asset ${assetId}` })
-        return { id: r.ticket.id, projectId: PROJECT_ID, stepId, assetId, status: 'pending', createdAt: r.ticket.created_at }
+        const projectId = await getActiveProjectId()
+        const r = await portalApi.reviews.create({ project_id: projectId, asset_id: assetId, step_key: stepId ? String(stepId) : null })
+        await portalApi.activity.create({ project_id: projectId, actor_role: 'client', action_type: 'review', title: 'Review submitted', detail: `Asset ${assetId}` })
+        return { id: r.ticket.id, projectId, stepId, assetId, status: 'pending', createdAt: r.ticket.created_at }
       },
       async () => {
         const ticket: ReviewTicket = { id: `r-${Date.now()}`, projectId: PROJECT_ID, assetId, stepId, status: 'pending', createdAt: new Date().toISOString() }
@@ -95,7 +100,8 @@ export const reviewService = {
   approveAsset: async (ticketId: string, adminNote?: string) => runAdapter<ReviewTicket | null>(
     async () => {
       const r = await portalApi.reviews.update(ticketId, { status: 'approved', admin_note: adminNote || null })
-      await portalApi.adminNotes.create({ project_id: PROJECT_ID, review_ticket_id: ticketId, note: adminNote || 'Approved' })
+      const projectId = await getActiveProjectId()
+      await portalApi.adminNotes.create({ project_id: projectId, review_ticket_id: ticketId, note: adminNote || 'Approved' })
       return { id: r.ticket.id, projectId: PROJECT_ID, status: 'approved', createdAt: r.ticket.created_at, adminNote: r.ticket.admin_note }
     },
     async () => {
@@ -108,7 +114,8 @@ export const reviewService = {
   rejectAsset: async (ticketId: string, adminNote?: string) => runAdapter<ReviewTicket | null>(
     async () => {
       const r = await portalApi.reviews.update(ticketId, { status: 'rejected', admin_note: adminNote || null })
-      await portalApi.adminNotes.create({ project_id: PROJECT_ID, review_ticket_id: ticketId, note: adminNote || 'Rejected' })
+      const projectId = await getActiveProjectId()
+      await portalApi.adminNotes.create({ project_id: projectId, review_ticket_id: ticketId, note: adminNote || 'Rejected' })
       return { id: r.ticket.id, projectId: PROJECT_ID, status: 'rejected', createdAt: r.ticket.created_at, adminNote: r.ticket.admin_note }
     },
     async () => {
@@ -123,7 +130,8 @@ export const reviewService = {
 export const supportService = {
   listThreads: () => runAdapter<SupportThread[]>(
     async () => {
-      const r = await portalApi.support.listThreads(PROJECT_ID)
+      const projectId = await getActiveProjectId()
+      const r = await portalApi.support.listThreads(projectId)
       const threads = r.threads || []
       const withMessages = await Promise.all(threads.map(async (t: any) => {
         const m = await portalApi.support.listMessages(t.id)
@@ -141,13 +149,14 @@ export const supportService = {
     () => mockSupport,
   ),
   createSupportRequest: async (subject: string, body: string) => runAdapter(
-    async () => {
-      const t = await portalApi.support.createThread({ project_id: PROJECT_ID, subject, priority: 'medium', status: 'open' })
+      async () => {
+      const projectId = await getActiveProjectId()
+      const t = await portalApi.support.createThread({ project_id: projectId, subject, priority: 'medium', status: 'open' })
       await portalApi.support.createMessage({ thread_id: t.thread.id, sender_role: 'client', body })
-      await portalApi.activity.create({ project_id: PROJECT_ID, actor_role: 'client', action_type: 'support', title: 'Support request created', detail: subject })
+      await portalApi.activity.create({ project_id: projectId, actor_role: 'client', action_type: 'support', title: 'Support request created', detail: subject })
       return {
         id: t.thread.id,
-        projectId: PROJECT_ID,
+        projectId,
         subject: t.thread.subject,
         priority: t.thread.priority,
         status: t.thread.status,
@@ -196,8 +205,9 @@ export const marketplaceService = {
   ),
   requestListing: async (listingId: string, note: string) => runAdapter(
     async () => {
-      const order = await portalApi.marketplace.createOrder({ project_id: PROJECT_ID, listing_id: listingId, note, status: 'requested' })
-      await portalApi.activity.create({ project_id: PROJECT_ID, actor_role: 'client', action_type: 'marketplace', title: 'Marketplace request sent', detail: listingId })
+      const projectId = await getActiveProjectId()
+      const order = await portalApi.marketplace.createOrder({ project_id: projectId, listing_id: listingId, note, status: 'requested' })
+      await portalApi.activity.create({ project_id: projectId, actor_role: 'client', action_type: 'marketplace', title: 'Marketplace request sent', detail: listingId })
       return { listingId, note, orderId: order.order.id }
     },
     async () => {
@@ -233,7 +243,8 @@ export const notificationService = {
 export const analyticsService = {
   listActivity: () => runAdapter<ActivityEntry[]>(
     async () => {
-      const r = await portalApi.activity.list(PROJECT_ID)
+      const projectId = await getActiveProjectId()
+      const r = await portalApi.activity.list(projectId)
       return (r.activity || []).map((a: any) => ({ id: a.id, type: (a.action_type || 'progress') as ActivityEntry['type'], title: a.title, detail: a.detail, at: a.created_at }))
     },
     () => mockActivity,

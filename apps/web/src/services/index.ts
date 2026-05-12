@@ -2,7 +2,7 @@ export { authService } from './httpApi'
 export { projectService, journeyService, aiModuleService } from './journeyService'
 import { runAdapter } from './adapter'
 import { portalApi } from './httpApi'
-import { mockProject } from '@/data/mockStore'
+import { getActiveProjectId } from './projectContext'
 export {
   assetService,
   reviewService,
@@ -18,8 +18,9 @@ export const onboardingService = {
   saveStep: async <T>(step: number, payload: T) =>
     runAdapter(
       async () => {
+        const projectId = await getActiveProjectId()
         const result = await portalApi.onboarding.save({
-          project_id: mockProject.id,
+          project_id: projectId,
           step,
           payload,
         })
@@ -30,7 +31,8 @@ export const onboardingService = {
   listSteps: () =>
     runAdapter(
       async () => {
-        const result = await portalApi.onboarding.list(mockProject.id)
+        const projectId = await getActiveProjectId()
+        const result = await portalApi.onboarding.list(projectId)
         return result.answers ?? []
       },
       async () => [],
@@ -41,7 +43,8 @@ export const documentService = {
   list: () =>
     runAdapter(
       async () => {
-        const result = await portalApi.documents.list(mockProject.id)
+        const projectId = await getActiveProjectId()
+        const result = await portalApi.documents.list(projectId)
         return result.documents ?? []
       },
       async () => [],
@@ -49,7 +52,8 @@ export const documentService = {
   create: (payload: Record<string, unknown>) =>
     runAdapter(
       async () => {
-        const result = await portalApi.documents.create({ project_id: mockProject.id, ...payload })
+        const projectId = await getActiveProjectId()
+        const result = await portalApi.documents.create({ project_id: projectId, ...payload })
         return result.document
       },
       async () => payload,
@@ -60,8 +64,9 @@ export const trackingService = {
   track: (event: string, payload: Record<string, unknown>) =>
     runAdapter(
       async () => {
+        const projectId = await getActiveProjectId()
         const result = await portalApi.activity.create({
-          project_id: mockProject.id,
+          project_id: projectId,
           action_type: 'event',
           title: event,
           detail: JSON.stringify(payload),

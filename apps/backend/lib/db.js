@@ -1,77 +1,114 @@
 /**
- * Engine NotREAL — Database Client
+ * Engine NotREAL - Unified database adapter.
  *
- * Exports a single `db` client that is:
- *   - Real Supabase client when SUPABASE_URL + SUPABASE_SERVICE_KEY are set
- *   - In-memory memdb when Supabase env is not configured (dev/demo mode)
- *
- * All backend routes import `db` from here (or via middleware/auth which re-exports it).
- * Zero route changes needed — the API is identical.
+ * Uses Supabase when the required credentials are present, otherwise falls
+ * back to the in-memory memdb implementation.
  */
 
+const { createClient } = require('@supabase/supabase-js')
 const memdb = require('./memdb')
 
-let _db = null
-let _usingSupabase = false
+const defaultSupabaseProjectId = 'pcaturcbsepbtaqksqqm'
+const configuredSupabaseProjectId = process.env.SUPABASE_PROJECT_ID || defaultSupabaseProjectId
+const supabaseUrl = process.env.SUPABASE_URL || (configuredSupabaseProjectId ? `https://${configuredSupabaseProjectId}.supabase.co` : '')
+const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY
+const hasSupabase = Boolean(supabaseUrl && serviceKey)
 
-function buildSupabaseClient() {
-  const url = process.env.SUPABASE_URL
-  const key = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY
-
-  if (!url || !key) return null
-
-  try {
-    const { createClient } = require('@supabase/supabase-js')
-    const client = createClient(url, key, {
-      auth: { autoRefreshToken: false, persistSession: false },
+const client = hasSupabase
+  ? createClient(supabaseUrl, serviceKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
     })
-    return client
-  } catch (err) {
-    console.warn('[db] Supabase client creation failed:', err.message)
-    return null
-  }
-}
+  : memdb
 
 function getDb() {
-  if (_db) return _db
-
-  const supabaseClient = buildSupabaseClient()
-  if (supabaseClient) {
-    _db = supabaseClient
-    _usingSupabase = true
-    console.log('[db] ✅ Supabase connected')
-  } else {
-    _db = memdb
-    _usingSupabase = false
-    if (process.env.NODE_ENV === 'production') {
-      console.warn('[db] ⚠️  WARNING: Running in PRODUCTION without Supabase. Data will not persist.')
-    } else {
-      console.log('[db] ℹ️  Using in-memory memdb (dev mode). Set SUPABASE_URL + SUPABASE_SERVICE_KEY for persistence.')
-    }
-  }
-
-  return _db
+  return client
 }
 
 function isUsingSupabase() {
-  getDb() // ensure initialized
-  return _usingSupabase
+  return hasSupabase
 }
 
 function resetClient() {
-  _db = null
-  _usingSupabase = false
+  // Kept for compatibility with older test helpers.
 }
 
-// Export the db getter as a proxy so callers can use it like: db.from('table')
-const db = new Proxy({}, {
-  get(_, prop) {
-    const client = getDb()
-    if (prop === 'isSupabase') return _usingSupabase
-    if (prop === '__reset') return resetClient
-    const val = client[prop]
-    return typeof val === 'function' ? val.bind(client) : val
-  }
-})
+function querySingle(table, column, value) {
+  return client
+    .from(table)
+    .select('*')
+    .eq(column, value)
+    .maybeSingle()
+    .then(({ data, error }) => {
+      if (error) return null
+      return data || null
+    })
+}
 
-module.exports = { db, getDb, isUsingSupabase, resetClient }
+async function getUserByEmail(email) {
+  const normalized = String(email || '').trim().toLowerCase()
+  if (!normalized) return null
+  if (!hasSupabase) return memdb.getUserByEmail(normalized)
+
+  const user = await querySingle('users', 'email', normalized)
+  if (user) return user
+  return querySingle('profiles', 'email', normalized)
+}
+
+async function getUserById(id) {
+  const normalized = String(id || '').trim()
+  if (!normalized) return null
+  if (!hasSupabase) return memdb.getUserById(normalized)
+
+  const user = await querySingle('users', 'id', normalized)
+  if (user) return user
+  return querySingle('profiles', 'id', normalized)
+}
+
+async function addUser(user) {
+  if (!hasSupabase) {
+    memdb.addUser(user)
+    return user
+  }
+
+  const { data, error } = await client.from('users').insert(user).select().single()
+  if (error) throw error
+  return data
+}
+
+async function updateUser(id, patch) {
+  if (!hasSupabase) {
+    const user = memdb.getUserById(id)
+    if (!user) return null
+    Object.assign(user, patch)
+    return user
+  }
+
+  const { data, error } = await client.from('users').update(patch).eq('id', id).select().single()
+  if (error) throw error
+  return data
+}
+
+const db = {
+  from: (...args) => getDb().from(...args),
+  getUserByEmail,
+  getUserById,
+  addUser,
+  updateUser,
+  getDb,
+  isUsingSupabase,
+  resetClient,
+  usingSupabase: hasSupabase,
+}
+
+module.exports = {
+  db,
+  supabase: db,
+  getDb,
+  isUsingSupabase,
+  resetClient,
+  getUserByEmail,
+  getUserById,
+  addUser,
+  updateUser,
+  usingSupabase: hasSupabase,
+}
