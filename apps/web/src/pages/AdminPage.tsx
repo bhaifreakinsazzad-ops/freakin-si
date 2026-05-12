@@ -14,6 +14,7 @@ export default function AdminPage() {
   const { user } = useAuth()
   const [tab, setTab] = useState<Tab>('overview')
   const [stats, setStats] = useState<any>(null)
+  const [overview, setOverview] = useState<any>(null)
   const [payments, setPayments] = useState<any[]>([])
   const [users, setUsers] = useState<any[]>([])
   const [analytics, setAnalytics] = useState<any>(null)
@@ -28,7 +29,15 @@ export default function AdminPage() {
   useEffect(() => { if (tab === 'analytics') loadAnalytics() }, [tab])
 
   const loadStats = async () => {
-    try { const r = await adminApi.getStats(); setStats(r.data.stats) } catch {}
+    try {
+      const [statsRes, overviewRes] = await Promise.allSettled([
+        adminApi.getStats(),
+        adminApi.getOverview(),
+      ])
+
+      if (statsRes.status === 'fulfilled') setStats(statsRes.value.data.stats)
+      if (overviewRes.status === 'fulfilled') setOverview(overviewRes.value.data)
+    } catch {}
   }
   const loadPayments = async () => {
     setLoading(true)
@@ -136,6 +145,34 @@ export default function AdminPage() {
                 </div>
               ))}
             </div>
+
+            {overview ? (
+              <div className="glass-light rounded-xl p-5 border border-green-900/20">
+                <h3 className="font-bold text-gray-300 mb-4 flex items-center gap-2">
+                  <Shield size={16} className="text-green-400" />
+                  Live overview
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                  {[
+                    { label: 'Support tickets', value: overview.support_tickets?.total ?? 0 },
+                    { label: 'Orders', value: overview.orders?.total ?? 0 },
+                    { label: 'Service requests', value: overview.service_requests?.total ?? 0 },
+                    { label: 'Businesses', value: overview.businesses?.total ?? 0 },
+                    { label: 'Fixer diagnoses', value: overview.fixer_diagnoses?.total ?? 0 },
+                  ].map((item) => (
+                    <div key={item.label} className="rounded-xl border border-green-900/20 bg-black/30 p-4">
+                      <div className="text-2xl font-bold text-white">{item.value}</div>
+                      <div className="text-xs text-gray-500 mt-1">{item.label}</div>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-500 mt-3">Loaded from the deployed API, with Supabase as the live source when available.</p>
+              </div>
+            ) : (
+              <div className="rounded-xl border border-yellow-700/30 bg-yellow-900/10 px-4 py-3 text-sm text-yellow-200">
+                Live overview data is unavailable right now, but the page is still connected to the deployed API.
+              </div>
+            )}
 
             <div className="grid md:grid-cols-2 gap-4">
               <div className="glass-light rounded-xl p-5 border border-green-900/20">

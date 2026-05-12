@@ -95,13 +95,23 @@ app.get('/api/admin/overview', require('./middleware/auth').authenticateToken, a
   const isAdmin = req.user?.is_admin || adminEmails.includes(req.user?.email || '');
   if (!isAdmin) return res.status(403).json({ error: 'Admin access required' });
 
+  const loadRows = async (table, columns) => {
+    try {
+      const { data } = await db.from(table).select(columns).order('created_at', { ascending: false });
+      return data || [];
+    } catch {
+      return [];
+    }
+  };
+
   if (isUsingSupabase()) {
     try {
-      const [supportTickets, orders, serviceRequests, businesses] = await Promise.all([
-        db.from('support_tickets').select('id, status, created_at').order('created_at', { ascending: false }),
-        db.from('orders').select('id, status, amount, currency, created_at').order('created_at', { ascending: false }),
-        db.from('service_requests').select('id, status, created_at').order('created_at', { ascending: false }),
-        db.from('businesses').select('id, created_at').order('created_at', { ascending: false }),
+      const [supportTickets, orders, serviceRequests, businesses, fixerDiagnoses] = await Promise.all([
+        loadRows('support_tickets', 'id, status, created_at'),
+        loadRows('orders', 'id, status, amount, currency, created_at'),
+        loadRows('service_requests', 'id, status, created_at'),
+        loadRows('businesses', 'id, created_at'),
+        loadRows('fixer_diagnoses', 'id, status, created_at'),
       ]);
 
       return res.json({
@@ -110,6 +120,7 @@ app.get('/api/admin/overview', require('./middleware/auth').authenticateToken, a
         orders: { total: orders.data?.length || 0, recent: (orders.data || []).slice(0, 5) },
         service_requests: { total: serviceRequests.data?.length || 0, recent: (serviceRequests.data || []).slice(0, 5) },
         businesses: { total: businesses.data?.length || 0, recent: (businesses.data || []).slice(0, 5) },
+        fixer_diagnoses: { total: fixerDiagnoses.data?.length || 0, recent: (fixerDiagnoses.data || []).slice(0, 5) },
       });
     } catch (error) {
       console.error('[admin/overview] Supabase error:', error.message);
@@ -118,11 +129,12 @@ app.get('/api/admin/overview', require('./middleware/auth').authenticateToken, a
 
   const supportRoute = require('./routes/support');
   const ordersRoute = require('./routes/orders');
-  const [supportTickets, orders, serviceRequests, businesses] = await Promise.all([
-    db.from('support_tickets').select('id, status, created_at').order('created_at', { ascending: false }),
-    db.from('orders').select('id, status, amount, currency, created_at').order('created_at', { ascending: false }),
-    db.from('service_requests').select('id, status, created_at').order('created_at', { ascending: false }),
-    db.from('businesses').select('id, created_at').order('created_at', { ascending: false }),
+  const [supportTickets, orders, serviceRequests, businesses, fixerDiagnoses] = await Promise.all([
+    loadRows('support_tickets', 'id, status, created_at'),
+    loadRows('orders', 'id, status, amount, currency, created_at'),
+    loadRows('service_requests', 'id, status, created_at'),
+    loadRows('businesses', 'id, created_at'),
+    loadRows('fixer_diagnoses', 'id, status, created_at'),
   ]);
 
   return res.json({
@@ -131,6 +143,7 @@ app.get('/api/admin/overview', require('./middleware/auth').authenticateToken, a
     orders: { total: orders.data?.length || ordersRoute.ORDERS?.length || 0, recent: (orders.data || ordersRoute.ORDERS || []).slice(0, 5) },
     service_requests: { total: serviceRequests.data?.length || 0, recent: (serviceRequests.data || []).slice(0, 5) },
     businesses: { total: businesses.data?.length || 0, recent: (businesses.data || []).slice(0, 5) },
+    fixer_diagnoses: { total: fixerDiagnoses.data?.length || 0, recent: (fixerDiagnoses.data || []).slice(0, 5) },
   });
 });
 
