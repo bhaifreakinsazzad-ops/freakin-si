@@ -6,12 +6,16 @@ import { notificationService } from '@/services'
 import type { NotificationItem, UserRole } from '@/types/domain'
 
 const baseNav = [
+  { to: '/command', label: 'Command', icon: Command },
   { to: '/dashboard', label: 'AI CEO Dashboard', icon: LayoutDashboard },
   { to: '/journey', label: 'My 7-Step Journey', icon: Sparkles },
   { to: '/builder', label: 'Uncover My Gold', icon: Sparkles },
+  { to: '/fixer', label: 'Fixer', icon: Sparkles },
+  { to: '/run', label: 'Run / CRM', icon: LayoutDashboard },
   { to: '/modules', label: 'AI Module Library', icon: Command },
   { to: '/marketplace', label: 'Marketplace', icon: Search },
   { to: '/services', label: 'Build Request', icon: Search },
+  { to: '/requests', label: 'Requests', icon: Search },
   { to: '/pricing', label: 'Pricing / Upgrade', icon: Search },
   { to: '/assets', label: 'Assets & Documents', icon: Search },
   { to: '/support', label: 'Support Requests', icon: Bell },
