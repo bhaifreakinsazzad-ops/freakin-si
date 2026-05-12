@@ -13,15 +13,6 @@ function previewModeEnabled() {
   return process.env.CLIENT_PREVIEW_MODE === 'true' || process.env.NODE_ENV !== 'production'
 }
 
-async function resolvePreviewUser() {
-  return (
-    (await db.getUserByEmail('demo@enginenotreal.com')) ||
-    (await db.getUserByEmail('demo@blacksheep.ai')) ||
-    (await db.getUserById('demo-user-001')) ||
-    null
-  )
-}
-
 function makePreviewAdmin() {
   return {
     id: 'demo-user-001',
@@ -51,8 +42,7 @@ const authenticateToken = async (req, res, next) => {
 
   try {
     if (PREVIEW_TOKENS.has(token) || token.startsWith(LOCAL_TOKEN_PREFIX)) {
-      const previewUser = await resolvePreviewUser()
-      req.user = previewUser ? { ...previewUser, is_admin: true } : makePreviewAdmin()
+      req.user = makePreviewAdmin()
       return next()
     }
 

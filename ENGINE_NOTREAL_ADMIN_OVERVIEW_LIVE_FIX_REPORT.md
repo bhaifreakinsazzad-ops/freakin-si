@@ -12,5 +12,6 @@
 
 ## Validation
 - `npm run build --workspace=apps/web` passed.
-- The custom-domain admin page still loads successfully.
-- The remaining step is the production redeploy so the live backend picks up the updated admin route.
+- The live backend now returns Supabase counts for `support_tickets`, `orders`, `service_requests`, `businesses`, and `fixer_diagnoses`.
+- The custom-domain admin endpoint now returns the same live overview payload.
+- The `/admin` page loads successfully on the custom domain and uses the deployed API.

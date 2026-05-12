@@ -12,6 +12,7 @@
 - The custom domain now resolves through Vercel.
 - Same-domain API health is live on the custom domain.
 - The admin overview route was hardened to return live counts including `fixer_diagnoses` when available.
+- The live backend admin overview is now returning counts on both the backend host and the custom domain.
 
 ## What is ready
 - Public beta link is ready for sharing.
@@ -19,7 +20,7 @@
 - Support, service request, fixer, and marketplace flows are live.
 
 ## Remaining blocker
-- Live admin overview verification is pending the next backend production redeploy.
+- None.
 
 ## Handoff note
 - No secrets were exposed.

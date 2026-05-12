@@ -116,11 +116,11 @@ app.get('/api/admin/overview', require('./middleware/auth').authenticateToken, a
 
       return res.json({
         mode: 'supabase',
-        support_tickets: { total: supportTickets.data?.length || 0, recent: (supportTickets.data || []).slice(0, 5) },
-        orders: { total: orders.data?.length || 0, recent: (orders.data || []).slice(0, 5) },
-        service_requests: { total: serviceRequests.data?.length || 0, recent: (serviceRequests.data || []).slice(0, 5) },
-        businesses: { total: businesses.data?.length || 0, recent: (businesses.data || []).slice(0, 5) },
-        fixer_diagnoses: { total: fixerDiagnoses.data?.length || 0, recent: (fixerDiagnoses.data || []).slice(0, 5) },
+        support_tickets: { total: supportTickets.length || 0, recent: supportTickets.slice(0, 5) },
+        orders: { total: orders.length || 0, recent: orders.slice(0, 5) },
+        service_requests: { total: serviceRequests.length || 0, recent: serviceRequests.slice(0, 5) },
+        businesses: { total: businesses.length || 0, recent: businesses.slice(0, 5) },
+        fixer_diagnoses: { total: fixerDiagnoses.length || 0, recent: fixerDiagnoses.slice(0, 5) },
       });
     } catch (error) {
       console.error('[admin/overview] Supabase error:', error.message);
@@ -139,11 +139,11 @@ app.get('/api/admin/overview', require('./middleware/auth').authenticateToken, a
 
   return res.json({
     mode: 'memdb',
-    support_tickets: { total: supportTickets.data?.length || supportRoute.TICKETS?.length || 0, recent: (supportTickets.data || supportRoute.TICKETS || []).slice(0, 5) },
-    orders: { total: orders.data?.length || ordersRoute.ORDERS?.length || 0, recent: (orders.data || ordersRoute.ORDERS || []).slice(0, 5) },
-    service_requests: { total: serviceRequests.data?.length || 0, recent: (serviceRequests.data || []).slice(0, 5) },
-    businesses: { total: businesses.data?.length || 0, recent: (businesses.data || []).slice(0, 5) },
-    fixer_diagnoses: { total: fixerDiagnoses.data?.length || 0, recent: (fixerDiagnoses.data || []).slice(0, 5) },
+    support_tickets: { total: supportTickets.length || supportRoute.TICKETS?.length || 0, recent: (supportTickets.length ? supportTickets : supportRoute.TICKETS || []).slice(0, 5) },
+    orders: { total: orders.length || ordersRoute.ORDERS?.length || 0, recent: (orders.length ? orders : ordersRoute.ORDERS || []).slice(0, 5) },
+    service_requests: { total: serviceRequests.length || 0, recent: serviceRequests.slice(0, 5) },
+    businesses: { total: businesses.length || 0, recent: businesses.slice(0, 5) },
+    fixer_diagnoses: { total: fixerDiagnoses.length || 0, recent: fixerDiagnoses.slice(0, 5) },
   });
 });
 

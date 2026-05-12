@@ -20,4 +20,4 @@
 - Manual payment review stays active for beta.
 
 ## Known Beta Limitation
-- Admin overview has been fixed in code and needs the redeployed backend to pick up the live route update.
+- None on the admin path. Live overview counts are now returning from the deployed backend.
