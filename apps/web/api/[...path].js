@@ -135,7 +135,9 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return send(res, 200, { ok: true });
 
   const raw = req.query.path || [];
-  const parts = (Array.isArray(raw) ? raw : [raw]).filter(Boolean);
+  const parts = (Array.isArray(raw) ? raw : [raw])
+    .flatMap((part) => String(part).split('/'))
+    .filter(Boolean);
   const path = `/${parts.join('/')}`;
   const body = getBody(req);
 
