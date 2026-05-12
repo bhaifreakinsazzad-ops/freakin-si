@@ -73,9 +73,9 @@ export default function HubPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <span
             className="font-display"
-            style={{ fontSize: 18, fontWeight: 700, color: '#c8102e' }}
+            style={{ fontSize: 18, fontWeight: 700, color: '#6366f1' }}
           >
-            Black Sheep
+            Engine NotREAL
           </span>
           <ChevronRight size={14} style={{ color: 'var(--fsi-text-muted, #A7ACB8)', opacity: 0.6 }} />
           <span style={{ fontSize: 13, color: 'var(--fsi-text-muted, #A7ACB8)', letterSpacing: '0.04em' }}>

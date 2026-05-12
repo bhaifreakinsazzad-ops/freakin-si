@@ -1,5 +1,5 @@
 /**
- * Black Sheep — The Gate (Marketplace)
+ * Engine NotREAL — Marketplace
  * 4-tab marketplace: Ready-Made Businesses, Websites & Apps, Tools & Assets, Custom AI Agents
  */
 
@@ -11,7 +11,7 @@ import {
   ShoppingCart, Code2, Layers, Palette, FileText, LayoutGrid,
   Target, ArrowRight, ExternalLink, Star,
   TrendingUp, DollarSign, Clock, CheckCircle, Plus,
-  ChevronRight, Tag, Zap,
+  ChevronRight, Tag, Zap, Briefcase, Rocket, Megaphone, HeadphonesIcon,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -20,13 +20,79 @@ const API = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
 // ─── Tab definitions ──────────────────────────────────────────────────────────
 
 const TABS = [
-  { id: 'businesses', label: 'Ready-Made Businesses', icon: Building2 },
-  { id: 'websites',   label: 'Websites & Apps',       icon: Globe },
-  { id: 'tools',      label: 'Tools & Assets',        icon: Package },
-  { id: 'agents',     label: 'Custom AI Agents',      icon: Bot },
+  { id: 'servicepacks', label: 'Service Packs',        icon: Briefcase },
+  { id: 'businesses',   label: 'Ready-Made Businesses', icon: Building2 },
+  { id: 'websites',     label: 'Websites & Apps',       icon: Globe },
+  { id: 'tools',        label: 'Tools & Assets',        icon: Package },
+  { id: 'agents',       label: 'Custom AI Agents',      icon: Bot },
 ] as const
 
 type TabId = typeof TABS[number]['id']
+
+// ─── Service Packs ────────────────────────────────────────────────────────────
+
+const SERVICE_PACKS = [
+  {
+    id: 'growth-engine',
+    title: 'Starter Growth Engine',
+    category: 'Growth',
+    icon: Rocket,
+    color: '#6366f1',
+    bestFor: 'New founders, early-stage businesses, service providers starting out',
+    outcome: 'Clear offer, positioning, audience, and a 30-day launch plan',
+    deliverables: ['Business blueprint', 'Offer positioning doc', 'Target audience profile', '30-day action roadmap'],
+    price: 'From $199',
+    timeline: '5–7 days',
+  },
+  {
+    id: 'messenger-sales',
+    title: 'Messenger Sales Machine',
+    category: 'Sales',
+    icon: Megaphone,
+    color: '#22d3ee',
+    bestFor: 'Businesses selling via WhatsApp, Messenger, or DMs',
+    outcome: 'Ready-to-use conversation scripts and follow-up sequences that convert leads',
+    deliverables: ['Sales script pack (10+ scripts)', 'Follow-up sequence', 'Objection handling guide', 'Messenger funnel map'],
+    price: 'From $299',
+    timeline: '3–5 days',
+  },
+  {
+    id: 'booked-calls',
+    title: 'Booked Calls Funnel',
+    category: 'Lead Gen',
+    icon: Target,
+    color: '#10b981',
+    bestFor: 'Coaches, consultants, agencies who close on calls',
+    outcome: 'Full funnel from lead capture to booked call — automated and optimised',
+    deliverables: ['Lead capture page copy', 'Nurture email sequence', 'Calendar booking setup guide', 'Pre-call qualifier survey'],
+    price: 'From $399',
+    timeline: '7–10 days',
+  },
+  {
+    id: 'creative-sprint',
+    title: 'Creative Sprint Pack',
+    category: 'Creative',
+    icon: Palette,
+    color: '#f59e0b',
+    bestFor: 'Businesses that need fast, high-quality ad and content creative',
+    outcome: 'Full batch of ad creatives, graphics, and copy — ready to publish',
+    deliverables: ['5 ad creative concepts', 'Social post pack (30 posts)', 'Brand copywriting guide', 'Content calendar template'],
+    price: 'From $149',
+    timeline: '3–5 days',
+  },
+  {
+    id: 'ai-sales',
+    title: 'AI Sales Assistant',
+    category: 'AI',
+    icon: Bot,
+    color: '#8b5cf6',
+    bestFor: 'Businesses that need automated follow-up and lead qualification',
+    outcome: 'AI-powered system that qualifies leads, follows up, and books meetings without manual effort',
+    deliverables: ['AI chatbot setup guide', 'Lead qualification workflow', 'Auto-response templates', 'CRM integration checklist'],
+    price: 'From $249',
+    timeline: '5–7 days',
+  },
+]
 
 // ─── Tab 1 data ───────────────────────────────────────────────────────────────
 
@@ -65,7 +131,7 @@ const WEB_CATEGORIES = [
     tier: 'LOW' as const,
     price: 'from $79',
     desc: 'Professional landing pages, portfolio sites, lead gen pages',
-    cta: '/services',
+    cta: '/requests',
   },
   {
     title: 'E-commerce Stores',
@@ -73,7 +139,7 @@ const WEB_CATEGORIES = [
     tier: 'MED' as const,
     price: 'from $159',
     desc: 'Shopify, WooCommerce, or custom online stores ready to sell',
-    cta: '/services',
+    cta: '/requests',
   },
   {
     title: 'Web Applications',
@@ -81,7 +147,7 @@ const WEB_CATEGORIES = [
     tier: 'HIGH' as const,
     price: 'from $299',
     desc: 'Full-stack web apps, dashboards, SaaS platforms',
-    cta: '/services',
+    cta: '/requests',
   },
   {
     title: 'VR / AR Experiences',
@@ -89,7 +155,7 @@ const WEB_CATEGORIES = [
     tier: 'HIGH' as const,
     price: 'from $999',
     desc: 'Immersive 3D experiences, product configurators, virtual tours',
-    cta: '/services',
+    cta: '/requests',
   },
 ]
 
@@ -363,6 +429,98 @@ function ListingModal({ listing, onClose }: { listing: Listing; onClose: () => v
         </p>
       </motion.div>
     </motion.div>
+  )
+}
+
+// ─── Tab 0: Service Packs ─────────────────────────────────────────────────────
+
+function ServicePacksTab() {
+  return (
+    <div className="p-4 max-w-3xl mx-auto space-y-4">
+      <div className="mb-2">
+        <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
+          Done-for-you service packs. Select a pack, request it, and our team delivers. No commitment until you approve scope and pricing.
+        </p>
+      </div>
+      <div className="grid grid-cols-1 gap-4">
+        {SERVICE_PACKS.map(pack => {
+          const Icon = pack.icon
+          return (
+            <div key={pack.id}
+              className="rounded-2xl p-5 transition"
+              style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${pack.color}22` }}
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl shrink-0 flex items-center justify-center"
+                  style={{ background: `${pack.color}18`, border: `1px solid ${pack.color}35` }}>
+                  <Icon className="w-5 h-5" style={{ color: pack.color }} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap mb-1">
+                    <h3 className="font-bold text-base" style={{ color: '#f1f5f9', fontFamily: "'Space Grotesk', sans-serif" }}>{pack.title}</h3>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold" style={{ background: `${pack.color}20`, color: pack.color, border: `1px solid ${pack.color}35` }}>{pack.category}</span>
+                  </div>
+                  <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                    <span className="font-semibold" style={{ color: 'rgba(255,255,255,0.6)' }}>Best for:</span> {pack.bestFor}
+                  </p>
+                  <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                    <span className="font-semibold" style={{ color: 'rgba(255,255,255,0.6)' }}>Outcome:</span> {pack.outcome}
+                  </p>
+                  <div className="mb-3">
+                    <p className="text-[10px] font-semibold uppercase tracking-wider mb-1.5" style={{ color: 'rgba(255,255,255,0.35)' }}>Deliverables</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {pack.deliverables.map(d => (
+                        <span key={d} className="flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-md" style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.5)' }}>
+                          <CheckCircle className="w-2.5 h-2.5" style={{ color: pack.color }} /> {d}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between flex-wrap gap-3">
+                    <div className="flex items-center gap-3">
+                      <span className="font-bold" style={{ color: pack.color }}>{pack.price}</span>
+                      <span className="flex items-center gap-1 text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                        <Clock className="w-3 h-3" /> {pack.timeline}
+                      </span>
+                    </div>
+                    <div className="flex gap-2">
+                      <Link to={`/requests?service=${pack.id}`}
+                        className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition"
+                        style={{ background: `linear-gradient(135deg, ${pack.color}cc, ${pack.color}99)`, color: '#fff' }}>
+                        Request This Service <ArrowRight className="w-3 h-3" />
+                      </Link>
+                      <Link to="/fixer"
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition"
+                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
+                        Fixer First
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Bottom CTA */}
+      <div className="rounded-2xl p-5 text-center" style={{ background: 'rgba(99,102,241,0.06)', border: '1px solid rgba(99,102,241,0.15)' }}>
+        <p className="text-sm font-semibold mb-1" style={{ color: '#f1f5f9' }}>Need something custom?</p>
+        <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>Describe your project and we will scope it for you.</p>
+        <div className="flex items-center justify-center gap-3">
+          <Link to="/requests"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold"
+            style={{ background: 'linear-gradient(135deg, #6366f1, #4f46e5)', color: '#fff' }}>
+            <Briefcase className="w-4 h-4" /> Submit Custom Request
+          </Link>
+          <Link to="/support"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium"
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
+            <HeadphonesIcon className="w-4 h-4" /> Talk to Us
+          </Link>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -771,7 +929,7 @@ function AgentsTab() {
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export default function MarketplacePage() {
-  const [activeTab, setActiveTab] = useState<TabId>('businesses')
+  const [activeTab, setActiveTab] = useState<TabId>('servicepacks')
 
   return (
     <div className="h-full overflow-y-auto" style={{ background: '#080808' }}>
@@ -839,10 +997,11 @@ export default function MarketplacePage() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.18 }}
           >
-            {activeTab === 'businesses' && <BusinessesTab />}
-            {activeTab === 'websites'   && <WebsitesTab />}
-            {activeTab === 'tools'      && <ToolsTab />}
-            {activeTab === 'agents'     && <AgentsTab />}
+            {activeTab === 'servicepacks' && <ServicePacksTab />}
+            {activeTab === 'businesses'  && <BusinessesTab />}
+            {activeTab === 'websites'    && <WebsitesTab />}
+            {activeTab === 'tools'       && <ToolsTab />}
+            {activeTab === 'agents'      && <AgentsTab />}
           </motion.div>
         </AnimatePresence>
       </div>

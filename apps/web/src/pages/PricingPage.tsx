@@ -1,484 +1,333 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { subscriptionApi } from '@/lib/api'
 import { useAuth } from '@/contexts/AuthContext'
-import { useLang } from '@/contexts/LanguageContext'
-import { CheckCircle, Zap, Crown, Star, ArrowRight, Shield, DollarSign } from 'lucide-react'
+import { CheckCircle, Zap, Crown, Building2, ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 
-// ─── BDT plan types (existing) ───────────────────────────────────────────────
+/* ── Plan definitions ─────────────────────────────────────────────────────── */
 interface Plan {
-  id: string; name: string; nameEn: string; price_bdt: number
-  period: string | null; features: string[]; color: string; popular: boolean
-}
-
-// ─── USD plan definition ──────────────────────────────────────────────────────
-interface UsdPlan {
   id: string
   name: string
-  price: number
+  price: number | string
   period: string
   popular: boolean
+  icon: React.ReactNode
+  color: string
+  badge?: string
+  desc: string
   features: string[]
+  limits: string
   cta: string
-  note?: string
 }
 
-const USD_PLANS: UsdPlan[] = [
+const PLANS: Plan[] = [
   {
-    id: 'free_usd',
-    name: 'Free',
+    id: 'starter',
+    name: 'Starter',
     price: 0,
     period: '/mo',
     popular: false,
-    cta: 'Get Started Free',
+    icon: <Zap size={20} />,
+    color: '#64748b',
+    desc: 'For new founders exploring what Engine NotREAL can do.',
     features: [
-      '3 AI blueprints / month',
-      'AI Chat (limited)',
-      'Growth Check tool',
-      'Community support',
+      '5 AI business blueprints / month',
+      '3 Fixer Mode diagnoses / month',
+      'Basic CRM (up to 10 leads)',
+      'Marketplace browsing',
+      'AI Chat (50 messages/day)',
+      'Community access',
     ],
+    limits: '5 blueprints · 3 fixer · 10 leads',
+    cta: 'Start Free',
   },
   {
-    id: 'starter_usd',
-    name: 'Starter',
-    price: 9,
-    period: '/mo',
-    popular: false,
-    cta: 'Start Now',
-    features: [
-      '10 blueprints / month',
-      'AI Chat + all models',
-      'Brand assets (basic)',
-      'Marketplace access',
-    ],
-  },
-  {
-    id: 'pro_usd',
-    name: 'Pro',
-    price: 29,
+    id: 'growth',
+    name: 'Growth',
+    price: 49,
     period: '/mo',
     popular: true,
-    cta: 'Go Pro',
-    note: 'Most Popular',
+    icon: <ArrowRight size={20} />,
+    color: '#6366f1',
+    badge: 'Most Popular',
+    desc: 'For active operators and service providers building momentum.',
     features: [
-      'Unlimited blueprints',
-      'Priority AI processing',
-      'Full brand assets package',
-      'Partner ecosystem access (ThePaperWorkSquad, CGW)',
-      '10% off partner services',
+      'Unlimited AI blueprints',
+      'Unlimited Fixer diagnoses',
+      'Full CRM — unlimited leads',
+      'Service request submissions',
+      'Priority marketplace listing',
+      'AI Chat (500 messages/day)',
+      'All 19 AI tools',
+      'Export all reports (PDF/CSV)',
       'Email support',
     ],
+    limits: 'Unlimited blueprints + fixer · 500 chat/day',
+    cta: 'Go Growth',
   },
   {
-    id: 'elite_usd',
-    name: 'Elite',
-    price: 99,
+    id: 'agency',
+    name: 'Agency',
+    price: 149,
     period: '/mo',
     popular: false,
-    cta: 'Go Elite',
+    icon: <Building2 size={20} />,
+    color: '#06b6d4',
+    desc: 'For agencies, consultants, and high-volume operators.',
     features: [
-      'Everything in Pro',
-      'White-glove onboarding call',
-      'Dedicated account manager',
-      'Funding introduction (CGW Systems)',
-      'Custom domain setup',
-      'Priority support (24hr response)',
+      'Everything in Growth',
+      'White-label branding',
+      'Client sub-accounts (up to 10)',
+      'API access',
+      'Custom AI prompts',
+      'Unlimited AI Chat',
+      'Dedicated support line',
+      'Onboarding call included',
+      'Priority Fixer outputs',
     ],
+    limits: 'Unlimited everything · 10 sub-accounts',
+    cta: 'Go Agency',
   },
 ]
 
+const CREDITS = [
+  { name: 'AI Blueprint Pack', desc: '+20 extra blueprints', price: '$9' },
+  { name: 'Fixer Credit Pack', desc: '+10 Fixer diagnoses', price: '$12' },
+  { name: 'Service Request Pack', desc: '+5 service submissions', price: '$15' },
+]
+
 const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
+  hidden: { opacity: 0, y: 24 },
   visible: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.08, duration: 0.45, ease: 'easeOut' },
+    transition: { delay: i * 0.1, duration: 0.45, ease: 'easeOut' },
   }),
 }
 
 export default function PricingPage() {
   const { user } = useAuth()
-  const { t, lang } = useLang()
   const navigate = useNavigate()
-  const [plans, setPlans] = useState<Plan[]>([])
-  const [currency, setCurrency] = useState<'usd' | 'bdt'>('usd')
+  const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly')
 
-  useEffect(() => {
-    subscriptionApi.getPlans().then(r => setPlans(r.data.plans)).catch(() => {})
-  }, [])
-
-  // ── BDT helpers (unchanged) ──
-  const planIcons: Record<string, React.ReactNode> = {
-    free: <Star size={22} className="text-gray-400" />,
-    pro: <Zap size={22} className="text-green-400" />,
-    premium: <Crown size={22} className="text-purple-400" />,
-  }
-
-  const planColors: Record<string, string> = {
-    free: 'border-gray-700/40',
-    pro: 'border-green-500/40 bg-green-500/5',
-    premium: 'border-purple-500/40 bg-purple-500/5',
-  }
-
-  const btnColors: Record<string, string> = {
-    free: 'border border-gray-600 text-gray-300 hover:bg-white/5',
-    pro: 'bg-green-500 text-black hover:bg-green-400',
-    premium: 'bg-purple-600 text-white hover:bg-purple-500',
-  }
+  const annualPrice = (monthly: number) => Math.round(monthly * 10) // 2 months free
 
   const handleSelect = (planId: string) => {
-    if (planId === 'free') return
-    if (!user) { navigate('/register'); return }
-    navigate('/payment', { state: { planId } })
-  }
-
-  const handleUsdSelect = (planId: string) => {
-    if (planId === 'free_usd') {
+    if (planId === 'starter') {
       if (!user) navigate('/register')
+      else navigate('/dashboard')
       return
     }
     if (!user) { navigate('/register'); return }
-    navigate('/payment', { state: { planId, currency: 'usd' } })
+    navigate('/payment', { state: { planId, billing } })
   }
 
-  const subLabel = (sub: string) =>
-    sub === 'free' ? t.subFree : sub === 'pro' ? `${t.subPro} ✓` : `${t.subPremium} ✓`
-
-  // ── USD icon mapping ──
-  const usdPlanIcon = (id: string) => {
-    if (id === 'free_usd') return <Star size={20} className="text-gray-400" />
-    if (id === 'starter_usd') return <Zap size={20} style={{ color: '#F5B041' }} />
-    if (id === 'pro_usd') return <Shield size={20} style={{ color: '#F5B041' }} />
-    return <Crown size={20} style={{ color: '#F5B041' }} />
+  const displayPrice = (plan: Plan) => {
+    if (plan.price === 0) return 'Free'
+    if (billing === 'annual') return `$${annualPrice(plan.price as number)}/mo`
+    return `$${plan.price}/mo`
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* ── Header (unchanged) ── */}
-      <div className="border-b border-green-900/20 glass px-4 py-4 flex items-center justify-between sticky top-0 z-10">
-        <Link to="/" className="flex items-center gap-2">
-          <span style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:16, color:'#c8102e', background:'rgba(200,16,46,0.12)', padding:'2px 8px', borderRadius:6, border:'1px solid rgba(200,16,46,0.25)' }}>BS</span>
-          <span className="font-bold font-mono" style={{ color:'#c8102e' }}>Black Sheep</span>
+    <div className="min-h-screen" style={{ background: '#070710', color: '#f1f5f9' }}>
+      {/* ── Nav ── */}
+      <div style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', background: 'rgba(7,7,16,0.85)', backdropFilter: 'blur(20px)' }}
+        className="sticky top-0 z-10 px-4 py-4 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-2 no-underline">
+          <div style={{
+            width: 32, height: 32, borderRadius: 8,
+            background: 'linear-gradient(135deg, #6366f1, #06b6d4)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 900, fontSize: 13, color: '#fff' }}>EN</span>
+          </div>
+          <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: 16, color: '#f1f5f9' }}>Engine NotREAL</span>
         </Link>
         <div className="flex items-center gap-3">
           {user ? (
-            <Link to="/chat" className="text-sm text-green-400 hover:underline">{t.pricingGotoDash} →</Link>
+            <Link to="/dashboard" className="text-sm" style={{ color: '#6366f1' }}>Dashboard →</Link>
           ) : (
-            <Link to="/login" className="text-sm text-gray-400 hover:text-green-400">{t.login}</Link>
+            <Link to="/login" className="text-sm" style={{ color: '#94a3b8' }}>Sign In</Link>
           )}
         </div>
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-16">
         {/* ── Hero ── */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-full px-4 py-2 text-sm text-green-400 mb-5">
-            <Zap size={14} /> {t.pricingPageBadge}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm mb-5"
+            style={{ background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.3)', color: '#6366f1', fontWeight: 600 }}>
+            <Zap size={14} /> Simple, transparent pricing
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            {t.pricingPageTitle.split(' ').slice(0, -1).join(' ')}{' '}
-            <span className="gradient-text">{t.pricingPageTitle.split(' ').slice(-1)}</span>
+          <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 900, marginBottom: 16 }}>
+            Start free.{' '}
+            <span style={{ background: 'linear-gradient(90deg, #6366f1, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              Scale when ready.
+            </span>
           </h1>
-          <p className="text-gray-400 text-lg max-w-xl mx-auto">{t.pricingPageSub}</p>
-          {user && (
-            <div className="mt-4 inline-flex items-center gap-2 text-sm">
-              <span className="text-gray-500">{t.pricingCurrentPlan}</span>
-              <span className={cn('font-bold', user.subscription === 'pro' ? 'text-green-400' : user.subscription === 'premium' ? 'text-purple-400' : 'text-gray-300')}>
-                {subLabel(user.subscription)}
-              </span>
-            </div>
-          )}
-        </motion.div>
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 17, color: '#94a3b8', maxWidth: 480, margin: '0 auto' }}>
+            Every plan includes demo mode — no API key needed to start. Add your own keys to unlock live AI.
+          </p>
 
-        {/* ── Currency toggle ── */}
-        <div className="flex justify-center mb-10">
-          <div className="inline-flex rounded-xl border border-gray-700/50 p-1" style={{ background: '#0d0d1a' }}>
-            <button
-              onClick={() => setCurrency('usd')}
-              className={cn(
-                'px-5 py-2 rounded-lg text-sm font-semibold transition-all',
-                currency === 'usd'
-                  ? 'text-white'
-                  : 'text-gray-500 hover:text-gray-300'
-              )}
-              style={currency === 'usd' ? { background: '#F5B041' } : {}}
-            >
-              <DollarSign size={13} className="inline -mt-0.5 mr-1" />
-              USD Plans
-            </button>
-            <button
-              onClick={() => setCurrency('bdt')}
-              className={cn(
-                'px-5 py-2 rounded-lg text-sm font-semibold transition-all',
-                currency === 'bdt'
-                  ? 'text-white'
-                  : 'text-gray-500 hover:text-gray-300'
-              )}
-              style={currency === 'bdt' ? { background: '#22c55e' } : {}}
-            >
-              ৳ BDT Plans
-            </button>
-          </div>
-        </div>
-
-        {/* ════════════════════════════════════════════════════
-            USD PLANS
-        ════════════════════════════════════════════════════ */}
-        {currency === 'usd' && (
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="text-center mb-10"
-            >
-              <div
-                className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium mb-3"
-                style={{ background: 'rgba(67,97,238,0.12)', border: '1px solid rgba(67,97,238,0.35)', color: '#F5B041' }}
-              >
-                Black Sheep Platform — USD Pricing
-              </div>
-              <p className="text-gray-400 text-sm">
-                Billed monthly. Cancel any time.
-              </p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-4 gap-5 mb-14">
-              {USD_PLANS.map((plan, i) => {
-                const isPopular = plan.popular
-                const isElite = plan.id === 'elite_usd'
-                return (
-                  <motion.div
-                    key={plan.id}
-                    custom={i}
-                    initial="hidden"
-                    animate="visible"
-                    variants={fadeUp}
-                    className="rounded-2xl p-6 border relative flex flex-col"
-                    style={{
-                      background: isPopular ? 'rgba(67,97,238,0.08)' : '#0d0d1a',
-                      borderColor: isPopular ? '#F5B041' : isElite ? 'rgba(245,176,65,0.4)' : 'rgba(255,255,255,0.08)',
-                      boxShadow: isPopular ? '0 0 40px rgba(67,97,238,0.18)' : 'none',
-                    }}
-                  >
-                    {isPopular && (
-                      <div
-                        className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-xs font-bold px-4 py-1 rounded-full shadow-lg whitespace-nowrap"
-                        style={{ background: '#F5B041', color: '#fff' }}
-                      >
-                        Most Popular
-                      </div>
-                    )}
-
-                    {/* Icon + Name */}
-                    <div className="flex items-center gap-2.5 mb-4">
-                      {usdPlanIcon(plan.id)}
-                      <h2 className="text-lg font-bold text-white">{plan.name}</h2>
-                    </div>
-
-                    {/* Price */}
-                    <div className="mb-6">
-                      {plan.price === 0 ? (
-                        <div className="text-4xl font-extrabold" style={{ color: '#F5B041' }}>Free</div>
-                      ) : (
-                        <div className="flex items-baseline gap-0.5">
-                          <span className="text-3xl font-extrabold" style={{ color: isElite ? '#F5B041' : '#F5B041' }}>
-                            ${plan.price}
-                          </span>
-                          <span className="text-gray-500 text-sm">{plan.period}</span>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Features */}
-                    <ul className="space-y-2.5 flex-1 mb-7">
-                      {plan.features.map(f => (
-                        <li key={f} className="flex items-start gap-2 text-sm text-gray-300">
-                          <CheckCircle
-                            size={14}
-                            className="mt-0.5 shrink-0"
-                            style={{ color: isElite ? '#F5B041' : '#F5B041' }}
-                          />
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-
-                    {/* CTA */}
-                    <button
-                      onClick={() => handleUsdSelect(plan.id)}
-                      className="w-full py-2.5 px-4 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2"
-                      style={
-                        isPopular
-                          ? { background: '#F5B041', color: '#fff' }
-                          : isElite
-                          ? { background: 'rgba(245,176,65,0.15)', border: '1px solid rgba(245,176,65,0.5)', color: '#F5B041' }
-                          : plan.price === 0
-                          ? { border: '1px solid rgba(255,255,255,0.12)', color: '#9ca3af' }
-                          : { border: '1px solid rgba(67,97,238,0.5)', color: '#F5B041' }
-                      }
-                    >
-                      {plan.cta} {plan.price > 0 && <ArrowRight size={14} />}
-                    </button>
-                  </motion.div>
-                )
-              })}
-            </div>
-
-            {/* Partner note */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="rounded-2xl p-6 border mb-6 text-center"
-              style={{ background: 'rgba(67,97,238,0.06)', borderColor: 'rgba(67,97,238,0.2)' }}
-            >
-              <p className="text-sm text-gray-400">
-                <span className="font-semibold" style={{ color: '#F5B041' }}>Pro &amp; Elite</span> plans unlock the{' '}
-                <Link to="/partners" className="underline" style={{ color: '#F5B041' }}>Partner Ecosystem</Link>{' '}
-                — ThePaperWorkSquad (LLC formation), CGW Systems (business funding), and DhandaBuzz (digital marketing) — all integrated into Step 9 of your Black Sheep AI Builder.
-              </p>
-            </motion.div>
-          </div>
-        )}
-
-        {/* ════════════════════════════════════════════════════
-            BDT PLANS (existing logic, unchanged)
-        ════════════════════════════════════════════════════ */}
-        {currency === 'bdt' && (
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="text-center mb-10"
-            >
-              <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-full px-4 py-1.5 text-sm text-green-400 mb-3">
-                বাংলাদেশ — BDT Pricing
-              </div>
-              <p className="text-gray-400 text-sm">Pay via bKash, Nagad, Rocket, or Bank.</p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-3 gap-6 mb-14">
-              {plans.map((plan, i) => (
-                <motion.div
-                  key={plan.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className={cn('rounded-2xl p-7 border relative flex flex-col', planColors[plan.id] || 'border-gray-700/40')}
-                >
-                  {plan.popular && (
-                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-green-500 text-black text-xs font-bold px-4 py-1 rounded-full shadow-lg">
-                      {t.pricingMostPopular}
-                    </div>
-                  )}
-
-                  <div className="flex items-center gap-3 mb-4">
-                    {planIcons[plan.id]}
-                    <div>
-                      <h2 className="text-xl font-bold text-white">{lang === 'en' && plan.nameEn ? plan.nameEn : plan.name}</h2>
-                    </div>
-                    {user?.subscription === plan.id && (
-                      <span className="ml-auto text-xs bg-green-900/50 text-green-300 border border-green-700/50 px-2 py-0.5 rounded-full">
-                        {t.pricingActive}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="mb-6">
-                    {plan.price_bdt === 0 ? (
-                      <div className="text-4xl font-bold gradient-text">{t.pricingFreeLabel}</div>
-                    ) : (
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-4xl font-bold gradient-text">৳{plan.price_bdt}</span>
-                        <span className="text-gray-500 text-sm">
-                          {plan.period === 'month' ? t.pricingMonthSuffix : plan.period}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  <ul className="space-y-3 flex-1 mb-7">
-                    {plan.features.map(f => (
-                      <li key={f} className="flex items-start gap-2.5 text-sm text-gray-300">
-                        <CheckCircle size={15} className={cn('mt-0.5 shrink-0', plan.id === 'premium' ? 'text-purple-400' : 'text-green-400')} />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <button
-                    onClick={() => handleSelect(plan.id)}
-                    disabled={user?.subscription === plan.id}
-                    className={cn(
-                      'w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2',
-                      btnColors[plan.id],
-                      user?.subscription === plan.id && 'opacity-50 cursor-not-allowed'
-                    )}
-                  >
-                    {user?.subscription === plan.id
-                      ? t.pricingCurrentPlanBtn
-                      : plan.id === 'free'
-                        ? t.pricingStartFree
-                        : <>{t.pricingPayNow} <ArrowRight size={16} /></>
-                    }
-                  </button>
-                </motion.div>
+          {/* Billing toggle */}
+          <div className="flex justify-center mt-8 mb-2">
+            <div className="inline-flex rounded-xl p-1" style={{ background: '#0f0f1a', border: '1px solid rgba(255,255,255,0.08)' }}>
+              {(['monthly', 'annual'] as const).map(b => (
+                <button key={b} onClick={() => setBilling(b)}
+                  className={cn('px-6 py-2 rounded-lg text-sm font-semibold transition-all capitalize')}
+                  style={{
+                    background: billing === b ? 'linear-gradient(135deg, #6366f1, #06b6d4)' : 'transparent',
+                    color: billing === b ? '#fff' : '#64748b',
+                  }}>
+                  {b} {b === 'annual' && <span style={{ fontSize: 11, opacity: 0.8 }}>· 2 months free</span>}
+                </button>
               ))}
             </div>
           </div>
-        )}
+        </motion.div>
 
-        {/* ── Payment methods (always visible) ── */}
-        <div className="mt-4 glass-light rounded-2xl p-8 border border-green-900/20">
-          <h3 className="text-center text-lg font-bold text-gray-300 mb-6">{t.pricingPaymentTitle}</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { name: 'bKash',  color: 'bg-pink-900/20 border-pink-800/30',   emoji: '💳', text: 'text-pink-300' },
-              { name: 'Nagad',  color: 'bg-orange-900/20 border-orange-800/30', emoji: '📲', text: 'text-orange-300' },
-              { name: 'Rocket', color: 'bg-purple-900/20 border-purple-800/30', emoji: '🚀', text: 'text-purple-300' },
-              { name: lang === 'en' ? 'Bank' : 'ব্যাংক', color: 'bg-blue-900/20 border-blue-800/30', emoji: '🏦', text: 'text-blue-300' },
-            ].map(m => (
-              <div key={m.name} className={cn('rounded-xl p-4 border text-center', m.color)}>
-                <div className="text-3xl mb-2">{m.emoji}</div>
-                <div className={cn('font-bold text-sm', m.text)}>{m.name}</div>
+        {/* ── Plan cards ── */}
+        <div className="grid md:grid-cols-3 gap-6 mb-16">
+          {PLANS.map((plan, i) => (
+            <motion.div key={plan.id} custom={i} initial="hidden" animate="visible" variants={fadeUp}
+              style={{
+                borderRadius: 20, padding: '32px 28px',
+                background: plan.popular ? 'rgba(99,102,241,0.08)' : '#0f0f1a',
+                border: `1px solid ${plan.popular ? 'rgba(99,102,241,0.45)' : 'rgba(255,255,255,0.08)'}`,
+                position: 'relative',
+                transform: plan.popular ? 'scale(1.03)' : 'scale(1)',
+                display: 'flex', flexDirection: 'column',
+              }}>
+              {plan.badge && (
+                <div style={{
+                  position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)',
+                  background: 'linear-gradient(135deg, #6366f1, #06b6d4)',
+                  color: '#fff', fontSize: 12, fontWeight: 700, padding: '4px 16px', borderRadius: 999,
+                  whiteSpace: 'nowrap',
+                }}>
+                  {plan.badge}
+                </div>
+              )}
+
+              {/* Plan header */}
+              <div className="flex items-center gap-3 mb-4" style={{ color: plan.color }}>
+                {plan.icon}
+                <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: 18, color: '#f1f5f9' }}>{plan.name}</span>
               </div>
-            ))}
-          </div>
-          <p className="text-center text-sm text-gray-500 mt-5">
-            {t.pricingPaymentNote} <span className="text-green-400">{t.pricingPaymentNoteHighlight}</span>{t.pricingPaymentNoteEnd && ` ${t.pricingPaymentNoteEnd}`}
-          </p>
-          {currency === 'usd' && (
-            <p className="text-center text-xs text-gray-600 mt-2">
-              USD plans are billed via card. BDT plans support the local payment methods above.
-            </p>
-          )}
+              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: '#64748b', marginBottom: 20, lineHeight: 1.6 }}>{plan.desc}</p>
+
+              {/* Price */}
+              <div style={{ marginBottom: 24 }}>
+                <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 42, fontWeight: 900, color: '#f1f5f9' }}>
+                  {displayPrice(plan)}
+                </span>
+                {billing === 'annual' && plan.price !== 0 && (
+                  <div style={{ fontSize: 12, color: '#22d3ee', marginTop: 4 }}>
+                    billed ${annualPrice(plan.price as number) * 10}/year
+                  </div>
+                )}
+              </div>
+
+              {/* Features */}
+              <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 28px', flex: 1, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {plan.features.map(f => (
+                  <li key={f} className="flex items-start gap-2.5">
+                    <CheckCircle size={15} style={{ color: plan.color, marginTop: 2, flexShrink: 0 }} />
+                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: 13.5, color: '#cbd5e1', lineHeight: 1.5 }}>{f}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* CTA */}
+              <button onClick={() => handleSelect(plan.id)}
+                style={{
+                  width: '100%', padding: '12px 24px', borderRadius: 12,
+                  fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: 15,
+                  cursor: 'pointer',
+                  background: plan.popular ? 'linear-gradient(135deg, #6366f1, #06b6d4)' : 'rgba(255,255,255,0.07)',
+                  color: plan.popular ? '#fff' : '#f1f5f9',
+                  border: plan.popular ? 'none' : '1px solid rgba(255,255,255,0.12)',
+                  transition: 'opacity 0.2s',
+                }}>
+                {plan.cta}
+              </button>
+            </motion.div>
+          ))}
         </div>
 
-        {/* ── FAQ (unchanged) ── */}
-        <div className="mt-14">
-          <h3 className="text-2xl font-bold text-center mb-8 gradient-text">{t.pricingFaqTitle}</h3>
-          <div className="space-y-4 max-w-2xl mx-auto">
-            {(lang === 'en' ? [
-              { q: 'How quickly will my account be upgraded after payment?', a: 'Usually within 2–24 hours. Payments made after midnight will be processed the next morning.' },
-              { q: 'What do I get with the Free plan?', a: '50 daily AI messages, 5 image generations, all basic tools, and 25+ AI models.' },
-              { q: 'How do I pay with bKash?', a: 'Go to the payment page, select "bKash", send the amount to the provided number, and submit your transaction ID.' },
-              { q: 'Who do I contact if I have a problem?', a: 'WhatsApp or SMS the payment number, or write to us via AI Chat.' },
-              { q: 'What is included in Pro USD partner access?', a: 'Pro and Elite USD subscribers get access to ThePaperWorkSquad (LLC & compliance), CGW Systems (funding & credit), and DhandaBuzz (digital marketing) — all connected through Step 9 of your Black Sheep AI Builder.' },
-            ] : [
-              { q: 'পেমেন্ট করলে কতক্ষণে অ্যাকাউন্ট আপগ্রেড হবে?', a: 'সাধারণত ২-২৪ ঘণ্টার মধ্যে অ্যাকাউন্ট আপগ্রেড হয়। রাত ১২টার পর করলে পরের দিন সকালে হয়।' },
-              { q: 'ফ্রি প্ল্যানে কী কী পাব?', a: 'দৈনিক ৫০টি AI মেসেজ, ৫টি ছবি তৈরি, সব বেসিক টুলস এবং ২৫+ AI মডেল।' },
-              { q: 'bKash দিয়ে কীভাবে পেমেন্ট করব?', a: 'পেমেন্ট পেজে গিয়ে "bKash" সিলেক্ট করুন। দেওয়া নম্বরে টাকা পাঠান এবং ট্রানজেকশন আইডি সাবমিট করুন।' },
-              { q: 'কোনো সমস্যা হলে কোথায় যোগাযোগ করব?', a: 'পেমেন্ট নম্বরে WhatsApp বা SMS করুন অথবা AI চ্যাটে লিখুন।' },
-            ] as { q: string; a: string }[]).map(({ q, a }) => (
-              <div key={q} className="glass-light rounded-xl p-5 border border-green-900/20">
-                <p className="font-medium text-green-300 mb-2">❓ {q}</p>
-                <p className="text-gray-400 text-sm leading-relaxed">{a}</p>
+        {/* ── Credit packs ── */}
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+          <div className="text-center mb-8">
+            <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 26, fontWeight: 800, marginBottom: 8 }}>
+              Need more? Buy credits.
+            </h2>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 15, color: '#94a3b8' }}>
+              Top up any plan with additional AI credits. No subscription required.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5">
+            {CREDITS.map(c => (
+              <div key={c.name} style={{
+                padding: '24px', borderRadius: 16,
+                background: '#0f0f1a', border: '1px solid rgba(255,255,255,0.08)',
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              }}>
+                <div>
+                  <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: 15, color: '#f1f5f9', marginBottom: 4 }}>{c.name}</div>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: '#64748b' }}>{c.desc}</div>
+                </div>
+                <div>
+                  <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, fontSize: 20, color: '#f1f5f9', textAlign: 'right' }}>{c.price}</div>
+                  <button
+                    onClick={() => { if (!user) navigate('/register') }}
+                    style={{
+                      marginTop: 8, padding: '6px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600,
+                      background: 'rgba(99,102,241,0.15)', color: '#818cf8', border: '1px solid rgba(99,102,241,0.3)',
+                      cursor: 'pointer',
+                    }}>
+                    Request
+                  </button>
+                </div>
               </div>
             ))}
           </div>
+        </motion.div>
+
+        {/* ── FAQ strip ── */}
+        <div className="mt-16 text-center">
+          <div style={{
+            display: 'inline-flex', flexWrap: 'wrap', gap: 24, justifyContent: 'center',
+            padding: '28px 40px', borderRadius: 16,
+            background: 'rgba(99,102,241,0.07)', border: '1px solid rgba(99,102,241,0.2)',
+          }}>
+            {[
+              { q: 'No credit card for Starter?', a: 'Correct — start free forever.' },
+              { q: 'Demo mode included?', a: 'Yes. No AI key required to explore.' },
+              { q: 'Cancel any time?', a: 'Yes. No lock-in contracts.' },
+              { q: 'bKash / Nagad?', a: 'Available on request for BD users.' },
+            ].map(f => (
+              <div key={f.q} style={{ maxWidth: 200, textAlign: 'center' }}>
+                <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: 13, color: '#f1f5f9', marginBottom: 4 }}>{f.q}</div>
+                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 12, color: '#64748b' }}>{f.a}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Final CTA ── */}
+        <div className="text-center mt-16">
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 15, color: '#64748b', marginBottom: 16 }}>
+            Still unsure? Start free and upgrade when you're ready.
+          </p>
+          <Link to="/register" style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8,
+            padding: '14px 32px', borderRadius: 12, textDecoration: 'none',
+            fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: 15, color: '#fff',
+            background: 'linear-gradient(135deg, #6366f1, #06b6d4)',
+            boxShadow: '0 4px 20px rgba(99,102,241,0.4)',
+          }}>
+            Start Free — No Card Needed
+          </Link>
         </div>
       </div>
     </div>

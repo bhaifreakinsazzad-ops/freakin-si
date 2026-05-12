@@ -90,7 +90,7 @@ const translations = {
     ctaBtn: 'এখনই রেজিস্টার করুন',
 
     // Footer
-    footerMade: 'Made with 💚 in Bangladesh · © 2026 - DhandaBuzz Powered by BhaiSazzaD',
+    footerMade: 'Made with 💚 in Bangladesh · © 2026 - Engine NotREAL',
 
     // Login page
     loginSubtitle: 'আপনার অ্যাকাউন্টে প্রবেশ করুন',
@@ -247,8 +247,8 @@ const translations = {
 
   en: {
     // Brand
-    brand: 'Black Sheep AI',
-    tagline: "Divorcing The Game™ — Exit Survival Mode",
+    brand: 'Engine NotREAL',
+    tagline: "Create. Fix. Run. Sell. One AI Business Engine.",
 
     // Nav
     navFeatures: 'Features',
@@ -273,7 +273,7 @@ const translations = {
     stat4Label: 'Bangla Support',
 
     // Features section
-    featuresTitle: 'Why Black Sheep AI?',
+    featuresTitle: 'Why Engine NotREAL?',
     featuresSub: 'Built for Bangladesh, speaks Bangla',
     feat1Title: 'AI Chat',
     feat1Desc: 'Chat with 40+ AI models. LLaMA, Gemini, Mistral — all in one place.',
@@ -332,7 +332,7 @@ const translations = {
     ctaBtn: 'Register Now',
 
     // Footer
-    footerMade: 'Made with 💚 in Bangladesh · © 2026 - DhandaBuzz Powered by BhaiSazzaD',
+    footerMade: 'Made with 💚 in Bangladesh · © 2026 - Engine NotREAL',
 
     // Login page
     loginSubtitle: 'Sign in to your account',
@@ -382,7 +382,7 @@ const translations = {
     // Chat page
     chatNewChat: 'New Chat',
     chatNoConvs: 'No conversations',
-    chatWelcome: 'Welcome to Black Sheep AI!',
+    chatWelcome: 'Welcome to Engine NotREAL AI!',
     chatWelcomeSub: 'Start a new chat or use an example below',
     chatPrompt1: 'Write a story in Bangla',
     chatPrompt2: 'Write Python code for me',

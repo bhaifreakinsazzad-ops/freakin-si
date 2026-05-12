@@ -105,7 +105,7 @@ function hasValidAuthPayload(data: any): data is { token: string; user: User } {
 // ── DEV mock user — auto-populated in development so every page is browsable ──
 const DEV_USER: User = {
   id: 'dev-preview-user',
-  email: 'dev@blacksheep.ai',
+  email: 'dev@enginenotreal.com',
   name: 'Dev Preview',
   subscription: 'premium',
   daily_usage: 3,

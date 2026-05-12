@@ -1,29 +1,44 @@
-// DESIGN.md §21 — Centralized Brand Config
+// Engine NotREAL — Centralized Brand Config
 export const brand = {
-  parentName:   'Divorcing The Game™',
-  platformName: 'Black Sheep',
-  fullName:     'Black Sheep by Divorcing The Game™',
-  tagline:      'Strategy | Freedom | Legacy',
-  positioning:  'Turn buried vision into business structure, capital pathways, and legacy.',
-  movementLine: 'Built for the overlooked. Made for the Black Sheep.',
-  primaryCTA:   'Uncover My Gold',
-  secondaryCTA: 'Choose My Gate',
-  footerLine:   'Built for the overlooked. Made for the Black Sheep.',
-  initials:     'BS',
+  name:         'Engine NotREAL',
+  tagline:      'Create. Fix. Run. Sell. One engine.',
+  positioning:  'An AI-powered business fixer engine for founders, agencies, and operators.',
+  movementLine: 'Bring the problem. Leave with the plan.',
+  primaryCTA:   'Start Building',
+  secondaryCTA: 'Fix My Business',
+  footerLine:   'Built for real-world operators. Powered by AI.',
+  initials:     'EN',
+  domain:       'enginenotreal.com',
+  // Legacy reference (preserved internally, not shown publicly)
+  _legacy: {
+    parentName:   'Divorcing The Game™',
+    platformName: 'Black Sheep',
+  },
 }
 
-// DESIGN.md §4 — Approved Phrases
 export const phrases = {
-  welcomeHome:      'Welcome Home',
-  notBroken1:       'You are not broken. You are unstructured.',
-  notBroken2:       'You are not broken. You are buried gold.',
-  goldIsStillThere: 'The gold is still there.',
-  uncoverMyGold:    'Uncover My Gold',
-  survivalOver:     'Survival mode is over.',
-  toStructure:      'From survival to structure.',
-  clarityFirst:     'Clarity before capital.',
-  structureFirst:   'Structure before scale.',
-  buildDifferent:   'Build Different.',
-  gateOpen:         'The Gate is open.',
-  tagline:          'Strategy | Freedom | Legacy',
+  heroHeadline:     'The AI Business Fixer Engine.',
+  heroSub:          'Create businesses. Fix operations. Run your pipeline. Sell your services.',
+  bringProblem:     'Bring the problem. Leave with the plan.',
+  createFix:        'Create. Fix. Run. Sell.',
+  aiEngine:         'AI Execution Engine',
+  founderDashboard: 'Founder Dashboard',
+  businessFixer:    'Business Fixer',
+  fromChaos:        'Turn business chaos into structured execution.',
+  realWorld:        'For real-world operators.',
+  oneEngine:        'One engine. Every business problem.',
+  noConfusion:      'From idea to execution, without the confusion.',
+  structured:       'Structure before scale.',
+  globalReady:      'Global. Bangladesh. US-ready.',
+}
+
+export const colors = {
+  primary:    '#6366f1',
+  primaryDim: 'rgba(99,102,241,0.15)',
+  primaryGlow:'rgba(99,102,241,0.35)',
+  accent:     '#06b6d4',
+  accentDim:  'rgba(6,182,212,0.15)',
+  success:    '#10b981',
+  warning:    '#f59e0b',
+  danger:     '#ef4444',
 }

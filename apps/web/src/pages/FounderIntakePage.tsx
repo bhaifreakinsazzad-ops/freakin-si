@@ -51,12 +51,12 @@ export default function FounderIntakePage() {
       {/* Nav */}
       <nav style={{ borderBottom: `1px solid ${T.border}`, padding: '16px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backdropFilter: 'blur(20px)', background: 'rgba(5,5,5,0.92)', position: 'sticky', top: 0, zIndex: 50 }}>
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-          <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(181,18,27,0.15)', border: '1px solid rgba(181,18,27,0.30)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ fontFamily: T.M, fontWeight: 900, fontSize: 13, color: T.red }}>BS</span>
+          <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg, #6366f1, #06b6d4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 900, fontSize: 13, color: '#fff' }}>EN</span>
           </div>
           <div>
-            <div style={{ fontFamily: T.M, fontWeight: 800, fontSize: 13, color: T.red, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Black Sheep</div>
-            <div style={{ fontSize: 10, color: T.steel, letterSpacing: '0.10em', textTransform: 'uppercase' }}>Divorcing The Game™</div>
+            <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, fontSize: 13, color: '#6366f1', letterSpacing: '0.08em', textTransform: 'uppercase' as const }}>Engine NotREAL</div>
+            <div style={{ fontSize: 10, color: T.steel, letterSpacing: '0.10em', textTransform: 'uppercase' as const }}>Founder Application</div>
           </div>
         </Link>
         <Link to="/choose-your-gate" style={{ fontSize: 12, color: T.gold, textDecoration: 'none', fontFamily: T.M, letterSpacing: '0.06em' }}>
@@ -87,7 +87,7 @@ export default function FounderIntakePage() {
                 <Shield size={11} /> Founder Intake
               </div>
               <h1 style={{ fontFamily: T.H, fontSize: 'clamp(2rem,5vw,3.2rem)', fontWeight: 700, margin: '0 0 16px' }}>
-                Apply as a Black Sheep Founder
+                Apply as a Founder
               </h1>
               <p style={{ color: T.steel, fontSize: '1rem', lineHeight: 1.7 }}>
                 Tell us where you are, what you carry, and what you are ready to build.
@@ -182,7 +182,7 @@ export default function FounderIntakePage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                 {[
                   { k: 'funding_interest', label: 'I am interested in funding pathways and business credit preparation.' },
-                  { k: 'scholarship_interest', label: 'I would like to be considered for the Black Sheep Blueprint Scholarship.' },
+                  { k: 'scholarship_interest', label: 'I would like to be considered for the Engine NotREAL Blueprint Scholarship.' },
                 ].map(({ k, label }) => (
                   <label key={k} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, cursor: 'pointer' }}>
                     <input type="checkbox" checked={(form as any)[k]} onChange={e => set(k, e.target.checked)}
@@ -197,7 +197,7 @@ export default function FounderIntakePage() {
                     style={{ marginTop: 3, accentColor: T.red, width: 16, height: 16 }} />
                   <span style={{ fontSize: 13, color: T.steel, lineHeight: 1.6 }}>
                     <span style={{ color: T.red }}>* </span>
-                    I consent to be contacted by the Black Sheep / Divorcing The Game™ team regarding my application and next steps.
+                    I consent to be contacted by the Engine NotREAL team regarding my application and next steps.
                   </span>
                 </label>
               </div>

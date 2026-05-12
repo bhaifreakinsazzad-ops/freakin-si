@@ -21,7 +21,7 @@ const tables = {
 const DEMO_ID = 'demo-user-001';
 tables.users[DEMO_ID] = {
   id: DEMO_ID,
-  email: 'demo@blacksheep.ai',
+  email: 'demo@enginenotreal.com',
   // bcrypt hash of "Demo@2025"
   password: '$2a$12$Bv8tUtqcX0nTPOhBFDsvcuaH3THRGOsGxp.bPyX3NFA4rfINnhXYa',
   name: 'Demo User',

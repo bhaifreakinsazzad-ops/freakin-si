@@ -73,11 +73,11 @@ const partners: Partner[] = [
     letter: 'D',
     avatarBg: 'bg-violet-600',
     avatarColor: 'text-white',
-    name: 'DhandaBuzz',
+    name: 'Digital Partners',
     tagline: 'Full-Service Digital Marketing Agency',
     tags: ['Digital Marketing', 'Web Development', 'SEO', 'Social Media'],
     description:
-      'DhandaBuzz is a full-service digital marketing agency that helps new businesses build a powerful online presence from day one. From paid advertising to organic SEO, professional web development to compelling copywriting, their team handles every channel that drives customer acquisition. They speak the language of growth-stage startups.',
+      'A full-service digital marketing partner that helps new businesses build a powerful online presence from day one. From paid advertising to organic SEO, professional web development to compelling copywriting, they handle every channel that drives customer acquisition.',
     services: [
       'Paid Ads (Meta, Google, TikTok)',
       'Brand Design & Visual Identity',
@@ -116,7 +116,7 @@ export default function PartnersPage() {
       >
         <Link to="/" className="flex items-center gap-2">
           <span className="font-extrabold text-xl tracking-tight" style={{ color: '#c8102e' }}>
-            Black Sheep
+            Engine NotREAL
           </span>
         </Link>
         <div className="flex items-center gap-4">
@@ -163,7 +163,7 @@ export default function PartnersPage() {
             Ecosystem
           </h1>
           <p className="text-lg max-w-2xl mx-auto" style={{ color: 'var(--fsi-text-muted, #9ca3af)' }}>
-            Expert services integrated directly into your Black Sheep journey — available at exactly
+            Expert services integrated directly into your Engine NotREAL journey — available at exactly
             the moment you need them inside Step&nbsp;9 of the AI Builder.
           </p>
         </motion.div>
@@ -305,7 +305,7 @@ export default function PartnersPage() {
               {
                 step: '01',
                 label: 'Build Your Plan',
-                detail: 'Use the Black Sheep AI Builder to map your business strategy step by step.',
+                detail: 'Use the Engine NotREAL AI Builder to map your business strategy step by step.',
                 color: '#F5B041',
               },
               {
@@ -366,7 +366,7 @@ export default function PartnersPage() {
           <span style={{ color: '#F5B041' }}>right support?</span>
         </h2>
         <p className="mb-8 text-lg" style={{ color: 'var(--fsi-text-muted, #9ca3af)' }}>
-          Your partners are waiting inside the Black Sheep AI Builder — start your blueprint today.
+          Your partners are waiting inside the Engine NotREAL AI Builder — start your blueprint today.
         </p>
         <Link
           to="/builder"

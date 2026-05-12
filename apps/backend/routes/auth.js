@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const router = express.Router();
 const memdb = require('../lib/memdb');
+const { db, isUsingSupabase } = require('../lib/db');
 const { authenticateToken } = require('../middleware/auth');
 const { getJwtSecret } = require('../lib/jwtSecret');
 
@@ -12,7 +13,7 @@ function makeToken(userId, email) {
 }
 
 function sanitizeUser(user) {
-  const { password, ...safe } = user;
+  const { password, password_hash, ...safe } = user;
   return safe;
 }
 
@@ -28,15 +29,24 @@ router.post('/register', async (req, res) => {
     }
 
     const lowerEmail = email.toLowerCase();
-    if (memdb.getUserByEmail(lowerEmail)) {
-      return res.status(400).json({ error: 'An account with this email already exists' });
+
+    // Check uniqueness — Supabase or memdb
+    if (isUsingSupabase()) {
+      const { data: existing } = await db.from('users').select('id').eq('email', lowerEmail).maybeSingle();
+      if (existing) {
+        return res.status(400).json({ error: 'An account with this email already exists' });
+      }
+    } else {
+      if (memdb.getUserByEmail(lowerEmail)) {
+        return res.status(400).json({ error: 'An account with this email already exists' });
+      }
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
     const newUser = {
       id: uuidv4(),
       email: lowerEmail,
-      password: hashedPassword,
+      password_hash: hashedPassword,
       name,
       phone: phone || null,
       subscription: 'free',
@@ -51,7 +61,15 @@ router.post('/register', async (req, res) => {
       updated_at: new Date().toISOString(),
     };
 
-    memdb.addUser(newUser);
+    if (isUsingSupabase()) {
+      const { error: insertErr } = await db.from('users').insert(newUser);
+      if (insertErr) {
+        console.error('[auth] Supabase register error:', insertErr.message);
+        return res.status(500).json({ error: 'Registration failed. Please try again.' });
+      }
+    } else {
+      memdb.addUser(newUser);
+    }
 
     res.status(201).json({ token: makeToken(newUser.id, newUser.email), user: sanitizeUser(newUser) });
   } catch (err) {
@@ -68,12 +86,25 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Email and password required' });
     }
 
-    const user = memdb.getUserByEmail(email.toLowerCase());
+    const lowerEmail = email.toLowerCase();
+    let user = null;
+
+    if (isUsingSupabase()) {
+      const { data, error } = await db.from('users').select('*').eq('email', lowerEmail).maybeSingle();
+      if (error) {
+        console.error('[auth] Supabase login lookup error:', error.message);
+        return res.status(500).json({ error: 'Login failed. Please try again.' });
+      }
+      user = data;
+    } else {
+      user = memdb.getUserByEmail(lowerEmail);
+    }
+
     if (!user) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    const valid = await bcrypt.compare(password, user.password);
+    const valid = await bcrypt.compare(password, user.password_hash || user.password || '');
     if (!valid) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
@@ -82,9 +113,13 @@ router.post('/login', async (req, res) => {
     const lastReset = new Date(user.last_reset_at || 0);
     const today = new Date();
     if (lastReset.toDateString() !== today.toDateString()) {
-      user.daily_usage = 0;
-      user.image_daily_usage = 0;
-      user.last_reset_at = today.toISOString();
+      const updates = { daily_usage: 0, image_daily_usage: 0, last_reset_at: today.toISOString() };
+      if (isUsingSupabase()) {
+        await db.from('users').update(updates).eq('id', user.id);
+        Object.assign(user, updates);
+      } else {
+        Object.assign(user, updates);
+      }
     }
 
     res.json({ token: makeToken(user.id, user.email), user: sanitizeUser(user) });
@@ -103,12 +138,20 @@ router.get('/me', authenticateToken, (req, res) => {
 router.patch('/profile', authenticateToken, async (req, res) => {
   try {
     const { name, phone, avatar_url } = req.body;
-    const user = memdb.getUserById(req.user.id);
-    if (name !== undefined) user.name = name;
-    if (phone !== undefined) user.phone = phone;
-    if (avatar_url !== undefined) user.avatar_url = avatar_url;
-    user.updated_at = new Date().toISOString();
-    res.json({ user: sanitizeUser(user) });
+    const updates = { updated_at: new Date().toISOString() };
+    if (name !== undefined) updates.name = name;
+    if (phone !== undefined) updates.phone = phone;
+    if (avatar_url !== undefined) updates.avatar_url = avatar_url;
+
+    if (isUsingSupabase()) {
+      const { data, error } = await db.from('users').update(updates).eq('id', req.user.id).select().single();
+      if (error) return res.status(500).json({ error: 'Profile update failed' });
+      return res.json({ user: sanitizeUser(data) });
+    } else {
+      const user = memdb.getUserById(req.user.id);
+      Object.assign(user, updates);
+      return res.json({ user: sanitizeUser(user) });
+    }
   } catch (err) {
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -118,14 +161,26 @@ router.patch('/profile', authenticateToken, async (req, res) => {
 router.post('/change-password', authenticateToken, async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
-    const user = memdb.getUserById(req.user.id);
-
-    const valid = await bcrypt.compare(currentPassword, user.password);
-    if (!valid) return res.status(401).json({ error: 'Current password is incorrect' });
     if (newPassword.length < 6) return res.status(400).json({ error: 'New password must be at least 6 characters' });
 
-    user.password = await bcrypt.hash(newPassword, 12);
-    user.updated_at = new Date().toISOString();
+    let user;
+    if (isUsingSupabase()) {
+      const { data } = await db.from('users').select('*').eq('id', req.user.id).single();
+      user = data;
+    } else {
+      user = memdb.getUserById(req.user.id);
+    }
+
+    const valid = await bcrypt.compare(currentPassword, user.password_hash || user.password || '');
+    if (!valid) return res.status(401).json({ error: 'Current password is incorrect' });
+
+    const newHash = await bcrypt.hash(newPassword, 12);
+    if (isUsingSupabase()) {
+      await db.from('users').update({ password_hash: newHash, updated_at: new Date().toISOString() }).eq('id', req.user.id);
+    } else {
+      user.password = newHash;
+      user.updated_at = new Date().toISOString();
+    }
     res.json({ success: true, message: 'Password changed successfully' });
   } catch (err) {
     res.status(500).json({ error: 'Internal server error' });

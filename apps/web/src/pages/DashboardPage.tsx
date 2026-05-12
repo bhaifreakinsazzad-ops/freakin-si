@@ -58,32 +58,39 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Shield size={14} style={{ color: '#c9a449' }} />
-              <span style={{ fontSize:11, fontFamily:"'Montserrat',sans-serif", fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', color:'#c9a449' }}>
-                Divorcing The Game™
+              <Zap size={14} style={{ color: '#818cf8' }} />
+              <span style={{ fontSize:11, fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', color:'#818cf8' }}>
+                Engine NotREAL
               </span>
             </div>
-            <h1 className="font-display font-bold" style={{ fontSize:'1.75rem', color:'#f5f0e8' }}>Legacy Dashboard</h1>
-            <p className="text-sm mt-0.5" style={{ color:'var(--bs-steel)' }}>Welcome home, {user.name}. Your vision becomes structure here.</p>
+            <h1 className="font-bold" style={{ fontSize:'1.75rem', color:'var(--fsi-text)', fontFamily:"'Space Grotesk',sans-serif" }}>
+              Founder Dashboard
+            </h1>
+            <p className="text-sm mt-0.5" style={{ color:'var(--fsi-text-muted)' }}>
+              Welcome back, {user.name}. Your engine is ready.
+            </p>
           </div>
           <span className={cn('px-3 py-1.5 rounded-full text-sm font-bold', getSubscriptionBadge(user.subscription))}>
             {subLabel}
           </span>
         </div>
 
-        {/* Founder Status Cards */}
+        {/* Engine Status Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: 'Founder Status', value: 'Active', icon: Shield, color: '#c9a449' },
-            { label: 'Blueprint Progress', value: 'Start Now', icon: FileText, color: '#b5121b' },
-            { label: 'Gate Recommended', value: 'Uncover First', icon: Target, color: '#c9c9c9' },
-            { label: 'Next Best Step', value: 'Uncover My Gold', icon: Sparkles, color: '#e0c878' },
-          ].map(({ label, value, icon: Icon, color }) => (
-            <div key={label} style={{ background:'linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))', border:'1px solid rgba(201,201,201,0.14)', borderRadius:16, padding:'16px 20px', backdropFilter:'blur(12px)' }}>
+            { label: 'Engine Status', value: 'Active', icon: Shield, color: '#10b981', to: '/command' },
+            { label: 'Create Business', value: 'Build Now', icon: Sparkles, color: '#818cf8', to: '/create' },
+            { label: 'Fix a Problem', value: 'Fixer Mode', icon: Wrench, color: '#22d3ee', to: '/fixer' },
+            { label: 'CRM Pipeline', value: 'Run Mode', icon: TrendingUp, color: '#f59e0b', to: '/run' },
+          ].map(({ label, value, icon: Icon, color, to }) => (
+            <Link key={label} to={to} style={{ background:'rgba(255,255,255,0.04)', border:`1px solid ${color}33`, borderRadius:16, padding:'16px 20px', backdropFilter:'blur(12px)', display:'block', transition:'border-color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = `${color}66`)}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = `${color}33`)}
+            >
               <Icon size={16} style={{ color, marginBottom:8 }} />
-              <p style={{ fontSize:10, fontFamily:"'Montserrat',sans-serif", fontWeight:700, letterSpacing:'0.10em', textTransform:'uppercase', color:'var(--bs-steel)', marginBottom:4 }}>{label}</p>
-              <p style={{ fontSize:13, fontWeight:700, color:'#f5f0e8' }}>{value}</p>
-            </div>
+              <p style={{ fontSize:10, fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, letterSpacing:'0.10em', textTransform:'uppercase', color:'var(--fsi-text-muted)', marginBottom:4 }}>{label}</p>
+              <p style={{ fontSize:13, fontWeight:700, color:'var(--fsi-text)' }}>{value}</p>
+            </Link>
           ))}
         </div>
 
@@ -125,10 +132,10 @@ export default function DashboardPage() {
         {/* Quick access */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: 'Uncover My Gold', icon: Sparkles, colorHex: '#c9a449', action: '/builder', actionLabel: 'Start Now' },
-            { label: 'The Gate', icon: Store, colorHex: '#b5121b', action: '/marketplace', actionLabel: 'Enter' },
-            { label: 'Build Request', icon: Briefcase, colorHex: '#c9c9c9', action: '/services', actionLabel: 'Send Request' },
-            { label: 'Choose Your Gate', icon: Crown, colorHex: '#e0c878', action: '/payment', actionLabel: 'View Gates' },
+            { label: 'AI Command',      icon: Sparkles,        colorHex: '#22d3ee', action: '/command',     actionLabel: 'Open' },
+            { label: 'Marketplace',     icon: Store,           colorHex: '#6366f1', action: '/marketplace', actionLabel: 'Browse' },
+            { label: 'Service Request', icon: Briefcase,       colorHex: '#10b981', action: '/requests',    actionLabel: 'Send Request' },
+            { label: 'Get Support',     icon: MessageSquare,   colorHex: '#f59e0b', action: '/support',     actionLabel: 'Open Ticket' },
           ].map(({ label, icon: Icon, colorHex, action, actionLabel }) => (
             <Link key={label} to={action}
               className="rounded-xl p-4 transition-all group"
@@ -143,22 +150,22 @@ export default function DashboardPage() {
           ))}
         </div>
 
-        {/* Black Sheep Platform Overview */}
+        {/* Engine NotREAL Platform Overview */}
         <div className="rounded-2xl p-5 space-y-4"
-          style={{ background:'linear-gradient(135deg,rgba(181,18,27,0.08),rgba(201,164,73,0.04))', border:'1px solid rgba(201,164,73,0.22)' }}>
+          style={{ background:'linear-gradient(135deg,rgba(99,102,241,0.08),rgba(6,182,212,0.04))', border:'1px solid rgba(99,102,241,0.22)' }}>
           <div className="flex items-center justify-between">
-            <h2 className="font-bold flex items-center gap-2 text-sm" style={{ color:'#c9a449', fontFamily:"'Montserrat',sans-serif", letterSpacing:'0.05em', textTransform:'uppercase' }}>
-              <Shield size={14} style={{ color:'#c9a449' }} /> Black Sheep Platform
+            <h2 className="font-bold flex items-center gap-2 text-sm" style={{ color:'#818cf8', fontFamily:"'Space Grotesk',sans-serif", letterSpacing:'0.05em', textTransform:'uppercase' }}>
+              <Shield size={14} style={{ color:'#818cf8' }} /> Platform Modules
             </h2>
-            <Link to="/builder" className="text-xs flex items-center gap-1" style={{ color:'var(--bs-steel)' }}>
-              Uncover My Gold <ArrowRight size={12} />
+            <Link to="/create" className="text-xs flex items-center gap-1" style={{ color:'var(--bs-steel)' }}>
+              Build Blueprint <ArrowRight size={12} />
             </Link>
           </div>
           <div className="grid grid-cols-3 gap-3">
             {[
-              { icon: Sparkles, label: 'Uncover My Gold', sublabel: 'Build your blueprint', to: '/builder',    color: '#c9a449' },
-              { icon: Briefcase, label: 'Build Request',  sublabel: 'Send project request', to: '/services',   color: '#c9c9c9' },
-              { icon: Store,     label: 'The Gate',       sublabel: 'Enter & explore',       to: '/marketplace', color: '#b5121b' },
+              { icon: Sparkles,  label: 'AI Builder',   sublabel: 'Create blueprint',  to: '/create',      color: '#6366f1' },
+              { icon: Wrench,    label: 'Fixer Mode',   sublabel: 'Fix your business', to: '/fixer',       color: '#f59e0b' },
+              { icon: Store,     label: 'Marketplace',  sublabel: 'Browse & request',  to: '/marketplace', color: '#06b6d4' },
             ].map(({ icon: Icon, label, sublabel, to, color }) => (
               <Link key={to} to={to}
                 className="rounded-xl p-3 flex flex-col items-center text-center gap-2 transition-all hover:scale-105"

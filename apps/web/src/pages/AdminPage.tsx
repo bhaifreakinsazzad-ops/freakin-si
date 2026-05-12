@@ -94,9 +94,9 @@ export default function AdminPage() {
           </Link>
           <div className="flex items-center gap-2">
             <Shield size={18} className="text-yellow-400" />
-            <span className="font-bold text-white">Black Sheep Command Center</span>
+            <span className="font-bold text-white">Engine NotREAL Admin</span>
           </div>
-          <span className="text-xs text-gray-600">— AI শালা</span>
+          <span className="text-xs text-gray-600">— Control Center</span>
         </div>
         <div className="flex items-center gap-3">
           <span className="text-xs text-gray-500">{user?.email}</span>

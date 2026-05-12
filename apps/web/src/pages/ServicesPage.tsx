@@ -1,5 +1,5 @@
 /**
- * Black Sheep — Build Request
+ * Engine NotREAL — Service Request
  * Send a Build Request: Ads, Dev, Design, Copy, SEO, Social services
  */
 
@@ -24,7 +24,7 @@ const SERVICES = [
   { id: 'social', icon: Users,        label: 'Social Mgmt',desc: 'Page management, DMs, community growth',    color: '#F97316', price: 'From $79/mo' },
 ]
 
-/* Showcase-only services (DhandaBuzz merged — link to external or future pages) */
+/* Showcase-only services (coming soon — link to future pages) */
 const SHOWCASE_EXTRAS = [
   { icon: Shield,       label: 'Secure Escrow',  desc: 'Safe deals, dispute resolution, 2% fee',     color: '#00FF94', href: '/register' },
   { icon: BarChart3,    label: 'Growth Analytics',desc: 'Live revenue, ROAS, conversion dashboard',   color: '#06B6D4', href: '/dashboard' },
@@ -160,7 +160,7 @@ export default function ServicesPage() {
                 </p>
               </div>
 
-              {/* Extra services showcase (DhandaBuzz merged) */}
+              {/* Extra services showcase (coming soon) */}
               <div className="grid grid-cols-2 gap-2">
                 {SHOWCASE_EXTRAS.map(s => (
                   <a key={s.label} href={s.href}

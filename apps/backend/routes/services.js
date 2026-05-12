@@ -16,7 +16,7 @@ router.post('/', authenticateToken, async (req, res) => {
   try {
     const {
       service_type, name, email, business_name,
-      description, budget, deadline, references_url,
+      description, budget, deadline, references_url, references_text,
     } = req.body;
 
     if (!service_type || !SERVICE_TYPES.includes(service_type)) {
@@ -38,7 +38,7 @@ router.post('/', authenticateToken, async (req, res) => {
         description:   description.trim(),
         budget:        budget || '',
         deadline:      deadline || '',
-        references_url:references_url || '',
+        references_text: references_text || references_url || '',
         status:        'pending',
       })
       .select()

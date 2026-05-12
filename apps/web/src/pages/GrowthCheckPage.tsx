@@ -1,6 +1,6 @@
 /**
  * BayParee — Growth Check
- * Free business assessment tool (ported from DhandaBuzz, US-market focused)
+ * Free business assessment tool — Engine NotREAL Growth Check
  * 8 questions → growth score + AI recommendations
  */
 import { useState } from 'react'

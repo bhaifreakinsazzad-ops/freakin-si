@@ -89,8 +89,29 @@ export const subscriptionApi = {
   getMyPayments: () => api.get('/subscriptions/my-payments'),
 }
 
+export const ordersApi = {
+  create: (data: {
+    planId?: string
+    serviceId?: string
+    description?: string
+    customerName: string
+    customerEmail: string
+    customerPhone?: string
+    businessName?: string
+    amount: number
+    currency?: string
+    paymentMethod?: string
+    notes?: string
+  }) => api.post('/orders', data),
+  submitPayment: (id: string, data: { paymentReference: string; paymentMethod?: string }) =>
+    api.post(`/orders/${id}/submit-payment`, data),
+  getMyOrders: () => api.get('/orders'),
+  getOrder: (id: string) => api.get(`/orders/${id}`),
+}
+
 export const adminApi = {
   getStats: () => api.get('/admin/stats'),
+  getOverview: () => api.get('/admin/overview'),
   getPayments: (params?: { status?: string; page?: number }) =>
     api.get('/admin/payments', { params }),
   approvePayment: (id: string, note?: string) =>

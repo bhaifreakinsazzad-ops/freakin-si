@@ -1,11 +1,11 @@
 /**
- * Freakin BI — Freakin Business Intelligence
- * Backend API v3.0
+ * Engine NotREAL — AI Business Engine
+ * Backend API v4.0
  *
  * Stack: Express.js + Supabase + JWT
- * Free LLMs: Groq, Gemini, OpenRouter, Together, Cohere
+ * AI Providers: Groq, OpenAI, Anthropic, Google, Mistral, Together, DeepSeek, xAI, Perplexity
  * Image Gen: Pollinations.ai (free, no key)
- * Payment: Manual bKash/Nagad confirmation
+ * Payment: Manual bKash/Nagad/Stripe confirmation
  */
 
 require('dotenv').config();
@@ -27,11 +27,16 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'http://localhost:4173',
+  'https://enginenotreal.com',
+  'https://www.enginenotreal.com',
+  // DhandaBuzz / client beta domains
+  'https://dhandabuzz.online',
+  'https://www.dhandabuzz.online',
+  // Legacy domains (kept for backward compat)
   'https://bhaifreakin.online',
   'https://www.bhaifreakin.online',
   'https://black-sheep.company',
   'https://www.black-sheep.company',
-  'https://powered-by-bhaisazzad.online',
 ];
 
 app.use(cors({
@@ -72,33 +77,83 @@ app.use('/api/auth/', rateLimit({
 
 // ============ ROUTES ============
 
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/chat', require('./routes/chat'));
-app.use('/api/image', require('./routes/image'));
-app.use('/api/tools', require('./routes/tools'));
-app.use('/api/models', require('./routes/models'));
+app.use('/api/auth',          require('./routes/auth'));
+app.use('/api/chat',          require('./routes/chat'));
+app.use('/api/image',         require('./routes/image'));
+app.use('/api/tools',         require('./routes/tools'));
+app.use('/api/models',        require('./routes/models'));
 app.use('/api/subscriptions', require('./routes/subscriptions'));
-app.use('/api/admin', require('./routes/admin'));
-app.use('/api/businesses', require('./routes/businesses'));
-app.use('/api/services',   require('./routes/services'));
+app.use('/api/admin',         require('./routes/admin'));
+app.use('/api/businesses',    require('./routes/businesses'));
+app.use('/api/services',      require('./routes/services'));
+app.use('/api/fixer',         require('./routes/fixer'));
+app.use('/api/support',       require('./routes/support'));
+app.use('/api/orders',        require('./routes/orders'));
 
-// Health check
+// Admin overview — counts across all core resources
+app.get('/api/admin/overview', require('./middleware/auth').authenticateToken, async (req, res) => {
+  const { db, isUsingSupabase } = require('./lib/db')
+  const adminEmails = (process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || '').split(',').map(e => e.trim())
+  const isAdmin = req.user?.is_admin || adminEmails.includes(req.user?.email || '')
+  if (!isAdmin) return res.status(403).json({ error: 'Admin access required' })
+
+  const supportRoute = require('./routes/support')
+  const ordersRoute  = require('./routes/orders')
+
+  if (isUsingSupabase()) {
+    try {
+      const [tickets, orders, services, businesses] = await Promise.all([
+        db.from('support_tickets').select('id, status, created_at', { count: 'exact' }),
+        db.from('orders').select('id, status, amount, currency, created_at', { count: 'exact' }),
+        db.from('service_requests').select('id, status, created_at', { count: 'exact' }),
+        db.from('businesses').select('id, created_at', { count: 'exact' }),
+      ])
+      return res.json({
+        mode: 'supabase',
+        support_tickets: { total: tickets.count || 0, recent: (tickets.data || []).slice(0, 5) },
+        orders:          { total: orders.count  || 0, recent: (orders.data  || []).slice(0, 5) },
+        service_requests:{ total: services.count || 0, recent: (services.data || []).slice(0, 5) },
+        businesses:      { total: businesses.count || 0 },
+      })
+    } catch (err) {
+      console.error('[admin/overview] Supabase error:', err.message)
+    }
+  }
+
+  res.json({
+    mode: 'memdb',
+    support_tickets:  { total: supportRoute.TICKETS?.length || 0, recent: (supportRoute.TICKETS || []).slice(0, 5) },
+    orders:           { total: ordersRoute.ORDERS?.length   || 0, recent: (ordersRoute.ORDERS   || []).slice(0, 5) },
+    service_requests: { total: 0, recent: [] },
+    businesses:       { total: 0 },
+  })
+});
+
+// Health check — production readiness report
 app.get('/api/health', (req, res) => {
+  const { getEnvStatus } = require('./lib/envStatus')
+  const supportRoute = require('./routes/support')
+  const status = getEnvStatus()
+
   res.json({
     status: 'ok',
-    app: 'Freakin BI',
-    version: '3.0.0',
+    app: 'Engine NotREAL',
+    version: '4.0.0',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development',
+    ...status,
+    support: {
+      ready: true,
+      ticketsInMemory: supportRoute.TICKETS ? supportRoute.TICKETS.length : 0,
+    },
   });
 });
 
 // API info
 app.get('/', (req, res) => {
   res.json({
-    name: 'Freakin BI API',
-    version: '3.0.0',
-    description: 'Freakin Business Intelligence — Unlock the Code to Billions',
+    name: 'Engine NotREAL API',
+    version: '4.0.0',
+    description: 'Engine NotREAL — AI Business Fixer Engine',
     docs: '/api/health',
   });
 });
@@ -116,23 +171,31 @@ app.use((err, req, res, next) => {
 
 // ============ START ============
 
-app.listen(PORT, () => {
-  console.log(`
+// Only bind to a port when run directly (node server.js).
+// When imported by a serverless runtime (Vercel, etc.) the export below is used instead.
+if (require.main === module) {
+  app.listen(PORT, () => {
+    const aiProvider = process.env.GROQ_API_KEY ? 'Groq' :
+      process.env.GOOGLE_GENERATIVE_AI_API_KEY ? 'Google' :
+      process.env.OPENAI_API_KEY ? 'OpenAI' :
+      process.env.ANTHROPIC_API_KEY ? 'Anthropic' : 'Demo Mode';
+    console.log(`
 ╔══════════════════════════════════════════════════════════╗
 ║                                                          ║
-║   🔥  FREAKIN BI BACKEND v3.0                           ║
-║   Freakin Business Intelligence                          ║
+║   ⚡  ENGINE NOTREAL BACKEND v4.0                        ║
+║   AI Business Fixer Engine                               ║
 ║                                                          ║
 ║   🌐  http://localhost:${PORT}                              ║
 ║   📍  Environment: ${(process.env.NODE_ENV || 'development').padEnd(35)}║
 ║                                                          ║
-║   ✅  Free LLMs: Groq, Gemini, OpenRouter               ║
+║   🤖  AI Provider: ${aiProvider.padEnd(37)}║
 ║   🎨  Image Gen: Pollinations.ai (free)                  ║
-║   💳  Payments: bKash/Nagad (manual confirm)             ║
+║   💳  Payments: bKash/Nagad (manual) + Stripe (future)  ║
 ║   👤  Admin: ${(process.env.ADMIN_EMAILS || 'not set').padEnd(43)}║
 ║                                                          ║
 ╚══════════════════════════════════════════════════════════╝
-  `);
-});
+    `);
+  });
+}
 
 module.exports = app;

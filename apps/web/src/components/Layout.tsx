@@ -3,9 +3,9 @@ import { useAuth } from '@/contexts/AuthContext'
 import { useLang } from '@/contexts/LanguageContext'
 import { useState } from 'react'
 import {
-  MessageSquare, Image, Wrench, CreditCard, LayoutDashboard,
-  LogOut, ChevronLeft, ChevronRight, Shield, Menu, DollarSign,
-  Store, Briefcase, TrendingUp, Users, Globe2,
+  MessageSquare, Wrench, CreditCard, LayoutDashboard,
+  LogOut, ChevronLeft, ChevronRight, Shield, Menu,
+  Store, Briefcase, TrendingUp, Bot, Zap, Command, HeadphonesIcon,
 } from 'lucide-react'
 import { cn, getSubscriptionBadge } from '@/lib/utils'
 
@@ -17,16 +17,17 @@ export default function Layout() {
   const [mobileOpen, setMobileOpen]  = useState(false)
 
   const navItems = [
-    { to: '/dashboard',   icon: LayoutDashboard, label: 'Legacy Dashboard' },
-    { to: '/builder',     icon: TrendingUp,      label: 'Uncover My Gold', highlight: true },
-    { to: '/marketplace', icon: Store,           label: 'The Gate' },
-    { to: '/payment',     icon: CreditCard,      label: 'Choose Your Gate' },
-    { to: '/services',    icon: Briefcase,       label: 'Build Request' },
+    { to: '/dashboard',   icon: LayoutDashboard, label: 'Dashboard' },
+    { to: '/command',     icon: Command,         label: 'Command',     highlight: true },
+    { to: '/create',      icon: Zap,             label: 'Create' },
+    { to: '/fixer',       icon: Wrench,          label: 'Fixer',       highlight: true },
+    { to: '/run',         icon: TrendingUp,      label: 'Run / CRM' },
+    { to: '/marketplace', icon: Store,           label: 'Marketplace' },
+    { to: '/requests',    icon: Briefcase,       label: 'Requests' },
+    { to: '/support',     icon: HeadphonesIcon,  label: 'Support' },
     { to: '/chat',        icon: MessageSquare,   label: 'AI Chat' },
-    { to: '/image',       icon: Image,           label: 'AI Image' },
-    { to: '/tools',       icon: Wrench,          label: 'AI Tools' },
-    { to: '/hub',         icon: Globe2,          label: 'Business Hub' },
-    { to: '/partners',    icon: Users,           label: 'Partners' },
+    { to: '/tools',       icon: Bot,             label: 'AI Tools' },
+    { to: '/pricing',     icon: CreditCard,      label: 'Pricing' },
   ]
 
   const handleLogout = () => { logout(); navigate('/') }
@@ -43,26 +44,19 @@ export default function Layout() {
         style={{ borderColor: 'var(--fsi-border)' }}
       >
         <div
-          className="w-9 h-9 rounded-xl overflow-hidden shrink-0 flex items-center justify-center"
-          style={{ background: 'rgba(200,16,46,0.15)', boxShadow: '0 0 16px rgba(200,16,46,0.25)' }}
+          className="w-9 h-9 rounded-xl shrink-0 flex items-center justify-center font-bold text-sm"
+          style={{ background: 'rgba(99,102,241,0.15)', boxShadow: '0 0 16px rgba(99,102,241,0.30)', color: '#818cf8', fontFamily: "'Space Grotesk',sans-serif" }}
         >
-          <span style={{ fontWeight:900, fontSize:14, color:'#c8102e', fontFamily:"'Montserrat',sans-serif" }}>BS</span>
+          EN
         </div>
         {!collapsed && (
           <div>
-            <h1 className="font-display font-bold text-base leading-none" style={{ color: 'var(--fsi-text)' }}>
-              <span style={{ color: '#c8102e' }}>Black Sheep</span>
+            <h1 className="font-bold text-base leading-none" style={{ color: 'var(--fsi-text)', fontFamily: "'Space Grotesk',sans-serif" }}>
+              <span style={{ color: '#818cf8' }}>Engine</span>{' '}
+              <span style={{ color: '#22d3ee' }}>NotREAL</span>
             </h1>
-            <p
-              className="mt-0.5"
-              style={{
-                color: 'rgba(255,255,255,0.35)',
-                fontSize: '10px',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-              }}
-            >
-              Divorcing The Game™
+            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '10px', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: 2 }}>
+              AI Business Engine
             </p>
           </div>
         )}
@@ -79,17 +73,13 @@ export default function Layout() {
               'flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200',
               collapsed ? 'justify-center' : '',
               isActive
-                ? 'fsi-card-active text-[var(--fsi-gold)]'
+                ? 'bg-[rgba(99,102,241,0.15)] border-l-2 border-[#818cf8]'
                 : highlight
-                  ? 'text-[var(--fsi-gold)] bg-[rgba(245,176,65,0.07)] hover:bg-[rgba(245,176,65,0.13)] border border-[rgba(245,176,65,0.20)]'
+                  ? 'text-[#22d3ee] bg-[rgba(99,102,241,0.07)] hover:bg-[rgba(99,102,241,0.13)] border border-[rgba(99,102,241,0.22)]'
                   : 'hover:bg-[rgba(255,255,255,0.04)]'
             )}
             style={({ isActive }) => ({
-              color: isActive
-                ? 'var(--fsi-gold)'
-                : highlight
-                  ? 'var(--fsi-gold)'
-                  : undefined,
+              color: isActive ? '#818cf8' : highlight ? '#22d3ee' : undefined,
             })}
           >
             {({ isActive }) => (
@@ -97,20 +87,12 @@ export default function Layout() {
                 <Icon
                   size={17}
                   className="shrink-0"
-                  style={{
-                    color: isActive || highlight
-                      ? 'var(--fsi-gold)'
-                      : 'rgba(255,255,255,0.55)',
-                  }}
+                  style={{ color: isActive ? '#818cf8' : highlight ? '#22d3ee' : 'rgba(255,255,255,0.5)' }}
                 />
                 {!collapsed && (
                   <span
                     className="text-sm font-medium"
-                    style={{
-                      color: isActive || highlight
-                        ? 'var(--fsi-gold)'
-                        : 'rgba(255,255,255,0.55)',
-                    }}
+                    style={{ color: isActive ? '#818cf8' : highlight ? '#22d3ee' : 'rgba(255,255,255,0.55)' }}
                   >
                     {label}
                   </span>
@@ -245,8 +227,9 @@ export default function Layout() {
           <button onClick={() => setMobileOpen(true)} style={{ color: 'var(--fsi-gold)' }}>
             <Menu size={22} />
           </button>
-          <span className="font-display font-bold text-sm" style={{ color: 'var(--fsi-text)' }}>
-            <span style={{ color: '#c8102e' }}>Black Sheep</span>
+          <span className="font-bold text-sm" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>
+            <span style={{ color: '#818cf8' }}>Engine</span>{' '}
+            <span style={{ color: '#22d3ee' }}>NotREAL</span>
           </span>
           {/* empty placeholder to keep title centered */}
           <div className="w-6" />

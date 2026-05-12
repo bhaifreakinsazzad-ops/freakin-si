@@ -2,71 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Black Sheep / Divorcing The Game™ — Design Tokens (DESIGN.md source of truth) ── */
+/* ── Engine NotREAL — Design Tokens ── */
 
 @layer base {
   :root {
-    /* ── DESIGN.md §6 Color System ── */
+    /* ── Engine NotREAL Color System ── */
+    --en-primary:         #6366f1;
+    --en-primary-dim:     rgba(99,102,241,0.15);
+    --en-primary-glow:    rgba(99,102,241,0.35);
+    --en-accent:          #06b6d4;
+    --en-accent-dim:      rgba(6,182,212,0.15);
+    --en-void:            #070710;
+    --en-surface:         #0f0f1a;
+    --en-surface-2:       #16162a;
+    --en-border:          rgba(99,102,241,0.18);
+    --en-text:            #f1f5f9;
+    --en-text-muted:      rgba(241,245,249,0.5);
+
+    /* Legacy BS aliases — kept so existing components don't break */
     --bs-black:           #050505;
-    --bs-void:            #08080b;
-    --bs-charcoal:        #101014;
-    --bs-panel:           #17171d;
-    --bs-panel-soft:      #1e1e26;
-    --bs-border:          rgba(201,201,201,0.18);
-    --bs-border-strong:   rgba(201,164,73,0.38);
-
-    --bs-red:             #b5121b;
-    --bs-red-deep:        #7f0b12;
-    --bs-red-bright:      #ef233c;
-    --bs-red-glow:        rgba(239,35,60,0.32);
-
-    --bs-gold:            #c9a449;
-    --bs-gold-soft:       #e0c878;
-    --bs-silver:          #c9c9c9;
-    --bs-steel:           #8f9299;
-    --bs-ivory:           #f5f0e8;
-    --bs-muted:           #9ca3af;
-
-    --bs-success:         #3ddc97;
-    --bs-warning:         #f5b84b;
+    --bs-void:            #070710;
+    --bs-charcoal:        #0f0f1a;
+    --bs-panel:           #16162a;
+    --bs-panel-soft:      #1e1e2e;
+    --bs-border:          rgba(99,102,241,0.18);
+    --bs-border-strong:   rgba(99,102,241,0.38);
+    --bs-red:             #6366f1;
+    --bs-red-deep:        #4f46e5;
+    --bs-red-bright:      #818cf8;
+    --bs-red-glow:        rgba(99,102,241,0.32);
+    --bs-gold:            #06b6d4;
+    --bs-gold-soft:       #67e8f9;
+    --bs-silver:          #94a3b8;
+    --bs-steel:           #64748b;
+    --bs-ivory:           #f1f5f9;
+    --bs-muted:           #94a3b8;
+    --bs-success:         #10b981;
+    --bs-warning:         #f59e0b;
     --bs-danger:          #ef4444;
+    --bs-red-border:      rgba(99,102,241,0.30);
+    --bs-gold-bright:     #67e8f9;
 
-    /* Legacy aliases — kept so existing components don't break */
-    --bs-red-border:      rgba(181,18,27,0.30);
-    --bs-gold-bright:     #e0c878;
-
-    /* Legacy FSI aliases — mapped to BS design system */
-    --fsi-gold:           var(--bs-gold);
-    --fsi-gold-bright:    var(--bs-gold-soft);
-    --fsi-gold-dim:       rgba(201,164,73,0.12);
-    --fsi-gold-muted:     rgba(201,164,73,0.30);
-    --fsi-gold-subtle:    rgba(201,164,73,0.06);
-    --fsi-gold-glow:      rgba(201,164,73,0.25);
-    --fsi-amber:          #b5851e;
-
-    /* Status — mapped to BS */
-    --fsi-green:          var(--bs-success);
-    --fsi-red:            var(--bs-red);
-    --fsi-blue:           #6366F1;
-    --fsi-teal:           #14B8A6;
-
-    /* Backgrounds — mapped to BS panels */
-    --fsi-void:           var(--bs-void);
-    --fsi-surface:        var(--bs-panel);
-    --fsi-surface-2:      var(--bs-panel-soft);
-    --fsi-surface-3:      #252530;
-    --fsi-surface-4:      #2e2e3c;
-
-    /* Borders */
-    --fsi-border:         var(--bs-border);
-    --fsi-border-hover:   rgba(201,201,201,0.28);
-    --fsi-border-active:  rgba(201,201,201,0.42);
+    /* FSI aliases — mapped to Engine NotREAL */
+    --fsi-gold:           var(--en-accent);
+    --fsi-gold-bright:    #67e8f9;
+    --fsi-gold-dim:       rgba(6,182,212,0.12);
+    --fsi-gold-muted:     rgba(6,182,212,0.30);
+    --fsi-gold-subtle:    rgba(6,182,212,0.06);
+    --fsi-gold-glow:      rgba(6,182,212,0.25);
+    --fsi-amber:          var(--en-primary);
+    --fsi-green:          #10b981;
+    --fsi-red:            #ef4444;
+    --fsi-blue:           var(--en-primary);
+    --fsi-teal:           var(--en-accent);
+    --fsi-void:           var(--en-void);
+    --fsi-surface:        var(--en-surface);
+    --fsi-surface-2:      var(--en-surface-2);
+    --fsi-surface-3:      #1e1e30;
+    --fsi-surface-4:      #252540;
+    --fsi-border:         var(--en-border);
+    --fsi-border-hover:   rgba(99,102,241,0.28);
+    --fsi-border-active:  rgba(99,102,241,0.45);
     --fsi-border-gold:    var(--bs-border-strong);
-
-    /* Text — white-based */
-    --fsi-text:           rgba(255,255,255,0.95);
-    --fsi-text-muted:     rgba(255,255,255,0.55);
-    --fsi-text-dim:       rgba(255,255,255,0.25);
+    --fsi-text:           rgba(241,245,249,0.95);
+    --fsi-text-muted:     rgba(241,245,249,0.55);
+    --fsi-text-dim:       rgba(241,245,249,0.25);
 
     /* Radix UI compat (keep exact same) */
     --background:             0 0% 3%;
@@ -106,9 +106,9 @@
 
   body {
     background:
-      radial-gradient(circle at 20% 10%, rgba(181,18,27,0.16), transparent 28%),
-      radial-gradient(circle at 80% 0%, rgba(201,164,73,0.09), transparent 22%),
-      linear-gradient(180deg, #050505 0%, #101014 52%, #050505 100%);
+      radial-gradient(circle at 20% 10%, rgba(99,102,241,0.14), transparent 28%),
+      radial-gradient(circle at 80% 0%, rgba(6,182,212,0.08), transparent 22%),
+      linear-gradient(180deg, #070710 0%, #0f0f1a 52%, #070710 100%);
     background-attachment: fixed;
     color: var(--fsi-text);
     font-family: 'Inter', 'Manrope', sans-serif;
@@ -130,11 +130,11 @@
 
   ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: var(--fsi-surface); }
-  ::-webkit-scrollbar-thumb { background: var(--fsi-gold-muted); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--fsi-gold); }
+  ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.30); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.55); }
 
   ::selection {
-    background: rgba(245, 176, 65, 0.20);
+    background: rgba(99,102,241,0.22);
     color: var(--fsi-text);
   }
 }

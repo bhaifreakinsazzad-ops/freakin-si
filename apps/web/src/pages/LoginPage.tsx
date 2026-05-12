@@ -40,15 +40,15 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex flex-col items-center gap-3 group">
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center"
-              style={{ background: 'rgba(200,16,46,0.12)', boxShadow: '0 0 30px rgba(200,16,46,0.30)', border: '1px solid rgba(200,16,46,0.25)' }}>
-              <span style={{ fontFamily:"'Montserrat',sans-serif", fontWeight:900, fontSize:20, color:'#c8102e' }}>BS</span>
+              style={{ background: 'linear-gradient(135deg, #6366f1, #06b6d4)', boxShadow: '0 0 30px rgba(99,102,241,0.35)' }}>
+              <span style={{ fontFamily:"'Space Grotesk',sans-serif", fontWeight:900, fontSize:20, color:'#fff' }}>EN</span>
             </div>
             <div>
               <div className="font-display text-2xl font-bold" style={{ color: 'var(--fsi-text)' }}>
-                <span style={{ color: '#c8102e' }}>Black Sheep</span>
+                Engine NotREAL
               </div>
               <p className="text-xs mt-1" style={{ color: 'var(--fsi-text-muted)' }}>
-                Divorcing The Game™ Platform
+                AI Business Engine — Sign in to continue
               </p>
             </div>
           </Link>
