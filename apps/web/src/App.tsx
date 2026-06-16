@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 import { AuthProvider, useAuth } from '@/contexts/AuthContext'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import { ChatModeProvider } from '@/contexts/ChatModeContext'
@@ -163,6 +164,7 @@ export default function App() {
           </ChatModeProvider>
         </AuthProvider>
       </LanguageProvider>
+      <Analytics />
     </BrowserRouter>
   )
 }
